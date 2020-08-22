@@ -1,0 +1,8 @@
+# Editor crud files
+*~
+\#*#
+.#*
+.vscode
+
+# Auto-generated files
+node_modules

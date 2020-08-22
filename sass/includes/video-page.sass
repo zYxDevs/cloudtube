@@ -1,0 +1,117 @@
+@use "colors.sass" as c
+
+.video-page
+  display: grid
+  grid-auto-flow: row
+  padding: 20px
+  grid-gap: 16px
+
+  @media screen and (min-width: 1000px)
+    grid-template-columns: 1fr 400px
+
+.main-video-section
+  .video-container
+    text-align: center
+
+    .video
+      display: inline-block
+      width: 100%
+      height: auto
+      max-height: 80vh
+
+  .info
+    display: flex
+    margin: 8px 4px 16px
+    font-size: 17px
+
+    .info-main
+      flex: 1
+
+      .title
+        margin: 0px 0px 4px
+        font-size: 30px
+        font-weight: normal
+        color: c.$fg-bright
+
+      .author-link
+        color: c.$fg-main
+        text-decoration: none
+
+        &:hover, &:active
+          color: c.$fg-bright
+          text-decoration: underline
+
+    .info-secondary
+      display: flex
+      flex-direction: column
+      align-items: end
+      margin-top: 6px
+      margin-left: 6px
+
+    .rating-bar
+      margin-top: 8px
+      width: 140px
+      height: 8px
+      border-radius: 3px
+      background: linear-gradient(to right, #1a1 var(--rating), #bbb var(--rating))
+
+  .description
+    font-size: 17px
+    margin: 16px 4px 4px 4px
+    background-color: c.$bg-accent-area
+    padding: 12px
+    border-radius: 4px
+
+.related-header
+  margin: 4px 0px 12px 2px
+  font-weight: normal
+  font-size: 26px
+
+.related-video
+  display: grid
+  grid-template-columns: 160px 1fr
+  grid-gap: 8px
+  align-items: start
+  align-content: start
+  margin-bottom: 16px
+
+  .thumbnail
+    position: relative
+    display: flex
+    background: c.$bg-darkest
+
+    .image
+      width: 160px
+      height: 90px
+
+    .duration
+      position: absolute
+      bottom: 3px
+      right: 3px
+      color: c.$fg-bright
+      font-size: 14px
+      background: rgba(20, 20, 20, 0.85)
+      line-height: 1
+      padding: 3px 5px 4px
+      border-radius: 4px
+
+  .title
+    font-size: 15px
+    line-height: 1.2
+
+    .title-link
+      color: c.$fg-main
+      text-decoration: none
+
+  .author-line
+    margin-top: 4px
+    font-size: 15px
+    color: c.$fg-dim
+
+    .author
+      color: c.$fg-dim
+      text-decoration: none
+
+      &:hover, &:active
+        color: c.$fg-bright
+        text-decoration: underline

@@ -1,0 +1,34 @@
+@use "colors.sass" as c
+
+body
+  background-color: c.$bg-dark
+  color: c.$fg-main
+  font-family: "Bariol", sans-serif
+  font-size: 18px
+  margin: 0
+  padding: 0
+
+a
+  color: c.$link
+
+input, select, button
+  font-family: inherit
+  font-size: 16px
+
+button
+  cursor: pointer
+
+:-moz-focusring
+  outline: none
+
+::-moz-focus-inner
+  border: 0
+
+select:-moz-focusring
+  color: transparent
+  text-shadow: 0 0 0 c.$fg-bright
+
+body.show-focus
+  a, select, button, input, video
+    &:focus
+      outline: 2px dotted #ddd

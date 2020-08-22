@@ -1,0 +1,68 @@
+extends includes/layout.pug
+
+block head
+  title= video.title
+  script(type="module" src=getStaticURL("html", "/static/js/player.js"))
+  script const data = !{JSON.stringify(video)}
+
+block content
+  - const sortedFormatStreams = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
+  - const sortedVideoAdaptiveFormats = video.adaptiveFormats.filter(f => f.type.startsWith("video")).sort((a, b) => b.second__height - a.second__height)
+  main.video-page
+    .main-video-section
+      .video-container
+        - const format = sortedFormatStreams[0]
+        video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
+          source(src=format.url type=format.type)
+
+      #current-time-container
+      #end-cards-container
+      .info
+        header.info-main
+          h1.title= video.title
+          .author
+            a(href=`/channel/${video.authorId}`).author-link= `Uploaded by ${video.author}`
+        .info-secondary
+          - const date = new Date(video.published*1000)
+          - const month = new Intl.DateTimeFormat("en-US", {month: "short"}).format(date.getTime())
+          div= `Uploaded ${date.getUTCDate()} ${month} ${date.getUTCFullYear()}`
+          div= video.second__viewCountText
+          div(style=`--rating: ${video.rating*20}%`)#rating-bar.rating-bar
+
+      audio(preload="auto")#audio
+      #live-event-notice
+      #audio-loading-display
+
+      .video-button-container
+        button.border-look#subscribe Subscribe
+        button.border-look#theatre Theatre
+        select(autocomplete="off").border-look#quality-select
+          each f in sortedFormatStreams
+            option(value=f.itag)= `${f.qualityLabel} ${f.container}`
+          each f in sortedVideoAdaptiveFormats
+            option(value=f.itag)= `${f.qualityLabel} ${f.container} *`
+
+      .video-button-container
+        a(href="/subscriptions").border-look
+          img(src="/static/images/search.svg" width=17 height=17 alt="").button-icon
+          | Search
+        button.border-look#share Share
+        a.border-look YouTube
+        a.border-look Iv: Snopyta
+
+      .description!= video.descriptionHtml
+
+    aside.related-videos
+      h2.related-header Related videos
+      each r in video.recommendedVideos
+        .related-video
+          - let link = `/watch?v=${r.videoId}`
+          a(href=link).thumbnail
+            img(src=`https://i.ytimg.com/vi/${r.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
+            span.duration= r.second__lengthText
+          .info
+            div.title: a(href=link).title-link= r.title
+            div.author-line
+              a(href=`/channel/${authorId}`).author= r.author
+              = ` • `
+              span.views= r.viewCountText
