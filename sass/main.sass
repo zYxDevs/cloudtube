@@ -2,6 +2,8 @@
 @use "includes/colors.sass" as c
 @use "sass:selector"
 @use "includes/video-page.sass"
+@use "includes/search-page.sass"
+@use "includes/home-page.sass"
 
 @font-face
   font-family: "Bariol"
@@ -52,6 +54,9 @@
   &:active
     background-color: c.$bg-dark
 
+.base-border-look
+  @include border-button
+
 .border-look
   @include border-button
   @include button-size
@@ -78,11 +83,17 @@
     &:focus, &:hover
       background-color: c.$bg-accent-x
 
-  .search
-    @include button-bg
+  .search-form
+    display: flex
     flex: 1
-    margin: 1px
+    align-items: center
 
-    &:hover, &:focus
-      border: 1px solid c.$edge-grey
-      margin: 0px
+    .search
+      @include button-bg
+      padding: 10px
+      flex: 1
+      margin: 1px
+
+      &:hover, &:focus
+        border: 1px solid c.$edge-grey
+        margin: 0px

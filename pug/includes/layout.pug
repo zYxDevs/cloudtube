@@ -10,6 +10,7 @@ html
   body.show-focus
     nav.main-nav
       a(href="/").link.home CloudTube
-      input(type="text" placeholder="Search" name="q" autocomplete="off").search
+      form(method="get" action="/search").search-form
+        input(type="text" placeholder="Search" name="q" autocomplete="off").search
 
     block content

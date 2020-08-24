@@ -1,0 +1,44 @@
+@use "video-list-item.sass" as *
+@use "colors.sass" as c
+
+.search-page
+  padding: 40px 20px 20px
+  max-width: 900px
+  margin: 0 auto
+
+.search-result
+  @include video-list-item
+
+  grid-gap: 16px
+  grid-template-columns: 240px 1fr
+  margin-bottom: 20px
+  overflow: hidden
+
+  .image
+    width: 240px
+    height: 135px
+
+  .duration
+    font-size: 17px
+    padding: 4px 5px
+    right: 5px
+    bottom: 5px
+
+  .title
+    font-size: 24px
+
+  .author-line
+    font-size: 15px
+    color: c.$fg-main
+
+  .author
+    color: c.$fg-main
+
+  .description
+    margin-top: 16px
+    font-size: 15px
+    color: c.$fg-dim
+
+    b
+      font-weight: normal
+      color: c.$fg-main

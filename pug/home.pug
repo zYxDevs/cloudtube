@@ -1,0 +1,11 @@
+extends includes/layout.pug
+
+block content
+  main.home-page
+    h1.top-header CloudTube
+    h2.tagline An alternative front-end for YouTube.
+    .encouraging-message
+      p You're in control. Watch things your way.
+      p Go on. What do you want to watch?
+      form(method="get" action="/search").encouraging-search-form
+        input(type="text" name="q" placeholder="I'd like to watch..." autocomplete="off").search.base-border-look

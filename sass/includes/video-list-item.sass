@@ -1,0 +1,50 @@
+@use "colors.sass" as c
+
+@mixin video-list-item
+  display: grid
+  grid-template-columns: 160px 1fr
+  grid-gap: 8px
+  align-items: start
+  align-content: start
+  margin-bottom: 12px
+
+  .thumbnail
+    position: relative
+    display: flex
+    background: c.$bg-darkest
+
+  .image
+    width: 160px
+    height: 90px
+
+  .duration
+    position: absolute
+    bottom: 3px
+    right: 3px
+    color: c.$fg-bright
+    font-size: 14px
+    background: rgba(20, 20, 20, 0.85)
+    line-height: 1
+    padding: 3px 5px 4px
+    border-radius: 4px
+
+  .title
+    font-size: 15px
+    line-height: 1.2
+
+  .title-link
+    color: c.$fg-main
+    text-decoration: none
+
+  .author-line
+    margin-top: 4px
+    font-size: 15px
+    color: c.$fg-dim
+
+  .author
+    color: c.$fg-dim
+    text-decoration: none
+
+    &:hover, &:active
+      color: c.$fg-bright
+      text-decoration: underline

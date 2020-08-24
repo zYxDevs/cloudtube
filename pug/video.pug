@@ -1,5 +1,7 @@
 extends includes/layout.pug
 
+include includes/video-list-item.pug
+
 block head
   title= video.title
   script(type="module" src=getStaticURL("html", "/static/js/player.js"))
@@ -56,13 +58,4 @@ block content
       h2.related-header Related videos
       each r in video.recommendedVideos
         .related-video
-          - let link = `/watch?v=${r.videoId}`
-          a(href=link).thumbnail
-            img(src=`https://i.ytimg.com/vi/${r.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
-            span.duration= r.second__lengthText
-          .info
-            div.title: a(href=link).title-link= r.title
-            div.author-line
-              a(href=`/channel/${authorId}`).author= r.author
-              = ` • `
-              span.views= r.viewCountText
+          +video_list_item(r)
