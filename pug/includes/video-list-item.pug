@@ -7,10 +7,10 @@ mixin video_list_item(video)
     div.title: a(href=link).title-link= video.title
     div.author-line
       a(href=`/channel/${video.authorId}`).author= video.author
+      = ` • `
+      span.views= video.viewCountText || video.second__viewCountText
       if video.publishedText
         = ` • `
         span.published= video.publishedText
-      = ` • `
-      span.views= video.viewCountText || video.second__viewCountText
     if video.descriptionHtml
       div.description!= video.descriptionHtml

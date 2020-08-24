@@ -49,6 +49,9 @@ class FormatLoader {
 		if (this.npa) {
 			audio.src = this.npa.url
 			audio.currentTime = lastTime
+		} else {
+			audio.pause()
+			audio.removeAttribute("src")
 		}
 	}
 }
