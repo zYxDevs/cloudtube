@@ -8,7 +8,7 @@ module.exports = [
 			const fetchURL = new URL("http://localhost:3000/api/v1/search")
 			fetchURL.searchParams.set("q", query)
 			const results = await fetch(fetchURL.toString()).then(res => res.json())
-			return render(200, "pug/search.pug", {results})
+			return render(200, "pug/search.pug", {query, results})
 		}
 	}
 ]

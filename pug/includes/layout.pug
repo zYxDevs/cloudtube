@@ -2,7 +2,7 @@ doctype html
 html
   head
     meta(charset="utf-8")
-    meta(name="viewport" value="width=device-width, initial-scale=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
     link(rel="stylesheet" type="text/css" href=getStaticURL("sass", "/main.sass"))
     script(type="module" src=getStaticURL("html", "/static/js/focus.js"))
     block head
@@ -11,6 +11,6 @@ html
     nav.main-nav
       a(href="/").link.home CloudTube
       form(method="get" action="/search").search-form
-        input(type="text" placeholder="Search" name="q" autocomplete="off").search
+        input(type="text" placeholder="Search" name="q" autocomplete="off" value=query).search
 
     block content
