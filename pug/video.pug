@@ -9,7 +9,7 @@ block head
 
 block content
   - const sortedFormatStreams = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
-  - const sortedVideoAdaptiveFormats = video.adaptiveFormats.filter(f => f.type.startsWith("video")).sort((a, b) => b.second__height - a.second__height)
+  - const sortedVideoAdaptiveFormats = video.adaptiveFormats.filter(f => f.type.startsWith("video")).sort((a, b) => a.second__order - b.second__order)
   main.video-page
     .main-video-section
       .video-container
