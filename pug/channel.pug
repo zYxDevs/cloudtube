@@ -1,0 +1,28 @@
+extends includes/layout.pug
+
+include includes/video-list-item.pug
+
+block content
+  main.channel-page
+    - const banner = data.authorBanners.slice(-1)[0]
+    if banner
+      .banner
+        img(src=banner.url width=banner.width height=banner.height alt="").banner-image
+
+    .channel-data
+      .info
+        - const thumbnail = data.authorThumbnails.slice(-1)[0]
+        if thumbnail
+          .logo
+            img(src=thumbnail.url width=thumbnail.width height=thumbnail.height alt="").thumbnail-image
+        .about
+          .name= data.author
+          .subscribers= data.second__subCountText || `${data.subCount} subscribers`
+        form(method="post" action=`/formapi/subscribe/${data.authorId}`).subscribe
+          button.subscribe-button.base-border-look Subscribe
+      .description!= data.descriptionHtml
+
+    .videos
+      each video in data.latestVideos
+        .channel-video
+          +video_list_item(video)

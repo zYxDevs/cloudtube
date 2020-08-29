@@ -48,3 +48,49 @@
     &:hover, &:active
       color: c.$fg-bright
       text-decoration: underline
+
+@mixin recommendation-item
+  @include video-list-item
+
+@mixin large-item
+  @include video-list-item
+
+  grid-gap: 16px
+  grid-template-columns: 240px 1fr
+  margin-bottom: 20px
+  overflow: hidden
+
+  .image
+    width: 240px
+    height: 135px
+
+  .duration
+    font-size: 17px
+    padding: 4px 5px
+    right: 5px
+    bottom: 5px
+
+  .title
+    font-size: 24px
+
+  .author-line
+    font-size: 15px
+    color: c.$fg-main
+
+  .author
+    color: c.$fg-main
+
+  .description
+    margin-top: 16px
+    font-size: 15px
+    color: c.$fg-dim
+
+@mixin search-result
+  @include large-item
+
+  .description b
+    font-weight: normal
+    color: c.$fg-main
+
+@mixin channel-video
+  @include large-item

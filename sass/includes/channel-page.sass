@@ -1,0 +1,63 @@
+@use "colors.sass" as c
+@use "video-list-item.sass" as *
+
+.channel-page
+  padding: 40px 20px 20px
+  max-width: 900px
+  margin: 0 auto
+
+.banner
+  display: flex
+
+.banner-image
+  width: 100%
+  height: auto
+  border-radius: 8px
+
+.channel-data
+  background-color: c.$bg-darker
+  padding: 24px
+  margin: 12px 0px 24px
+  border-radius: 8px
+
+  .info
+    display: flex
+
+    .thumbnail-image
+      $size: 120px
+
+      width: $size
+      height: $size
+      border-radius: 50%
+      margin-right: 24px
+
+    .about
+      flex: 1
+      margin-top: 10px
+
+      .name
+        font-size: 30px
+        color: c.$fg-bright
+
+      .subscribers
+        color: c.$fg-main
+        font-size: 18px
+
+    .subscribe
+      margin-top: 24px
+
+      .subscribe-button
+        $padding: 14px
+
+        padding: $padding - 2px $padding $padding
+        line-height: 1
+        border-radius: 8px
+        font-size: 22px
+        background-color: c.$power-deep
+        border: none
+
+  .description
+    margin-top: 16px
+
+.channel-video
+  @include channel-video
