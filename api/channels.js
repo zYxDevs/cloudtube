@@ -1,12 +1,16 @@
-const fetch = require("node-fetch")
 const {render} = require("pinski/plugins")
+const constants = require("./utils/constants")
+const {fetchChannel} = require("./utils/youtube")
+const {getUser} = require("./utils/getuser")
 
 module.exports = [
 	{
-		route: "/channel/([A-Za-z0-9-_]+)", methods: ["GET"], code: async ({fill}) => {
+		route: `/channel/(${constants.regex.ucid})`, methods: ["GET"], code: async ({req, fill}) => {
 			const id = fill[0]
-			const data = await fetch(`http://localhost:3000/api/v1/channels/${id}`).then(res => res.json())
-			return render(200, "pug/channel.pug", {data})
+			const data = await fetchChannel(id)
+			const user = getUser(req)
+			const subscribed = user.isSubscribed(id)
+			return render(200, "pug/channel.pug", {data, subscribed})
 		}
 	}
 ]

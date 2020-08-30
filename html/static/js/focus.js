@@ -1,3 +1,5 @@
+document.body.classList.remove("show-focus")
+
 document.addEventListener("mousedown", () => {
 	document.body.classList.remove("show-focus")
 })

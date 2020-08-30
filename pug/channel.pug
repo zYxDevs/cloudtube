@@ -1,6 +1,11 @@
-extends includes/layout.pug
+extends includes/layout
 
-include includes/video-list-item.pug
+include includes/video-list-item
+include includes/subscribe-button
+
+block head
+  title= `${data.author} - CloudTube`
+  script(type="module" src=getStaticURL("html", "/static/js/channel.js"))
 
 block content
   main.channel-page
@@ -18,8 +23,7 @@ block content
         .about
           .name= data.author
           .subscribers= data.second__subCountText || `${data.subCount} subscribers`
-        form(method="post" action=`/formapi/subscribe/${data.authorId}`).subscribe
-          button.subscribe-button.base-border-look Subscribe
+        +subscribe_button(data.authorId, subscribed, `/channel/${data.authorId}`).subscribe-button.base-border-look
       .description!= data.descriptionHtml
 
     .videos

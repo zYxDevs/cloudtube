@@ -1,4 +1,5 @@
 import {q, ElemJS} from "/static/js/elemjs/elemjs.js"
+import {SubscribeButton} from "/static/js/subscribe.js"
 
 const video = q("#video")
 const audio = q("#audio")
@@ -67,6 +68,7 @@ class QualitySelect extends ElemJS {
 	onInput() {
 		const itag = this.element.value
 		formatLoader.play(itag)
+		video.focus()
 	}
 }
 
@@ -118,3 +120,40 @@ for (let eventName of ["canplaythrough", "waiting", "stalled"]) {
 	video.addEventListener(eventName, playbackIntervention)
 	audio.addEventListener(eventName, playbackIntervention)
 }
+
+function relativeSeek(seconds) {
+	video.currentTime += seconds
+}
+
+function togglePlaying() {
+	if (video.paused) video.play()
+	else video.pause()
+}
+
+document.addEventListener("keydown", event => {
+	if (["INPUT", "SELECT", "BUTTON"].includes(event.target.tagName)) return
+	let caught = true
+	if (event.key === "j" || event.key === "n") {
+		relativeSeek(-10)
+	} else if (["k", "p", " ", "e"].includes(event.key)) {
+		togglePlaying()
+	} else if (event.key === "l" || event.key === "o") {
+		relativeSeek(10)
+	} else if (event.key === "ArrowLeft") {
+		relativeSeek(-5)
+	} else if (event.key === "ArrowRight") {
+		relativeSeek(5)
+	} else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+		// no-op
+	} else if (event.key >= "0" && event.key <= "9") {
+		video.currentTime = video.duration * (+event.key) / 10
+	} else if (event.key === "f") {
+		if (document.fullscreen) document.exitFullscreen()
+		else video.requestFullscreen()
+	} else {
+		caught = false
+	}
+	if (caught) event.preventDefault()
+})
+
+new SubscribeButton(q("#subscribe"))

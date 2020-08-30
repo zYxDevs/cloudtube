@@ -1,0 +1,6 @@
+mixin subscribe_button(ucid, isSubscribed, referrer)
+  - const subscribePath = !subscribed ? "subscribe" : "unsubscribe"
+  form(method="post" action=`/formapi/${subscribePath}/${ucid}`).subscribe-form
+    if referrer
+      input(type="hidden" name="referrer" value=referrer)
+    button(data-subscribed=(+isSubscribed) data-ucid=ucid)&attributes(attributes)#subscribe= !subscribed ? "Subscribe" : "Unsubscribe"

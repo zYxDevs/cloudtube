@@ -1,9 +1,10 @@
-extends includes/layout.pug
+extends includes/layout
 
-include includes/video-list-item.pug
+include includes/video-list-item
+include includes/subscribe-button
 
 block head
-  title= video.title
+  title= `${video.title} - CloudTube`
   script(type="module" src=getStaticURL("html", "/static/js/player.js"))
   script const data = !{JSON.stringify(video)}
 
@@ -36,21 +37,20 @@ block content
       #audio-loading-display
 
       .video-button-container
-        button.border-look#subscribe Subscribe
-        button.border-look#theatre Theatre
+        +subscribe_button(video.authorId, subscribed, `/watch?v=${video.videoId}`).border-look
+        //- button.border-look#theatre Theatre
         select(autocomplete="off").border-look#quality-select
           each f in sortedFormatStreams
             option(value=f.itag)= `${f.qualityLabel} ${f.container}`
           each f in sortedVideoAdaptiveFormats
             option(value=f.itag)= `${f.qualityLabel} ${f.container} *`
-
-      .video-button-container
-        a(href="/subscriptions").border-look
-          img(src="/static/images/search.svg" width=17 height=17 alt="").button-icon
-          | Search
-        button.border-look#share Share
-        a.border-look YouTube
-        a.border-look Iv: Snopyta
+        //-
+          a(href="/subscriptions").border-look
+            img(src="/static/images/search.svg" width=17 height=17 alt="").button-icon
+            | Search
+        //- button.border-look#share Share
+        a(href=`https://www.youtube.com/watch?v=${video.videoId}`).border-look YouTube
+        a(href=`https://invidio.us/watch?v=${video.videoId}`).border-look Invidious
 
       .description!= video.descriptionHtml
 

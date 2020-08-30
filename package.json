@@ -10,7 +10,9 @@
   "author": "",
   "license": "AGPL-3.0",
   "dependencies": {
+    "better-sqlite3": "^7.1.0",
+    "cookie": "^0.4.1",
     "node-fetch": "^2.6.0",
-    "pinski": "git+https://git.sr.ht/~cadence/nodejs-pinski#20548ccee95dfdd9c5eea91476a88f402d4aac08"
+    "pinski": "git+https://git.sr.ht/~cadence/nodejs-pinski#04cd72482574f689b78670b7f2b80209f5449a21"
   }
 }

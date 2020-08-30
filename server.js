@@ -1,23 +1,27 @@
 const {Pinski} = require("pinski")
 const {setInstance} = require("pinski/plugins")
 
-const server = new Pinski({
-	port: 8080,
-	relativeRoot: __dirname,
-	filesDir: "html"
-})
+;(async () => {
+	await require("./api/utils/upgradedb")()
 
-setInstance(server)
+	const server = new Pinski({
+		port: 8080,
+		relativeRoot: __dirname,
+		filesDir: "html"
+	})
 
-server.addSassDir("sass", ["sass/includes"])
-server.addRoute("/static/css/main.css", "sass/main.sass", "sass")
+	setInstance(server)
 
-server.addPugDir("pug", ["pug/includes"])
-server.addRoute("/", "pug/home.pug", "pug")
+	server.addSassDir("sass", ["sass/includes"])
+	server.addRoute("/static/css/main.css", "sass/main.sass", "sass")
 
-server.addStaticHashTableDir("html/static/js")
-server.addStaticHashTableDir("html/static/js/elemjs")
+	server.addPugDir("pug", ["pug/includes"])
+	server.addRoute("/", "pug/home.pug", "pug")
 
-server.addAPIDir("api")
+	server.addStaticHashTableDir("html/static/js")
+	server.addStaticHashTableDir("html/static/js/elemjs")
 
-server.startServer()
+	server.addAPIDir("api")
+
+	server.startServer()
+})()

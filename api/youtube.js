@@ -177,14 +177,14 @@ function fetchChannel(channelID, ignoreCache) {
 }
 
 module.exports = [
-	{
+	/*{
 		route: "/watch", methods: ["GET"], code: async ({url}) => {
 			const id = url.searchParams.get("v")
 			const video = await videoCache.getAs(id, () => fetch(`http://localhost:3000/api/v1/videos/${id}`).then(res => res.json()))
 			return render(200, "pug/video.pug", {video})
 		}
-	}
-	/*
+	},
+
     {
         route: "/v/(.*)", methods: ["GET"], code: async ({fill}) => {
             let id;
