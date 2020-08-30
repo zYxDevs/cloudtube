@@ -59,6 +59,7 @@
   grid-template-columns: 240px 1fr
   margin-bottom: 20px
   overflow: hidden
+  max-height: 150px
 
   .image
     width: 240px
@@ -93,4 +94,7 @@
     color: c.$fg-main
 
 @mixin channel-video
+  @include large-item
+
+@mixin subscriptions-video
   @include large-item

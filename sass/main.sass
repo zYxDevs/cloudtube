@@ -5,10 +5,11 @@
 @use "includes/search-page.sass"
 @use "includes/home-page.sass"
 @use "includes/channel-page.sass"
+@use "includes/subscriptions-page.sass"
 
 @font-face
   font-family: "Bariol"
-  src: url(/static/fonts/bariol.woff)
+  src: url(/static/fonts/bariol.woff?statichash=1)
 
 @mixin button-base
   appearance: none
@@ -74,6 +75,8 @@
     text-decoration: none
     margin: 1px 8px 1px 0px
     font-size: 20px
+    display: flex
+    align-items: center
 
     &.home
       font-weight: bold
@@ -98,3 +101,7 @@
       &:hover, &:focus
         border: 1px solid c.$edge-grey
         margin: 0px
+
+.subscriptions-link:hover, .subscriptions-link:focus
+  .subscriptions-icon
+    filter: brightness(2)

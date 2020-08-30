@@ -1,6 +1,5 @@
 const crypto = require("crypto")
 const {parse: parseCookie} = require("cookie")
-
 const constants = require("./constants")
 const db = require("./db")
 
@@ -26,7 +25,7 @@ class User {
 
 	getSubscriptions() {
 		if (this.token) {
-			return db.prepare("SELECT ucid FROM Subscriptions WHERE token = ?").pluck().all(ucid)
+			return db.prepare("SELECT ucid FROM Subscriptions WHERE token = ?").pluck().all(this.token)
 		} else {
 			return []
 		}

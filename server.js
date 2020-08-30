@@ -20,6 +20,8 @@ const {setInstance} = require("pinski/plugins")
 
 	server.addStaticHashTableDir("html/static/js")
 	server.addStaticHashTableDir("html/static/js/elemjs")
+	server.addStaticHashTableDir("html/static/images")
+	server.addStaticHashTableDir("html/static/fonts")
 
 	server.addAPIDir("api")
 

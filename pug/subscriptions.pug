@@ -1,0 +1,12 @@
+extends includes/layout.pug
+
+include includes/video-list-item.pug
+
+block head
+  title Subscriptions - CloudTube
+
+block content
+  main.subscriptions-page
+    each video in videos
+      .subscriptions-video
+        +video_list_item(video)
