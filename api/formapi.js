@@ -1,7 +1,7 @@
 const {redirect} = require("pinski/plugins")
 const db = require("./utils/db")
 const constants = require("./utils/constants")
-const {getToken} = require("./utils/getuser")
+const {getUser} = require("./utils/getuser")
 const validate = require("./utils/validate")
 const V = validate.V
 const {fetchChannel} = require("./utils/youtube")
@@ -18,10 +18,12 @@ module.exports = [
 				.last(async state => {
 					const {params} = state
 					const responseHeaders = {}
-					const token = getToken(req, responseHeaders)
+					const user = getUser(req, responseHeaders)
+					const settings = user.getSettingsOrDefaults()
+					const token = user.token
 
 					if (add) {
-						await fetchChannel(ucid)
+						await fetchChannel(ucid, settings.instance)
 						db.prepare("INSERT OR IGNORE INTO Subscriptions (token, ucid) VALUES (?, ?)").run(token, ucid)
 					} else {
 						db.prepare("DELETE FROM Subscriptions WHERE token = ? AND ucid = ?").run(token, ucid)
