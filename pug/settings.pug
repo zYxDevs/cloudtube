@@ -1,0 +1,46 @@
+extends includes/layout.pug
+
+mixin fieldset(name)
+  fieldset
+    legend= name
+    .fieldset-contents
+      block
+
+mixin input(id, description, placeholder, disabled, list)
+  .field-row
+    label.description(for=id)= description
+    input(type="text" id=id name=id value=settings[id] placeholder=placeholder disabled=disabled list=`${id}-list`).border-look
+    if list
+      datalist(id=`${id}-list`)
+        each item in list
+          option(value=item)
+
+mixin select(id, description, disabled, options)
+  .field-row
+    label.description(for=id)= description
+    select(id=id name=id disabled=disabled).border-look
+      each option in options
+        option(value=option.value selected=(option.value === settings[id]))= option.text
+
+block head
+  title Settings - CloudTube
+
+block content
+  main.settings-page
+    form(method="post" action="/settings")
+      +fieldset("Settings")
+
+        +input("instance", "Instance", constants.user_settings.instance.default, false, [
+          "https://invidious.snopyta.org",
+          "https://invidious.13ad.de",
+          "https://watch.nettohikari.com",
+          "https://invidious.fdn.fr"
+        ])
+
+        +select("save_history", "Watch history", false, [
+          {value: "", text: "Don't save"},
+          {value: "yes", text: "Save"}
+        ])
+
+      .save-settings
+        button.border-look Save

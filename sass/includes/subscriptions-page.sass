@@ -1,3 +1,4 @@
+@use "colors.sass" as c
 @use "video-list-item.sass" as *
 
 .subscriptions-page
@@ -7,3 +8,28 @@
 
 .subscriptions-video
   @include subscriptions-video
+
+.no-subscriptions
+  text-align: center
+
+.channels-details
+  margin-bottom: 24px
+
+.channels-list
+  display: grid
+  grid-gap: 8px
+
+.channel-item
+  display: flex
+  align-items: center
+  text-decoration: none
+
+  .thumbnail
+    width: 40px
+    height: 40px
+    border-radius: 50%
+    margin-right: 8px
+
+  .name
+    font-size: 22px
+    color: c.$fg-main

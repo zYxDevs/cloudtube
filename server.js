@@ -26,4 +26,6 @@ const {setInstance} = require("pinski/plugins")
 	server.addAPIDir("api")
 
 	server.startServer()
+
+	require("./background/feed-update")
 })()

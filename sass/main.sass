@@ -6,13 +6,15 @@
 @use "includes/home-page.sass"
 @use "includes/channel-page.sass"
 @use "includes/subscriptions-page.sass"
+@use "includes/settings-page.sass"
+@use "includes/forms.sass"
 
 @font-face
   font-family: "Bariol"
   src: url(/static/fonts/bariol.woff?statichash=1)
 
 @mixin button-base
-  appearance: none
+  -webkit-appearance: none
   -moz-appearance: none
   color: c.$fg-bright
   border: none
@@ -23,11 +25,14 @@
   line-height: 1.25
 
   @at-root #{selector.unify(&, "select")}
-    padding: 7px 27px 7px 8px
+    padding: 8px 27px 8px 8px
     background: url(/static/images/arrow-down-wide.svg) right 53% no-repeat c.$bg-accent-x
 
   @at-root #{selector.unify(&, "a")}
     padding: 7px 8px
+
+  @at-root #{selector.unify(&, "button")}
+    cursor: pointer
 
   .button-icon
     position: relative
@@ -102,6 +107,9 @@
         border: 1px solid c.$edge-grey
         margin: 0px
 
-.subscriptions-link:hover, .subscriptions-link:focus
-  .subscriptions-icon
+.icon-link:hover, .icon-link:focus
+  .icon
     filter: brightness(2)
+
+.button-container
+  display: flex

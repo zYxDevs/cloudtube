@@ -11,6 +11,14 @@ body
 a
   color: c.$link
 
+pre, code
+  font-size: 0.88em
+
+code
+  background: c.$bg-darker
+  padding: 3px 5px
+  border-radius: 4px
+
 input, select, button
   font-family: inherit
   font-size: 16px
@@ -38,3 +46,19 @@ body.show-focus
 
 video
   background-color: black
+
+details
+  background-color: c.$bg-accent-x
+  padding: 12px
+  border-radius: 8px
+
+  summary
+    text-decoration: underline
+    cursor: pointer
+    line-height: 1
+    margin-bottom: 0
+    user-select: none
+    color: c.$fg-main
+
+  &[open] summary
+    margin-bottom: 16px

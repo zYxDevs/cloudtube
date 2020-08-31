@@ -4,58 +4,70 @@ include includes/video-list-item
 include includes/subscribe-button
 
 block head
-  title= `${video.title} - CloudTube`
+  unless error
+    title= `${video.title} - CloudTube`
+  else
+    title Error - CloudTube
   script(type="module" src=getStaticURL("html", "/static/js/player.js"))
   script const data = !{JSON.stringify(video)}
 
 block content
-  - const sortedFormatStreams = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
-  - const sortedVideoAdaptiveFormats = video.adaptiveFormats.filter(f => f.type.startsWith("video")).sort((a, b) => a.second__order - b.second__order)
-  main.video-page
-    .main-video-section
-      .video-container
-        - const format = sortedFormatStreams[0]
-        video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
-          source(src=format.url type=format.type)
+  unless error
+    main.video-page
+      - const sortedFormatStreams = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
+      - const sortedVideoAdaptiveFormats = video.adaptiveFormats.filter(f => f.type.startsWith("video")).sort((a, b) => a.second__order - b.second__order)
 
-      #current-time-container
-      #end-cards-container
-      .info
-        header.info-main
-          h1.title= video.title
-          .author
-            a(href=`/channel/${video.authorId}`).author-link= `Uploaded by ${video.author}`
-        .info-secondary
-          - const date = new Date(video.published*1000)
-          - const month = new Intl.DateTimeFormat("en-US", {month: "short"}).format(date.getTime())
-          div= `Uploaded ${date.getUTCDate()} ${month} ${date.getUTCFullYear()}`
-          div= video.second__viewCountText
-          div(style=`--rating: ${video.rating*20}%`)#rating-bar.rating-bar
+      .main-video-section
+        .video-container
+          - const format = sortedFormatStreams[0]
+          video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
+            source(src=format.url type=format.type)
 
-      audio(preload="auto")#audio
-      #live-event-notice
-      #audio-loading-display
+        #current-time-container
+        #end-cards-container
+        .info
+          header.info-main
+            h1.title= video.title
+            .author
+              a(href=`/channel/${video.authorId}`).author-link= `Uploaded by ${video.author}`
+          .info-secondary
+            - const date = new Date(video.published*1000)
+            - const month = new Intl.DateTimeFormat("en-US", {month: "short"}).format(date.getTime())
+            div= `Uploaded ${date.getUTCDate()} ${month} ${date.getUTCFullYear()}`
+            div= video.second__viewCountText
+            div(style=`--rating: ${video.rating*20}%`)#rating-bar.rating-bar
 
-      .video-button-container
-        +subscribe_button(video.authorId, subscribed, `/watch?v=${video.videoId}`).border-look
-        //- button.border-look#theatre Theatre
-        select(autocomplete="off").border-look#quality-select
-          each f in sortedFormatStreams
-            option(value=f.itag)= `${f.qualityLabel} ${f.container}`
-          each f in sortedVideoAdaptiveFormats
-            option(value=f.itag)= `${f.qualityLabel} ${f.container} *`
-        //-
-          a(href="/subscriptions").border-look
-            img(src="/static/images/search.svg" width=17 height=17 alt="").button-icon
-            | Search
-        //- button.border-look#share Share
-        a(href=`https://www.youtube.com/watch?v=${video.videoId}`).border-look YouTube
-        a(href=`https://invidio.us/watch?v=${video.videoId}`).border-look Invidious
+        audio(preload="auto")#audio
+        #live-event-notice
+        #audio-loading-display
 
-      .description!= video.descriptionHtml
+        .button-container
+          +subscribe_button(video.authorId, subscribed, `/watch?v=${video.videoId}`).border-look
+          //- button.border-look#theatre Theatre
+          select(autocomplete="off").border-look#quality-select
+            each f in sortedFormatStreams
+              option(value=f.itag)= `${f.qualityLabel} ${f.container}`
+            each f in sortedVideoAdaptiveFormats
+              option(value=f.itag)= `${f.qualityLabel} ${f.container} *`
+          //-
+            a(href="/subscriptions").border-look
+              img(src="/static/images/search.svg" width=17 height=17 alt="").button-icon
+              | Search
+          //- button.border-look#share Share
+          a(href=`https://www.youtube.com/watch?v=${video.videoId}`).border-look YouTube
+          a(href=`https://invidio.us/watch?v=${video.videoId}`).border-look Invidious
 
-    aside.related-videos
-      h2.related-header Related videos
-      each r in video.recommendedVideos
-        .related-video
-          +video_list_item(r)
+        .description!= video.descriptionHtml
+
+      aside.related-videos
+        h2.related-header Related videos
+        each r in video.recommendedVideos
+          .related-video
+            +video_list_item(r)
+
+  else
+    //- error
+    main.video-error-page
+      h2 Error
+      != message
+      p: a(href=`https://www.youtube.com/watch?v=${video.videoId}`) Watch on YouTube →

@@ -1,0 +1,81 @@
+@use "colors.sass" as c
+
+@mixin disabled
+  background-color: c.$bg-dark
+  color: #808080
+
+fieldset
+  border: none
+  padding: 55px 0px 0px 0px
+  position: relative
+
+  @media screen and (max-width: 400px)
+    padding-top: 70px
+
+  legend
+    position: absolute
+    top: 5px
+    left: 0px
+    width: 100%
+    font-size: 28px
+    font-weight: bold
+    padding: 0
+    border-bottom: 1px solid #333
+    line-height: 1.56
+
+    @media screen and (max-width: 400px)
+      margin-top: 15px
+
+
+.field-row
+  line-height: 1
+  display: flex
+  align-items: center
+  justify-content: space-between
+  position: relative
+  padding-bottom: 5px
+  margin-bottom: 5px
+  border-bottom: 1px solid #bbb
+
+  @media screen and (max-width: 400px)
+    flex-direction: column
+    align-items: start
+    padding-bottom: 15px
+
+  .description
+    padding: 8px 8px 8px 0px
+
+//
+  .checkbox-row
+    .pill
+      display: flex
+      align-items: center
+      user-select: none
+
+    .fake-checkbox
+      -webkit-appearance: none
+      background-color: white
+      width: 16px
+      height: 16px
+      padding: 0px
+      border: 1px solid #666
+      border-radius: 3px
+      margin-left: 8px
+      position: relative
+      outline: none
+
+    .checkbox
+      display: none
+
+      &:checked + .pill .fake-checkbox
+        background: center center / contain url(/static/img/tick.svg)
+
+      &:disabled + .pill
+        @include disabled
+
+        .fake-checkbox
+          @include disabled
+
+      &.checkbox:not(:disabled) + .pill
+        @include acts-like-button
+        cursor: pointer

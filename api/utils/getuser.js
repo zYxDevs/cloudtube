@@ -23,6 +23,22 @@ class User {
 		this.token = token
 	}
 
+	getSettings() {
+		if (this.token) {
+			return db.prepare("SELECT * FROM Settings WHERE token = ?").get(this.token) || {}
+		} else {
+			return {}
+		}
+	}
+
+	getSettingsOrDefaults() {
+		const settings = this.getSettings()
+		for (const key of Object.keys(settings)) {
+			if (settings[key] === null) settings[key] = constants.user_settings[key].default
+		}
+		return settings
+	}
+
 	getSubscriptions() {
 		if (this.token) {
 			return db.prepare("SELECT ucid FROM Subscriptions WHERE token = ?").pluck().all(this.token)

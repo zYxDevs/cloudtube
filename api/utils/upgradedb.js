@@ -10,7 +10,13 @@ const deltas = [
 			.run()
 		db.prepare("CREATE TABLE Channels (ucid TEXT NOT NULL, name TEXT NOT NULL, icon_url TEXT, PRIMARY KEY (ucid))")
 			.run()
+		db.prepare("CREATE TABLE Videos (videoId TEXT NOT NULL, title TEXT NOT NULL, author TEXT, authorId TEXT NOT NULL, published INTEGER, publishedText TEXT, lengthText TEXT, viewCountText TEXT, descriptionHtml TEXT, PRIMARY KEY (videoId))")
+			.run()
 		db.prepare("CREATE TABLE CSRFTokens (token TEXT NOT NULL, expires INTEGER NOT NULL, PRIMARY KEY (token))")
+			.run()
+		db.prepare("CREATE TABLE SeenTokens (token TEXT NOT NULL, seen INTEGER NOT NULL, PRIMARY KEY (token))")
+			.run()
+		db.prepare("CREATE TABLE Settings (token TEXT NOT NULL, instance TEXT, save_history INTEGER, PRIMARY KEY (token))")
 			.run()
 	}
 ]

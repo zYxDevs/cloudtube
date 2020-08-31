@@ -7,6 +7,21 @@ block head
 
 block content
   main.subscriptions-page
-    each video in videos
-      .subscriptions-video
-        +video_list_item(video)
+    if hasSubscriptions
+      section
+        details.channels-details
+          summary #{channels.length} subscriptions
+          .channels-list
+            for channel in channels
+              a(href=`/channel/${channel.ucid}`).channel-item
+                img(src=channel.icon_url width=512 height=512 alt="").thumbnail
+                span.name= channel.name
+
+      each video in videos
+        .subscriptions-video
+          +video_list_item(video)
+    else
+      .no-subscriptions
+        h2 You have no subscriptions.
+        p Subscribing to a channel makes its videos appear here.
+        p You can find the subscribe button on channels and videos.

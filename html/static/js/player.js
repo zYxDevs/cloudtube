@@ -49,6 +49,7 @@ class FormatLoader {
 		video.currentTime = lastTime
 		if (this.npa) {
 			audio.src = this.npa.url
+			audio.pause()
 			audio.currentTime = lastTime
 		} else {
 			audio.pause()
@@ -58,6 +59,30 @@ class FormatLoader {
 }
 
 const formatLoader = new FormatLoader()
+
+class PlayManager {
+	constructor(media, isAudio) {
+		this.media = media
+		this.isAudio = isAudio
+	}
+
+	isActive() {
+		return !this.isAudio || formatLoader.npa
+	}
+
+	play() {
+		if (this.isActive()) this.media.play()
+	}
+
+	pause() {
+		if (this.isActive()) this.media.pause()
+	}
+}
+
+const playManagers = {
+	video: new PlayManager(video, false),
+	audio: new PlayManager(audio, true)
+}
 
 class QualitySelect extends ElemJS {
 	constructor() {
@@ -74,12 +99,21 @@ class QualitySelect extends ElemJS {
 
 const qualitySelect = new QualitySelect()
 
+const ignoreNext = {
+	play: 0
+}
+
 function playbackIntervention(event) {
 	console.log(event.target.tagName.toLowerCase(), event.type)
 	if (audio.src) {
 		let target = event.target
-		let targetName = target.tagName.toLowerCase()
 		let other = (event.target === video ? audio : video)
+		let targetPlayManager = playManagers[target.tagName.toLowerCase()]
+		let otherPlayManager = playManagers[other.tagName.toLowerCase()]
+		if (ignoreNext[event.type] > 0) {
+			ignoreNext[event.type]--
+			return
+		}
 		switch (event.type) {
 		case "durationchange":
 			target.ready = false;
@@ -91,7 +125,7 @@ function playbackIntervention(event) {
 			break;
 		case "play":
 			other.currentTime = target.currentTime;
-			other.play();
+			otherPlayManager.play();
 			break;
 		case "pause":
 			other.currentTime = target.currentTime;
@@ -125,13 +159,44 @@ function relativeSeek(seconds) {
 	video.currentTime += seconds
 }
 
+function playVideo() {
+	audio.currentTime = video.currentTime
+	let lastTime = video.currentTime
+	video.play().then(() => {
+		const interval = setInterval(() => {
+			console.log("checking video", video.currentTime, lastTime)
+			if (video.currentTime !== lastTime) {
+				clearInterval(interval)
+				playManagers.audio.play()
+				return
+			}
+		}, 15)
+	})
+}
+
 function togglePlaying() {
-	if (video.paused) video.play()
+	if (video.paused) playVideo()
 	else video.pause()
 }
 
+function toggleFullScreen() {
+	if (document.fullscreen) document.exitFullscreen()
+	else video.requestFullscreen()
+}
+
+video.addEventListener("click", event => {
+	event.preventDefault()
+	togglePlaying()
+})
+
+video.addEventListener("dblclick", event => {
+	event.preventDefault()
+	toggleFullScreen()
+})
+
 document.addEventListener("keydown", event => {
 	if (["INPUT", "SELECT", "BUTTON"].includes(event.target.tagName)) return
+	if (event.ctrlKey || event.shiftKey) return
 	let caught = true
 	if (event.key === "j" || event.key === "n") {
 		relativeSeek(-10)
@@ -148,8 +213,7 @@ document.addEventListener("keydown", event => {
 	} else if (event.key >= "0" && event.key <= "9") {
 		video.currentTime = video.duration * (+event.key) / 10
 	} else if (event.key === "f") {
-		if (document.fullscreen) document.exitFullscreen()
-		else video.requestFullscreen()
+		toggleFullScreen()
 	} else {
 		caught = false
 	}

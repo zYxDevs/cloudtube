@@ -1,9 +1,9 @@
 const fetch = require("node-fetch")
 const db = require("./db")
 
-async function fetchChannel(ucid) {
+async function fetchChannel(ucid, instance) {
 	// fetch
-	const channel = await fetch(`http://localhost:3000/api/v1/channels/${ucid}`).then(res => res.json())
+	const channel = await fetch(`${instance}/api/v1/channels/${ucid}`).then(res => res.json())
 	// update database
 	const bestIcon = channel.authorThumbnails.slice(-1)[0]
 	const iconURL = bestIcon ? bestIcon.url : null

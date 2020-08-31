@@ -7,8 +7,9 @@ module.exports = [
 	{
 		route: `/channel/(${constants.regex.ucid})`, methods: ["GET"], code: async ({req, fill}) => {
 			const id = fill[0]
-			const data = await fetchChannel(id)
 			const user = getUser(req)
+			const settings = user.getSettingsOrDefaults()
+			const data = await fetchChannel(id, settings.instance)
 			const subscribed = user.isSubscribed(id)
 			return render(200, "pug/channel.pug", {data, subscribed})
 		}
