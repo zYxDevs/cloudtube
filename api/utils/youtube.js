@@ -2,6 +2,7 @@ const fetch = require("node-fetch")
 const db = require("./db")
 
 async function fetchChannel(ucid, instance) {
+	if (!instance) throw new Error("No instance parameter provided")
 	// fetch
 	const channel = await fetch(`${instance}/api/v1/channels/${ucid}`).then(res => res.json())
 	// update database

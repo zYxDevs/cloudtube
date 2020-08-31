@@ -33,8 +33,8 @@ class User {
 
 	getSettingsOrDefaults() {
 		const settings = this.getSettings()
-		for (const key of Object.keys(settings)) {
-			if (settings[key] === null) settings[key] = constants.user_settings[key].default
+		for (const key of Object.keys(constants.user_settings)) {
+			if (settings[key] == null) settings[key] = constants.user_settings[key].default
 		}
 		return settings
 	}
