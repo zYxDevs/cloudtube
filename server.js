@@ -5,7 +5,7 @@ const {setInstance} = require("pinski/plugins")
 	await require("./api/utils/upgradedb")()
 
 	const server = new Pinski({
-		port: 8080,
+		port: 10412,
 		relativeRoot: __dirname,
 		filesDir: "html"
 	})
