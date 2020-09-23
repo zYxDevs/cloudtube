@@ -6,16 +6,19 @@ const db = require("./db")
 function getToken(req, responseHeaders) {
 	if (!req.headers.cookie) req.headers.cookie = ""
 	const cookie = parseCookie(req.headers.cookie)
-	const token = cookie.token
-	if (token) return token
-	if (responseHeaders) { // we should create a token
-		const setCookie = responseHeaders["set-cookie"] || []
-		const token = crypto.randomBytes(18).toString("base64").replace(/\W/g, "_")
-		setCookie.push(`token=${token}; Path=/; Max-Age=2147483648; HttpOnly; SameSite=Lax`)
-		responseHeaders["set-cookie"] = setCookie
-		return token
+	let token = cookie.token
+	if (!token) {
+		if (responseHeaders) { // we should create a token
+			const setCookie = responseHeaders["set-cookie"] || []
+			token = crypto.randomBytes(18).toString("base64").replace(/\W/g, "_")
+			setCookie.push(`token=${token}; Path=/; Max-Age=2147483648; HttpOnly; SameSite=Lax`)
+			responseHeaders["set-cookie"] = setCookie
+		} else {
+			return null
+		}
 	}
-	return null
+	db.prepare("REPLACE INTO SeenTokens (token, seen) VALUES (?, ?)").run([token, Date.now()])
+	return token
 }
 
 class User {

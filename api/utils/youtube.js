@@ -13,14 +13,4 @@ async function fetchChannel(ucid, instance) {
 	return channel
 }
 
-function fetchChannelLatest(ucid) {
-	return fetch(`http://localhost:3000/api/v1/channels/${ucid}/latest`).then(res => res.json()).then(root => {
-		root.forEach(video => {
-			video.descriptionHtml = video.descriptionHtml.replace(/<a /g, '<a tabindex="-1" ')
-		})
-		return root
-	})
-}
-
 module.exports.fetchChannel = fetchChannel
-module.exports.fetchChannelLatest = fetchChannelLatest

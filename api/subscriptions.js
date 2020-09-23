@@ -20,8 +20,8 @@ module.exports = [
 				})
 				if (subscriptions.length) {
 					hasSubscriptions = true
-					const all = await Promise.all(subscriptions.map(id => fetchChannelLatest(id)))
-					videos = all.flat(1).sort((a, b) => b.published - a.published).slice(0, 60)
+					const template = Array(subscriptions.length).fill("?").join(", ")
+					videos = db.prepare(`SELECT * FROM Videos WHERE authorId IN (${template}) ORDER BY published DESC LIMIT 60`).all(subscriptions)
 				}
 			}
 			return render(200, "pug/subscriptions.pug", {hasSubscriptions, videos, channels})

@@ -12,6 +12,7 @@
   "dependencies": {
     "better-sqlite3": "^7.1.0",
     "cookie": "^0.4.1",
+    "denque": "^1.4.1",
     "node-fetch": "^2.6.0",
     "pinski": "git+https://git.sr.ht/~cadence/nodejs-pinski#04cd72482574f689b78670b7f2b80209f5449a21"
   }
