@@ -1,7 +1,7 @@
 const fetch = require("node-fetch")
 const {render} = require("pinski/plugins")
-const db = require("./utils/db")
-const {getToken, getUser} = require("./utils/getuser")
+const db = require("../utils/db")
+const {getToken, getUser} = require("../utils/getuser")
 const pug = require("pug")
 
 class InstanceError extends Error {

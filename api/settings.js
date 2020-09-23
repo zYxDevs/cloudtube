@@ -1,8 +1,8 @@
 const {render, redirect} = require("pinski/plugins")
-const db = require("./utils/db")
-const {getToken, getUser} = require("./utils/getuser")
-const constants = require("./utils/constants")
-const validate = require("./utils/validate")
+const db = require("../utils/db")
+const {getToken, getUser} = require("../utils/getuser")
+const constants = require("../utils/constants")
+const validate = require("../utils/validate")
 const V = validate.V
 
 module.exports = [

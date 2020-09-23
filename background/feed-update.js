@@ -1,14 +1,14 @@
 const Denque = require("denque")
 const fetch = require("node-fetch")
-const constants = require("../api/utils/constants")
-const db = require("../api/utils/db")
+const constants = require("../utils/constants")
+const db = require("../utils/db")
 
 const prepared = {
 	video_insert: db.prepare(
 		"INSERT OR IGNORE INTO Videos"
-			+ " ( videoId,  title,  author,  authorId,  published,  publishedText,  viewCountText,  descriptionHtml)"
+			+ " ( videoId,  title,  author,  authorId,  published,  viewCountText,  descriptionHtml)"
 			+ " VALUES"
-			+ " (@videoId, @title, @author, @authorId, @published, @publishedText, @viewCountText, @descriptionHtml)"
+			+ " (@videoId, @title, @author, @authorId, @published, @viewCountText, @descriptionHtml)"
 	)
 }
 
@@ -48,6 +48,10 @@ class RefreshQueue {
 	}
 
 	next() {
+		if (this.isEmpty()) {
+			throw new Error("Cannot get next of empty refresh queue")
+		}
+
 		const item = this.queue.shift()
 		this.set.delete(item)
 		return item

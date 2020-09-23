@@ -2,7 +2,7 @@ const {Pinski} = require("pinski")
 const {setInstance} = require("pinski/plugins")
 
 ;(async () => {
-	await require("./api/utils/upgradedb")()
+	await require("./utils/upgradedb")()
 
 	const server = new Pinski({
 		port: 10412,

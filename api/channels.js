@@ -1,7 +1,7 @@
 const {render} = require("pinski/plugins")
-const constants = require("./utils/constants")
-const {fetchChannel} = require("./utils/youtube")
-const {getUser} = require("./utils/getuser")
+const constants = require("../utils/constants")
+const {fetchChannel} = require("../utils/youtube")
+const {getUser} = require("../utils/getuser")
 
 module.exports = [
 	{

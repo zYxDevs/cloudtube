@@ -1,10 +1,10 @@
 const {redirect} = require("pinski/plugins")
-const db = require("./utils/db")
-const constants = require("./utils/constants")
-const {getUser} = require("./utils/getuser")
-const validate = require("./utils/validate")
+const db = require("../utils/db")
+const constants = require("../utils/constants")
+const {getUser} = require("../utils/getuser")
+const validate = require("../utils/validate")
 const V = validate.V
-const {fetchChannel} = require("./utils/youtube")
+const {fetchChannel} = require("../utils/youtube")
 
 module.exports = [
 	{

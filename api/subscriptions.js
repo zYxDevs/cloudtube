@@ -1,7 +1,8 @@
 const {render} = require("pinski/plugins")
-const db = require("./utils/db")
-const {fetchChannelLatest} = require("./utils/youtube")
-const {getUser} = require("./utils/getuser")
+const db = require("../utils/db")
+const {fetchChannelLatest} = require("../utils/youtube")
+const {getUser} = require("../utils/getuser")
+const converters = require("../utils/converters")
 
 module.exports = [
 	{
@@ -22,6 +23,10 @@ module.exports = [
 					hasSubscriptions = true
 					const template = Array(subscriptions.length).fill("?").join(", ")
 					videos = db.prepare(`SELECT * FROM Videos WHERE authorId IN (${template}) ORDER BY published DESC LIMIT 60`).all(subscriptions)
+						.map(video => {
+							video.publishedText = converters.timeToPastText(video.published * 1000)
+							return video
+						})
 				}
 			}
 			return render(200, "pug/subscriptions.pug", {hasSubscriptions, videos, channels})
