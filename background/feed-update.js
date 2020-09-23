@@ -9,6 +9,9 @@ const prepared = {
 			+ " ( videoId,  title,  author,  authorId,  published,  viewCountText,  descriptionHtml)"
 			+ " VALUES"
 			+ " (@videoId, @title, @author, @authorId, @published, @viewCountText, @descriptionHtml)"
+	),
+	channel_refreshed_update: db.prepare(
+		"UPDATE Channels SET refreshed = ? WHERE ucid = ?"
 	)
 }
 
@@ -70,6 +73,8 @@ function refreshChannel(ucid) {
 				// store
 				prepared.video_insert.run(video)
 			})
+			// update channel refreshed
+			prepared.channel_refreshed_update.run(Date.now(), ucid)
 			console.log(`updated ${root.length} videos for channel ${ucid}`)
 		} else if (root.identifier === "PUBLISHED_DATES_NOT_PROVIDED") {
 			return [] // nothing we can do. skip this iteration.

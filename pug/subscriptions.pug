@@ -17,6 +17,16 @@ block content
                 img(src=channel.icon_url width=512 height=512 alt="").thumbnail
                 span.name= channel.name
 
+      if refreshed
+        section
+          details.channels-details
+            summary Last refreshed
+            div Oldest channel was refreshed #{timeToPastText(refreshed.min)}
+            div Newest channel was refreshed #{timeToPastText(refreshed.max)}
+            - const notLoaded = channels.length - refreshed.count
+            if notLoaded
+              div #{notLoaded} subscriptions have not been refreshed at all
+
       each video in videos
         .subscriptions-video
           +video_list_item(video)

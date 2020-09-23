@@ -18,13 +18,18 @@ const deltas = [
 			.run()
 		db.prepare("CREATE TABLE Settings (token TEXT NOT NULL, instance TEXT, save_history INTEGER, PRIMARY KEY (token))")
 			.run()
+	},
+	// 1: Channels +refreshed
+	function() {
+		db.prepare("ALTER TABLE Channels ADD COLUMN refreshed INTEGER")
+			.run()
 	}
 ]
 
 async function createBackup(entry) {
 	const filename = `db/backups/cloudtube.db.bak-v${entry-1}`
 	process.stdout.write(`Backing up current to ${filename}... `)
-	await db.backup(pj(__dirname, "../../", filename))
+	await db.backup(pj(__dirname, "../", filename))
 	process.stdout.write("done.\n")
 }
 
