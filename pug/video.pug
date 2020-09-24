@@ -20,8 +20,12 @@ block content
       .main-video-section
         .video-container
           - const format = sortedFormatStreams[0]
-          video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
-            source(src=format.url type=format.type)
+          if format
+            video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
+              source(src=format.url type=format.type)
+          else
+            video(src="")#video.video
+            .stream-notice The server provided no playback streams.
 
         #current-time-container
         #end-cards-container
