@@ -20,7 +20,7 @@ block content
       if refreshed
         section
           details.channels-details
-            summary Last refreshed
+            summary Last refreshed #{timeToPastText(refreshed.min)}
             div Oldest channel was refreshed #{timeToPastText(refreshed.min)}
             div Newest channel was refreshed #{timeToPastText(refreshed.max)}
             - const notLoaded = channels.length - refreshed.count
