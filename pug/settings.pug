@@ -6,10 +6,10 @@ mixin fieldset(name)
     .fieldset-contents
       block
 
-mixin input(id, description, placeholder, disabled, list)
+mixin input(id, description, type, placeholder, disabled, list)
   .field-row
     label.description(for=id)= description
-    input(type="text" id=id name=id value=settings[id] placeholder=placeholder disabled=disabled list=`${id}-list`).border-look
+    input(type=type id=id name=id value=settings[id] placeholder=placeholder disabled=disabled list=`${id}-list`).border-look
     if list
       datalist(id=`${id}-list`)
         each item in list
@@ -30,7 +30,7 @@ block content
     form(method="post" action="/settings")
       +fieldset("Settings")
 
-        +input("instance", "Instance", constants.user_settings.instance.default, false, [
+        +input("instance", "Instance", "url", constants.user_settings.instance.default, false, [
           "https://invidious.snopyta.org",
           "https://invidious.13ad.de",
           "https://watch.nettohikari.com",
