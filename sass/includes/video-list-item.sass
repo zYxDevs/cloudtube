@@ -1,5 +1,13 @@
 @use "colors.sass" as c
 
+@mixin thin
+  @media screen and (max-width: 499px)
+    @content
+
+@mixin wide
+  @media screen and (min-width: 500px)
+    @content
+
 @mixin video-list-item
   display: grid
   grid-template-columns: 160px 1fr
@@ -55,36 +63,44 @@
 @mixin large-item
   @include video-list-item
 
-  grid-gap: 16px
-  grid-template-columns: 240px 1fr
-  margin-bottom: 20px
-  overflow: hidden
-  max-height: 150px
-
-  .image
-    width: 240px
-    height: 135px
-
-  .duration
-    font-size: 17px
-    padding: 4px 5px
-    right: 5px
-    bottom: 5px
-
   .title
-    font-size: 24px
+    font-size: 17px
 
-  .author-line
-    font-size: 15px
-    color: c.$fg-main
+  +wide
+    grid-gap: 16px
+    grid-template-columns: auto 1fr
+    margin-bottom: 20px
+    overflow: hidden
+    max-height: 150px
 
-  .author
-    color: c.$fg-main
+    .image
+      width: 240px
+      height: 135px
 
-  .description
-    margin-top: 16px
-    font-size: 15px
-    color: c.$fg-dim
+    .duration
+      font-size: 17px
+      padding: 4px 5px
+      right: 5px
+      bottom: 5px
+
+    .title
+      font-size: 24px
+
+    .author-line
+      font-size: 15px
+      color: c.$fg-main
+
+    .author
+      color: c.$fg-main
+
+    .description
+      margin-top: 16px
+      font-size: 15px
+      color: c.$fg-dim
+
+  +thin
+    .description
+      display: none
 
 @mixin search-result
   @include large-item
