@@ -61,43 +61,68 @@ class RefreshQueue {
 	}
 }
 
-const refreshQueue = new RefreshQueue()
+class Refresher {
+	constructor() {
+		this.sym = constants.symbols.refresher
+		this.refreshQueue = new RefreshQueue()
+		this.state = this.sym.ACTIVE
+		this.waitingTimeout = null
+		this.next()
+	}
 
-function refreshChannel(ucid) {
-	return fetch(`http://localhost:3000/api/v1/channels/${ucid}/latest`).then(res => res.json()).then(root => {
-		if (Array.isArray(root)) {
-			root.forEach(video => {
-				// organise
-				video.descriptionHtml = video.descriptionHtml.replace(/<a /g, '<a tabindex="-1" ') // should be safe
-				video.viewCountText = null //TODO?
-				// store
-				prepared.video_insert.run(video)
-			})
-			// update channel refreshed
-			prepared.channel_refreshed_update.run(Date.now(), ucid)
-			console.log(`updated ${root.length} videos for channel ${ucid}`)
-		} else if (root.identifier === "PUBLISHED_DATES_NOT_PROVIDED") {
-			return [] // nothing we can do. skip this iteration.
-		} else {
-			throw new Error(root.error)
+	refreshChannel(ucid) {
+		return fetch(`http://localhost:3000/api/v1/channels/${ucid}/latest`).then(res => res.json()).then(root => {
+			if (Array.isArray(root)) {
+				root.forEach(video => {
+					// organise
+					video.descriptionHtml = video.descriptionHtml.replace(/<a /g, '<a tabindex="-1" ') // should be safe
+					video.viewCountText = null //TODO?
+					// store
+					prepared.video_insert.run(video)
+				})
+				// update channel refreshed
+				prepared.channel_refreshed_update.run(Date.now(), ucid)
+				console.log(`updated ${root.length} videos for channel ${ucid}`)
+			} else if (root.identifier === "PUBLISHED_DATES_NOT_PROVIDED") {
+				return [] // nothing we can do. skip this iteration.
+			} else {
+				throw new Error(root.error)
+			}
+		})
+	}
+
+	next() {
+		if (this.refreshQueue.isEmpty()) {
+			const timeSinceLastLoop = Date.now() - this.refreshQueue.lastLoadTime
+			if (timeSinceLastLoop < constants.caching.subscriptions_refresh_loop_min) {
+				const timeToWait = constants.caching.subscriptions_refresh_loop_min - timeSinceLastLoop
+				console.log(`waiting ${timeToWait} before next loop`)
+				this.state = this.sym.WAITING
+				this.waitingTimeout = setTimeout(() => this.next(), timeToWait)
+				return
+			} else {
+				this.refreshQueue.load()
+			}
 		}
-	})
-}
 
-function refreshNext() {
-	if (refreshQueue.isEmpty()) {
-		const timeSinceLastLoop = Date.now() - refreshQueue.lastLoadTime
-		if (timeSinceLastLoop < constants.caching.subscriptions_refresh_loop_min) {
-			const timeToWait = constants.caching.subscriptions_refresh_loop_min - timeSinceLastLoop
-			console.log(`waiting ${timeToWait} before next loop`)
-			return setTimeout(refreshNext, timeToWait)
+		if (!this.refreshQueue.isEmpty()) {
+			this.state = this.sym.ACTIVE
+			const ucid = this.refreshQueue.next()
+			this.refreshChannel(ucid).then(() => this.next())
 		} else {
-			refreshQueue.load()
+			this.state = this.sym.EMPTY
 		}
 	}
 
-	const ucid = refreshQueue.next()
-	refreshChannel(ucid).then(refreshNext)
+	skipWaiting() {
+		if (this.state !== this.sym.ACTIVE) {
+			clearTimeout(this.waitingTimeout)
+			this.refreshQueue.lastLoadTime = 0
+			this.next()
+		}
+	}
 }
 
-refreshNext()
+const refresher = new Refresher()
+
+module.exports.refresher = refresher

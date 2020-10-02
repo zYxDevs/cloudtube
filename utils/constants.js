@@ -19,6 +19,14 @@ const constants = {
 	regex: {
 		ucid: "[A-Za-z0-9-_]+",
 		video_id: "[A-Za-z0-9-_]+"
+	},
+
+	symbols: {
+		refresher: {
+			ACTIVE: Symbol("ACTIVE"),
+			WAITING: Symbol("WAITING"),
+			EMPTY: Symbol("EMPTY")
+		}
 	}
 }
 

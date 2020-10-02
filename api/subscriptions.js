@@ -3,6 +3,7 @@ const db = require("../utils/db")
 const {fetchChannelLatest} = require("../utils/youtube")
 const {getUser} = require("../utils/getuser")
 const {timeToPastText} = require("../utils/converters")
+const {refresher} = require("../background/feed-update")
 
 module.exports = [
 	{
@@ -13,6 +14,8 @@ module.exports = [
 			let channels = []
 			let refreshed = null
 			if (user.token) {
+				// trigger a background refresh, needed if they came back from being inactive
+				refresher.skipWaiting()
 				// get channels
 				const subscriptions = user.getSubscriptions()
 				const template = Array(subscriptions.length).fill("?").join(", ")
