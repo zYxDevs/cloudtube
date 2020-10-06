@@ -11,6 +11,29 @@ class InstanceError extends Error {
 	}
 }
 
+function formatOrder(format) {
+	// most significant to least significant
+	// key, max, order, transform
+	// asc: lower number comes first, desc: higher number comes first
+	const spec = [
+		["second__height", 8000, "desc", x => x ? Math.floor(x/96) : 0],
+		["fps", 100, "desc", x => x ? Math.floor(x/10) : 0],
+		["type", " ".repeat(60), "asc", x => x.length],
+	]
+	let total = 0
+	for (let i = 0; i < spec.length; i++) {
+		const s = spec[i]
+		let diff = s[3](format[s[0]])
+		if (s[2] === "asc") diff = s[3](s[1]) - diff
+		total += diff
+		if (i+1 < spec.length) {
+			s2 = spec[i+1]
+			total *= s2[3](s2[1])
+		}
+	}
+	return -total
+}
+
 module.exports = [
 	{
 		route: "/watch", methods: ["GET"], code: async ({req, url}) => {
@@ -22,6 +45,11 @@ module.exports = [
 				const video = await fetch(outURL).then(res => res.json())
 				if (!video) throw new Error("The instance returned null.")
 				if (video.error) throw new InstanceError(video.error, video.identifier)
+				// video data additional processing
+				for (const format of video.formatStreams.concat(video.adaptiveFormats)) {
+					if (!format.second__height && format.resolution) format.second__height = +format.resolution.slice(0, -1)
+					if (!format.second__order) format.second__order = formatOrder(format)
+				}
 				const subscribed = user.isSubscribed(video.authorId)
 				return render(200, "pug/video.pug", {video, subscribed})
 			} catch (e) {
