@@ -3,6 +3,7 @@ const {render} = require("pinski/plugins")
 const db = require("../utils/db")
 const {getToken, getUser} = require("../utils/getuser")
 const pug = require("pug")
+const converters = require("../utils/converters")
 
 class InstanceError extends Error {
 	constructor(error, identifier) {
@@ -49,6 +50,11 @@ module.exports = [
 				for (const format of video.formatStreams.concat(video.adaptiveFormats)) {
 					if (!format.second__height && format.resolution) format.second__height = +format.resolution.slice(0, -1)
 					if (!format.second__order) format.second__order = formatOrder(format)
+				}
+				for (const rec of video.recommendedVideos) {
+					if (!rec.second__lengthText && rec.lengthSeconds > 0) {
+						rec.second__lengthText = converters.lengthSecondsToLengthText(rec.lengthSeconds)
+					}
 				}
 				const subscribed = user.isSubscribed(video.authorId)
 				return render(200, "pug/video.pug", {video, subscribed})

@@ -18,4 +18,14 @@ function timeToPastText(timestamp) {
 	}, null) || "just now"
 }
 
+function lengthSecondsToLengthText(seconds) {
+	return [Math.floor(seconds/3600), Math.floor(seconds/60)%60, seconds%60]
+		.reduce((a, c, i, t) => (
+			a ? a : c || i == 1 ? t.slice(i) : false
+		), false)
+		.map((x, i) => i === 0 ? x : (x+"").padStart(2, "0"))
+		.join(":")
+}
+
 module.exports.timeToPastText = timeToPastText
+module.exports.lengthSecondsToLengthText = lengthSecondsToLengthText
