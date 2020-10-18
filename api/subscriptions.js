@@ -33,7 +33,8 @@ module.exports = [
 						})
 				}
 			}
-			return render(200, "pug/subscriptions.pug", {hasSubscriptions, videos, channels, refreshed, timeToPastText})
+			const instanceOrigin = user.getSettingsOrDefaults().instance
+			return render(200, "pug/subscriptions.pug", {hasSubscriptions, videos, channels, refreshed, timeToPastText, instanceOrigin})
 		}
 	}
 ]

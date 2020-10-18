@@ -11,7 +11,8 @@ module.exports = [
 			const settings = user.getSettingsOrDefaults()
 			const data = await fetchChannel(id, settings.instance)
 			const subscribed = user.isSubscribed(id)
-			return render(200, "pug/channel.pug", {data, subscribed})
+			const instanceOrigin = settings.instance
+			return render(200, "pug/channel.pug", {data, subscribed, instanceOrigin})
 		}
 	}
 ]

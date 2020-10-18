@@ -29,7 +29,7 @@ block content
 
       each video in videos
         .subscriptions-video
-          +video_list_item(video)
+          +video_list_item(video, instanceOrigin)
     else
       .no-subscriptions
         h2 You have no subscriptions.
