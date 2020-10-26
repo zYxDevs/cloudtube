@@ -37,9 +37,8 @@ module.exports = [
 								if (isNaN(provided)) data[key] = null
 								else data[key] = +provided
 							} else if (setting.type === "boolean") {
-								if (provided === "true") data[key] = true
-								else if (provided === "false") data[key] = false
-								else data[key] = null
+								if (provided === "1") data[key] = 1
+								else data[key] = 0
 							} else {
 								throw new Error("Unsupported setting type: "+setting.type)
 							}

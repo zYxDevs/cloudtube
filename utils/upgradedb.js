@@ -23,6 +23,11 @@ const deltas = [
 	function() {
 		db.prepare("ALTER TABLE Channels ADD COLUMN refreshed INTEGER")
 			.run()
+	},
+	// 2: Settings +local
+	function() {
+		db.prepare("ALTER TABLE Settings ADD COLUMN local INTEGER DEFAULT 0")
+			.run()
 	}
 ]
 

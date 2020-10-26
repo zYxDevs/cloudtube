@@ -7,6 +7,10 @@ const constants = {
 		save_history: {
 			type: "boolean",
 			default: false
+		},
+		local: {
+			type: "boolean",
+			default: false
 		}
 	},
 

@@ -1,0 +1,16 @@
+extends includes/layout
+
+include includes/video-list-item
+include includes/subscribe-button
+
+block head
+  title Fetching... - CloudTube
+  script(type="module" src=getStaticURL("html", "/static/js/local-video.js"))
+  script const id = !{JSON.stringify(id)}
+
+block content
+  main.video-error-page
+    h2 Fetching video
+    p#status Waiting...
+    form(method="post")#form.local-video-form
+      input(type="hidden" name="video")#video-data
