@@ -162,6 +162,7 @@ function relativeSeek(seconds) {
 function playVideo() {
 	audio.currentTime = video.currentTime
 	let lastTime = video.currentTime
+	ignoreNext.play++
 	video.play().then(() => {
 		const interval = setInterval(() => {
 			console.log("checking video", video.currentTime, lastTime)
