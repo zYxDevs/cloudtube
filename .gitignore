@@ -6,4 +6,7 @@
 
 # Auto-generated files
 node_modules
+
+# User configuration
 /db
+/config/config.js

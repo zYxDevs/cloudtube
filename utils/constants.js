@@ -1,4 +1,6 @@
-const constants = {
+const mixin = require("mixin-deep")
+
+let constants = {
 	user_settings: {
 		instance: {
 			type: "string",
@@ -32,6 +34,13 @@ const constants = {
 			EMPTY: Symbol("EMPTY")
 		}
 	}
+}
+
+try {
+	const overrides = require("../config/config.js")
+	constants = mixin(constants, overrides)
+} catch (e) {
+	console.log("Note: overrides file `config/config.js` ignored, file not found.")
 }
 
 module.exports = constants
