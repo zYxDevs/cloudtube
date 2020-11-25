@@ -1,8 +1,7 @@
 mixin video_list_item(video, instanceOrigin)
-  - if (!instanceOrigin) instanceOrigin = "https://i.ytimg.com"
   - let link = `/watch?v=${video.videoId}`
   a(href=link tabindex="-1").thumbnail
-    img(src=`${instanceOrigin}/vi/${video.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
+    img(src=`/vi/${video.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
     if video.second__lengthText != undefined
       span.duration= video.second__lengthText
   .info
