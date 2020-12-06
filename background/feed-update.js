@@ -12,6 +12,9 @@ const prepared = {
 	),
 	channel_refreshed_update: db.prepare(
 		"UPDATE Channels SET refreshed = ? WHERE ucid = ?"
+	),
+	unsubscribe_all_from_channel: db.prepare(
+		"DELETE FROM Subscriptions WHERE ucid = ?"
 	)
 }
 
@@ -85,6 +88,10 @@ class Refresher {
 				console.log(`updated ${root.length} videos for channel ${ucid}`)
 			} else if (root.identifier === "PUBLISHED_DATES_NOT_PROVIDED") {
 				return [] // nothing we can do. skip this iteration.
+			} else if (root.identifier === "NOT_FOUND") {
+				// the channel does not exist. we should unsubscribe all users so we don't try again.
+				console.log(`channel ${ucid} does not exist, unsubscribing all users`)
+				prepared.unsubscribe_all_from_channel.run(ucid)
 			} else {
 				throw new Error(root.error)
 			}
