@@ -28,5 +28,4 @@ block content
 
     .videos
       each video in data.latestVideos
-        .channel-video
-          +video_list_item(video, instanceOrigin)
+        +video_list_item("channel-video", video, instanceOrigin)

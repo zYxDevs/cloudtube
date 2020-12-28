@@ -1,19 +1,20 @@
-mixin video_list_item(video, instanceOrigin)
-  - let link = `/watch?v=${video.videoId}`
-  a(href=link tabindex="-1").thumbnail
-    img(src=`/vi/${video.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
-    if video.second__lengthText != undefined
-      span.duration= video.second__lengthText
-  .info
-    div.title: a(href=link).title-link= video.title
-    div.author-line
-      a(href=`/channel/${video.authorId}`).author= video.author
-      - const views = video.viewCountText || video.second__viewCountText
-      if views
-        = ` • `
-        span.views= views
-      if video.publishedText
-        = ` • `
-        span.published= video.publishedText
-    if video.descriptionHtml
-      div.description!= video.descriptionHtml
+mixin video_list_item(className, video, instanceOrigin)
+  div(class={[className]: true, "video-list-item--watched": video.watched})
+    - let link = `/watch?v=${video.videoId}`
+    a(href=link tabindex="-1").thumbnail
+      img(src=`/vi/${video.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
+      if video.second__lengthText != undefined
+        span.duration= video.second__lengthText
+    .info
+      div.title: a(href=link).title-link= video.title
+      div.author-line
+        a(href=`/channel/${video.authorId}`).author= video.author
+        - const views = video.viewCountText || video.second__viewCountText
+        if views
+          = ` • `
+          span.views= views
+        if video.publishedText
+          = ` • `
+          span.published= video.publishedText
+      if video.descriptionHtml
+        div.description!= video.descriptionHtml

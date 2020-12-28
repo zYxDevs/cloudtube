@@ -66,8 +66,7 @@ block content
       aside.related-videos
         h2.related-header Related videos
         each r in video.recommendedVideos
-          .related-video
-            +video_list_item(r, instanceOrigin)
+          +video_list_item("related-video", r, instanceOrigin)
 
   else
     //- error

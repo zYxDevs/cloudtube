@@ -28,6 +28,11 @@ const deltas = [
 	function() {
 		db.prepare("ALTER TABLE Settings ADD COLUMN local INTEGER DEFAULT 0")
 			.run()
+	},
+	// 3: +WatchedVideos
+	function() {
+		db.prepare("CREATE TABLE WatchedVideos (token TEXT NOT NULL, videoID TEXT NOT NULL, PRIMARY KEY (token, videoID))")
+			.run()
 	}
 ]
 

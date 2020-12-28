@@ -27,9 +27,13 @@ block content
             if notLoaded
               div #{notLoaded} subscriptions have not been refreshed at all
 
+      if settings.save_history
+        input(type="checkbox" id="watched-videos-display")
+        .watched-videos-display-container
+          label(for="watched-videos-display").watched-videos-display-label Hide watched videos
+
       each video in videos
-        .subscriptions-video
-          +video_list_item(video, instanceOrigin)
+        +video_list_item("subscriptions-video", video, instanceOrigin)
     else
       .no-subscriptions
         h2 You have no subscriptions.

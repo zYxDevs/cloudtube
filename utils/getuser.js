@@ -57,6 +57,22 @@ class User {
 			return false
 		}
 	}
+
+	getWatchedVideos() {
+		const settings = this.getSettingsOrDefaults()
+		if (this.token && settings.save_history) {
+			return db.prepare("SELECT videoID FROM WatchedVideos WHERE token = ?").pluck().all(this.token)
+		} else {
+			return []
+		}
+	}
+
+	addWatchedVideoMaybe(videoID) {
+		const settings = this.getSettingsOrDefaults()
+		if (videoID && this.token && settings.save_history) {
+			db.prepare("INSERT OR IGNORE INTO WatchedVideos (token, videoID) VALUES (?, ?)").run([this.token, videoID])
+		}
+	}
 }
 
 /**

@@ -8,5 +8,4 @@ block head
 block content
   main.search-page
     each result in results
-      .search-result
-        +video_list_item(result, instanceOrigin)
+      +video_list_item("search-result", result, instanceOrigin)

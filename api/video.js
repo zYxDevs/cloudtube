@@ -37,22 +37,35 @@ function formatOrder(format) {
 
 async function renderVideo(videoPromise, {user, id, instanceOrigin}) {
 	try {
+		// resolve video
 		const video = await videoPromise
 		if (!video) throw new Error("The instance returned null.")
 		if (video.error) throw new InstanceError(video.error, video.identifier)
-		// video data additional processing
+		// process stream list ordering
 		for (const format of video.formatStreams.concat(video.adaptiveFormats)) {
 			if (!format.second__height && format.resolution) format.second__height = +format.resolution.slice(0, -1)
 			if (!format.second__order) format.second__order = formatOrder(format)
 		}
+		// process length text
 		for (const rec of video.recommendedVideos) {
 			if (!rec.second__lengthText && rec.lengthSeconds > 0) {
 				rec.second__lengthText = converters.lengthSecondsToLengthText(rec.lengthSeconds)
 			}
 		}
+		// get subscription data
 		const subscribed = user.isSubscribed(video.authorId)
+		// process watched videos
+		user.addWatchedVideoMaybe(video.videoId)
+		const watchedVideos = user.getWatchedVideos()
+		if (watchedVideos.length) {
+			for (const rec of video.recommendedVideos) {
+				rec.watched = watchedVideos.includes(rec.videoId)
+			}
+		}
 		return render(200, "pug/video.pug", {video, subscribed, instanceOrigin})
 	} catch (e) {
+		// show an appropriate error message
+		// these should probably be split out to their own files
 		let message = pug.render("pre= error", {error: e.stack || e.toString()})
 		if (e instanceof fetch.FetchError) {
 			const template = `

@@ -22,6 +22,8 @@ module.exports = [
 				channels = db.prepare(`SELECT * FROM Channels WHERE ucid IN (${template}) ORDER BY name`).all(subscriptions)
 				// get refreshed status
 				refreshed = db.prepare(`SELECT min(refreshed) as min, max(refreshed) as max, count(refreshed) as count FROM Channels WHERE ucid IN (${template})`).get(subscriptions)
+				// get watched videos
+				const watchedVideos = user.getWatchedVideos()
 				// get videos
 				if (subscriptions.length) {
 					hasSubscriptions = true
@@ -29,12 +31,15 @@ module.exports = [
 					videos = db.prepare(`SELECT * FROM Videos WHERE authorId IN (${template}) ORDER BY published DESC LIMIT 60`).all(subscriptions)
 						.map(video => {
 							video.publishedText = timeToPastText(video.published * 1000)
+							console.log(watchedVideos, video.videoId)
+							video.watched = watchedVideos.includes(video.videoId)
 							return video
 						})
 				}
 			}
-			const instanceOrigin = user.getSettingsOrDefaults().instance
-			return render(200, "pug/subscriptions.pug", {hasSubscriptions, videos, channels, refreshed, timeToPastText, instanceOrigin})
+			const settings = user.getSettingsOrDefaults()
+			const instanceOrigin = settings.instance
+			return render(200, "pug/subscriptions.pug", {settings, hasSubscriptions, videos, channels, refreshed, timeToPastText, instanceOrigin})
 		}
 	}
 ]
