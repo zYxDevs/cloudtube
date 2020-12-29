@@ -18,11 +18,11 @@
 
   @at-root .video-list-item--watched#{&}
     background: c.$bg-darker
-    padding: 8px 8px 0px
-    margin: -8px -8px 12px
+    padding: 4px 4px 0px
+    margin: -4px -4px 8px
 
     .thumbnail
-      margin-bottom: 8px
+      margin-bottom: 4px
 
     .image
       opacity: 0.4
@@ -83,6 +83,13 @@
     margin-bottom: 20px
     overflow: hidden
     max-height: 150px
+
+    @at-root .video-list-item--watched#{&}
+      padding: 8px 8px 0px
+      margin: -8px -8px 12px
+
+      .thumbnail
+        margin-bottom: 8px
 
     .image
       width: 240px
