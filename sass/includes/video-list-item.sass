@@ -16,6 +16,17 @@
   align-content: start
   margin-bottom: 12px
 
+  @at-root .video-list-item--watched#{&}
+    background: c.$bg-darker
+    padding: 8px 8px 0px
+    margin: -8px -8px 12px
+
+    .thumbnail
+      margin-bottom: 8px
+
+    .image
+      opacity: 0.4
+
   .thumbnail
     position: relative
     display: flex

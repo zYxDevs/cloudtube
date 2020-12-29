@@ -12,6 +12,13 @@ module.exports = [
 			const data = await fetchChannel(id, settings.instance)
 			const subscribed = user.isSubscribed(id)
 			const instanceOrigin = settings.instance
+			// apply watched status
+			const watchedVideos = user.getWatchedVideos()
+			if (data.latestVideos) {
+				data.latestVideos.forEach(video => {
+					video.watched = watchedVideos.includes(video.videoId)
+				})
+			}
 			return render(200, "pug/channel.pug", {data, subscribed, instanceOrigin})
 		}
 	}
