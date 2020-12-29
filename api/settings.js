@@ -10,7 +10,7 @@ module.exports = [
 		route: "/settings", methods: ["GET"], code: async ({req}) => {
 			const user = getUser(req)
 			const settings = user.getSettings()
-			return render(200, "pug/settings.pug", {constants, settings})
+			return render(200, "pug/settings.pug", {constants, user, settings})
 		}
 	},
 	{

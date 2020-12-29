@@ -79,3 +79,25 @@ fieldset
       &.checkbox:not(:disabled) + .pill
         @include acts-like-button
         cursor: pointer
+
+@mixin checkbox-hider($base)
+  ##{$base}
+    position: relative
+    left: 10px
+    display: block
+    z-index: 1
+    height: 42px
+    margin: 0
+
+  .#{$base}-container
+    position: relative
+    display: grid // why does the default not work???
+    top: -42px
+    background: c.$bg-accent-x
+    line-height: 1
+    border-radius: 8px
+    margin-bottom: -18px
+
+    .#{$base}-label
+      padding: 12px 0px 12px 32px
+      cursor: pointer

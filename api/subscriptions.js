@@ -31,7 +31,6 @@ module.exports = [
 					videos = db.prepare(`SELECT * FROM Videos WHERE authorId IN (${template}) ORDER BY published DESC LIMIT 60`).all(subscriptions)
 						.map(video => {
 							video.publishedText = timeToPastText(video.published * 1000)
-							console.log(watchedVideos, video.videoId)
 							video.watched = watchedVideos.includes(video.videoId)
 							return video
 						})

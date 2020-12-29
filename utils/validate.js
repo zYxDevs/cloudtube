@@ -78,6 +78,20 @@ function presetURLParamsBody() {
 	]
 }
 
+function presetEnsureParams(list) {
+	return [
+		state => {
+			return list.every(name => state.params.has(name))
+		},
+		() => ({
+			statusCode: 400,
+			contentType: "application/json",
+			content: `Some required body parameters were missing. Required parameters: ${list.join(", ")}`
+		})
+	]
+}
+
 module.exports.V = V
 module.exports.presetLoad = presetLoad
 module.exports.presetURLParamsBody = presetURLParamsBody
+module.exports.presetEnsureParams = presetEnsureParams

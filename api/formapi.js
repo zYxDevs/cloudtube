@@ -1,7 +1,7 @@
 const {redirect} = require("pinski/plugins")
 const db = require("../utils/db")
 const constants = require("../utils/constants")
-const {getUser} = require("../utils/getuser")
+const {getUser, setToken} = require("../utils/getuser")
 const validate = require("../utils/validate")
 const V = validate.V
 const {fetchChannel} = require("../utils/youtube")
@@ -53,6 +53,46 @@ module.exports = [
 					}
 				})
 				.go()
+		}
+	},
+	{
+		route: `/formapi/erase`, methods: ["POST"], upload: true, code: async ({req, fill, body}) => {
+			return new V()
+				.with(validate.presetLoad({body}))
+				.with(validate.presetURLParamsBody())
+				.with(validate.presetEnsureParams(["token"]))
+				.last(async state => {
+					const {params} = state
+					const token = params.get("token")
+					;["Subscriptions", "Settings", "SeenTokens", "WatchedVideos"].forEach(table => {
+						db.prepare(`DELETE FROM ${table} WHERE token = ?`).run(token)
+					})
+					return {
+						statusCode: 303,
+						headers: {
+							location: "/",
+							"set-cookie": `token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax`
+						},
+						content: {
+							status: "ok"
+						}
+					}
+				})
+				.go()
+		}
+	},
+	{
+		route: "/formapi/importsession/(\\w+)", methods: ["GET"], code: async ({req, fill}) => {
+			return {
+				statusCode: 303,
+				headers: setToken({
+					location: "/subscriptions"
+				}, fill[0]),
+				contentType: "application/json",
+				content: {
+					status: "ok"
+				}
+			}
 		}
 	}
 ]

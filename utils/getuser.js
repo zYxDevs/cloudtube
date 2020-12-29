@@ -9,16 +9,21 @@ function getToken(req, responseHeaders) {
 	let token = cookie.token
 	if (!token) {
 		if (responseHeaders) { // we should create a token
-			const setCookie = responseHeaders["set-cookie"] || []
-			token = crypto.randomBytes(18).toString("base64").replace(/\W/g, "_")
-			setCookie.push(`token=${token}; Path=/; Max-Age=2147483648; HttpOnly; SameSite=Lax`)
-			responseHeaders["set-cookie"] = setCookie
+			setToken(responseHeaders)
 		} else {
 			return null
 		}
 	}
 	db.prepare("REPLACE INTO SeenTokens (token, seen) VALUES (?, ?)").run([token, Date.now()])
 	return token
+}
+
+function setToken(responseHeaders, token) {
+	const setCookie = responseHeaders["set-cookie"] || []
+	if (!token) token = crypto.randomBytes(18).toString("base64").replace(/\W/g, "_")
+	setCookie.push(`token=${token}; Path=/; Max-Age=2147483648; HttpOnly; SameSite=Lax`)
+	responseHeaders["set-cookie"] = setCookie
+	return responseHeaders
 }
 
 class User {
@@ -107,6 +112,7 @@ cleanCSRF()
 setInterval(cleanCSRF, constants.caching.csrf_time).unref()
 
 module.exports.getToken = getToken
+module.exports.setToken = setToken
 module.exports.generateCSRF = generateCSRF
 module.exports.checkCSRF = checkCSRF
 module.exports.getUser = getUser

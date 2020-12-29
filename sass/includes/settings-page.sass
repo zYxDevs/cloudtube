@@ -1,3 +1,6 @@
+@use "forms.sass" as forms
+@use "colors.sass" as c
+
 .settings-page
   padding: 40px 20px 20px
   max-width: 600px
@@ -9,3 +12,18 @@
   .border-look
     font-size: 22px
     padding: 7px 16px 8px
+
+.data-management
+  margin-top: 24px
+
+  .delete-confirm-container
+    background: c.$bg-darker
+    margin-bottom: -36px
+
+@include forms.checkbox-hider("delete-confirm")
+
+#delete-confirm:not(:checked) ~ * #delete-button
+  visibility: hidden
+
+.delete-details[open]
+  padding-bottom: 40px
