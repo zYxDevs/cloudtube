@@ -1,12 +1,5 @@
 @use "colors.sass" as c
-
-@mixin thin
-  @media screen and (max-width: 499px)
-    @content
-
-@mixin wide
-  @media screen and (min-width: 500px)
-    @content
+@use "_dimensions.sass" as dimensions
 
 @mixin video-list-item
   display: grid
@@ -77,7 +70,7 @@
   .title
     font-size: 17px
 
-  +wide
+  +dimensions.wide
     grid-gap: 16px
     grid-template-columns: auto 1fr
     margin-bottom: 20px
@@ -116,7 +109,7 @@
       font-size: 15px
       color: c.$fg-dim
 
-  +thin
+  +dimensions.thin
     .description
       display: none
 

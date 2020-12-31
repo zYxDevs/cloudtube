@@ -1,9 +1,6 @@
 @use "colors.sass" as c
 @use "buttons.sass" as *
-
-@mixin thin
-  @media screen and (max-width: 499px)
-    @content
+@use "_dimensions.sass" as dimensions
 
 .main-nav
   background-color: c.$bg-accent
@@ -11,13 +8,13 @@
   padding: 8px
   box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.1)
 
-  +thin
+  +dimensions.thin
     display: block
 
   .links
     display: flex
 
-    +thin
+    +dimensions.thin
       margin-bottom: 4px
       padding: 1px
 

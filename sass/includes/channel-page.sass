@@ -1,5 +1,6 @@
 @use "colors.sass" as c
 @use "video-list-item.sass" as *
+@use "_dimensions.sass" as dimensions
 
 .channel-page
   padding: 40px 20px 20px
@@ -22,6 +23,10 @@
 
   .info
     display: flex
+    flex-wrap: wrap
+
+    +dimensions.thin
+      display: block
 
     .thumbnail-image
       $size: 120px
