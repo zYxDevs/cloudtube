@@ -87,7 +87,7 @@ module.exports = [
 				statusCode: 303,
 				headers: setToken({
 					location: "/subscriptions"
-				}, fill[0]),
+				}, fill[0]).responseHeaders,
 				contentType: "application/json",
 				content: {
 					status: "ok"

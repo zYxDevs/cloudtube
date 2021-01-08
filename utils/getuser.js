@@ -9,7 +9,7 @@ function getToken(req, responseHeaders) {
 	let token = cookie.token
 	if (!token) {
 		if (responseHeaders) { // we should create a token
-			setToken(responseHeaders)
+			token = setToken(responseHeaders).token
 		} else {
 			return null
 		}
@@ -23,7 +23,7 @@ function setToken(responseHeaders, token) {
 	if (!token) token = crypto.randomBytes(18).toString("base64").replace(/\W/g, "_")
 	setCookie.push(`token=${token}; Path=/; Max-Age=2147483648; HttpOnly; SameSite=Lax`)
 	responseHeaders["set-cookie"] = setCookie
-	return responseHeaders
+	return {token, responseHeaders}
 }
 
 class User {
