@@ -50,31 +50,32 @@ block content
       .save-settings
         button.border-look Save
 
-    details.data-management
-      summary Sync data
-      p Open this link elsewhere to import your current CloudTube session there.
-      p.
-        If you clear your cookies often, you can bookmark this link and open it
-        to restore your data, or if you have multiple devices, you can send this
-        link to them to import your session and automatically keep everything
-        in sync.
-      - let url = `/formapi/importsession/${user.token}`
-      a(href=url)= url
+    if user.token
+      details.data-management
+        summary Sync data
+        p Open this link elsewhere to import your current CloudTube session there.
+        p.
+          If you clear your cookies often, you can bookmark this link and open it
+          to restore your data, or if you have multiple devices, you can send this
+          link to them to import your session and automatically keep everything
+          in sync.
+        - let url = `/formapi/importsession/${user.token}`
+        a(href=url)= url
 
-    details.data-management.delete-details
-      summary Delete data
-      p Press this button to erase all your data from CloudTube.
-      p.
-        Just the current session will be removed. If you lost access to a
-        previous session, you cannot touch it.
-      p.
-        You will lose your subscriptions, watch history, settings, and anything
-        else you stored on the server. The server will keep no record that they
-        ever existed.
-      p Deletion is instant and #[em cannot be undone.]
-      input(type="checkbox" id="delete-confirm")
-      .delete-confirm-container
-        label(for="delete-confirm").delete-confirm-label I understand the consequences
-      form(method="post" action="/formapi/erase")
-        input(type="hidden" name="token" value=user.token)
-        button.border-look#delete-button Permanently erase my data
+      details.data-management.delete-details
+        summary Delete data
+        p Press this button to erase all your data from CloudTube.
+        p.
+          Just the current session will be removed. If you lost access to a
+          previous session, you cannot touch it.
+        p.
+          You will lose your subscriptions, watch history, settings, and anything
+          else you stored on the server. The server will keep no record that they
+          ever existed.
+        p Deletion is instant and #[em cannot be undone.]
+        input(type="checkbox" id="delete-confirm")
+        .delete-confirm-container
+          label(for="delete-confirm").delete-confirm-label I understand the consequences
+        form(method="post" action="/formapi/erase")
+          input(type="hidden" name="token" value=user.token)
+          button.border-look#delete-button Permanently erase my data
