@@ -4,6 +4,7 @@ include includes/video-list-item.pug
 
 block head
   title Subscriptions - CloudTube
+  script(type="module" src=getStaticURL("html", "/static/js/subscriptions.js"))
 
 block content
   main.subscriptions-page
@@ -34,7 +35,7 @@ block content
           label(for="watched-videos-display").watched-videos-display-label Hide watched videos
 
       each video in videos
-        +video_list_item("subscriptions-video", video, instanceOrigin)
+        +video_list_item("subscriptions-video", video, instanceOrigin, {showMarkWatched: settings.save_history && !video.watched})
     else
       .no-subscriptions
         h2 You have no subscriptions.

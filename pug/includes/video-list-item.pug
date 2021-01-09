@@ -1,4 +1,4 @@
-mixin video_list_item(className, video, instanceOrigin)
+mixin video_list_item(className, video, instanceOrigin, options = {})
   div(class={[className]: true, "video-list-item--watched": video.watched})
     - let link = `/watch?v=${video.videoId}`
     a(href=link tabindex="-1").thumbnail
@@ -16,5 +16,9 @@ mixin video_list_item(className, video, instanceOrigin)
         if video.publishedText
           = ` • `
           span.published= video.publishedText
+        if options.showMarkWatched
+          form(method="post" action=`/formapi/markwatched/${video.videoId}`).mark-watched
+            = ` • `
+            button.mark-watched__button Mark watched
       if video.descriptionHtml
         div.description!= video.descriptionHtml

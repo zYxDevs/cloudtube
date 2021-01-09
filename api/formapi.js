@@ -32,23 +32,19 @@ module.exports = [
 					if (params.has("referrer")) {
 						return {
 							statusCode: 303,
-							contentType: "application/json",
+							contentType: "text/plain",
 							headers: Object.assign(responseHeaders, {
 								Location: params.get("referrer")
 							}),
-							content: {
-								status: "ok"
-							}
+							content: "Success, redirecting..."
 						}
 						return redirect(params.get("referrer"), 303)
 					} else {
 						return {
 							statusCode: 200,
-							contentType: "application/json",
+							contentType: "text/plain",
 							headers: responseHeaders,
-							content: {
-								status: "ok"
-							}
+							content: "Success."
 						}
 					}
 				})
@@ -56,7 +52,27 @@ module.exports = [
 		}
 	},
 	{
-		route: `/formapi/erase`, methods: ["POST"], upload: true, code: async ({req, fill, body}) => {
+		route: `/formapi/markwatched/(${constants.regex.video_id})`, methods: ["POST"], code: async ({req, fill}) => {
+			const videoID = fill[0]
+			const user = getUser(req)
+			const token = user.token
+			if (token) {
+				db.prepare("INSERT OR IGNORE INTO WatchedVideos (token, videoID) VALUES (?, ?)").run(token, videoID)
+			}
+			return {
+				statusCode: 303,
+				contentType: "text/plain",
+				headers: {
+					Location: "/subscriptions"
+				},
+				content: {
+					status: "Success, redirecting..."
+				}
+			}
+		}
+	},
+	{
+		route: "/formapi/erase", methods: ["POST"], upload: true, code: async ({req, fill, body}) => {
 			return new V()
 				.with(validate.presetLoad({body}))
 				.with(validate.presetURLParamsBody())
@@ -69,13 +85,12 @@ module.exports = [
 					})
 					return {
 						statusCode: 303,
+						contentType: "text/plain",
 						headers: {
 							location: "/",
 							"set-cookie": `token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax`
 						},
-						content: {
-							status: "ok"
-						}
+						content: "Success, redirecting..."
 					}
 				})
 				.go()
@@ -88,10 +103,8 @@ module.exports = [
 				headers: setToken({
 					location: "/subscriptions"
 				}, fill[0]).responseHeaders,
-				contentType: "application/json",
-				content: {
-					status: "ok"
-				}
+				contentType: "text/plain",
+				content: "Success, redirecting..."
 			}
 		}
 	}

@@ -101,3 +101,17 @@ fieldset
     .#{$base}-label
       padding: 12px 0px 12px 32px
       cursor: pointer
+
+@mixin single-button-form
+  display: inline-block
+  white-space: pre-wrap // preserve whitespace inside the form at the edge
+
+  > button
+    background: none
+    padding: 0
+    margin: 0
+    border: none
+    color: inherit
+    font-family: inherit
+    font-size: inherit
+    text-decoration: underline
