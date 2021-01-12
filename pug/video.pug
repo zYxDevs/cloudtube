@@ -21,7 +21,7 @@ block content
         .video-container
           - const format = sortedFormatStreams[0]
           if format
-            video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
+            video(controls preload="auto" poster=`/vi/${video.videoId}/maxresdefault.jpg` width=format.second__width height=format.second__height data-itag=format.itag)#video.video
               source(src=format.url type=format.type)
           else
             video(src="")#video.video
