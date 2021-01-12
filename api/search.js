@@ -13,16 +13,7 @@ module.exports = [
 			const results = await fetch(fetchURL.toString()).then(res => res.json())
 
 			for (const video of results) {
-				if (!video.second__lengthText && video.lengthSeconds > 0) {
-					video.second__lengthText = converters.lengthSecondsToLengthText(video.lengthSeconds)
-				}
-				if (!video.second__lengthText && video.lengthSeconds === 0) {
-					video.second__lengthText = "LIVE"
-					video.liveNow = true
-				}
-				if (video.publishedText === "0 seconds ago") {
-					video.publishedText = "Live now"
-				}
+				converters.normaliseVideoInfo(video)
 			}
 
 			return render(200, "pug/search.pug", {query, results, instanceOrigin})

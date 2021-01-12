@@ -27,5 +27,29 @@ function lengthSecondsToLengthText(seconds) {
 		.join(":")
 }
 
+/**
+ * Second and Invidious don't return quite the same data. This
+ * function normalises them so that all the useful properties are
+ * available no matter the kind of instance. The video is modified
+ * in-place.
+ *
+ * Changes:
+ * - second__lengthText is added, may be [hh:]mm:ss or "LIVE"
+ * - publishedText may be changed to "Live now"
+ */
+function normaliseVideoInfo(video) {
+	if (!video.second__lengthText && video.lengthSeconds > 0) {
+		video.second__lengthText = converters.lengthSecondsToLengthText(video.lengthSeconds)
+	}
+	if (!video.second__lengthText && video.lengthSeconds === 0) {
+		video.second__lengthText = "LIVE"
+		video.liveNow = true
+	}
+	if (video.publishedText === "0 seconds ago") {
+		video.publishedText = "Live now"
+	}
+}
+
 module.exports.timeToPastText = timeToPastText
 module.exports.lengthSecondsToLengthText = lengthSecondsToLengthText
+module.exports.normaliseVideoInfo = normaliseVideoInfo

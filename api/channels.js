@@ -2,6 +2,7 @@ const {render} = require("pinski/plugins")
 const constants = require("../utils/constants")
 const {fetchChannel} = require("../utils/youtube")
 const {getUser} = require("../utils/getuser")
+const converters = require("../utils/converters")
 
 module.exports = [
 	{
@@ -12,10 +13,11 @@ module.exports = [
 			const data = await fetchChannel(id, settings.instance)
 			const subscribed = user.isSubscribed(id)
 			const instanceOrigin = settings.instance
-			// apply watched status
+			// normalise info, apply watched status
 			const watchedVideos = user.getWatchedVideos()
 			if (data.latestVideos) {
 				data.latestVideos.forEach(video => {
+					converters.normaliseVideoInfo(video)
 					video.watched = watchedVideos.includes(video.videoId)
 				})
 			}
