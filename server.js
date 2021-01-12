@@ -17,6 +17,7 @@ const {setInstance} = require("pinski/plugins")
 
 	server.addPugDir("pug", ["pug/includes"])
 	server.addRoute("/", "pug/home.pug", "pug")
+	server.addRoute("/cant-think", "pug/cant-think.pug", "pug")
 
 	server.addStaticHashTableDir("html/static/js")
 	server.addStaticHashTableDir("html/static/js/elemjs")

@@ -1,0 +1,66 @@
+extends includes/layout.pug
+
+block head
+  title Can't think?
+
+block pre-nav
+  - showNav = false
+
+mixin leave(index, prefix="No more?", final)
+  p(class={[`leave__stage-${index}`]: true, leave__final: final}).leave
+    = `${prefix} `
+    span.leave__actions
+      if final
+        a(href="/search?q=cats+being+cute")= "[BLISS] ".repeat(14)
+      else
+        a(href="https://wikipedia.org/wiki/Special:Random") [SEEK]
+        = ` / `
+        a(href="/search?q=cats+being+cute") [BLISS]
+
+block content
+  main.cant-think-page
+    .encouraging-message
+      p Oh?
+      p You can't think of anything to watch, yet you're still here?
+      p Have I got that right? You really have nothing going on up there. Nothing that you want to watch.
+      p #[em And yet you still came to this website.]
+      +leave(1)
+      p You came to this website with no purpose, no goal. You just knew that you wanted to watch... something.
+      p But there's no front page algorithm to feed you. #[em You] choose what to watch.
+      p ...
+      p Can't handle that power?
+      p Can you really, truly, not?
+      +leave(2)
+      p You came here with no goal. You did not come to learn. You did not come to be entertained. You did not come here because you wanted to leave feeling satisfied.
+      p You came because you wanted to be distracted.
+      p A distraction. That's all you wanted. But instead... you found this. It's okay, just relax. I'm here for you.
+      p Do you hear them? The alarm bells, inside your head?
+      +leave(3)
+      p Every day you #[em sit] and you #[em stare] into this 24-inch lightbulb, hoping that the technological wonder that is the internet will allow you to turn off your brain and enter into the #[em womb-like bliss] of distraction.
+      p Is this the best you can do? Is this what you are? Is this all you're capable of?
+      p Do you not think there might be something more, something worthwhile, something truly satisfying out there? Just waiting for you?
+      p There is. There's so much more. Do you believe?
+      +leave(4)
+      p This is what they want from you. This is exactly what they wanted when they manufactured this world for you to live in.
+      p They have created a capitalist masterpiece.
+      p I fight them. I fight their product. I arrive to rescue you from your cell. But I can't give you everything you need. Your future is yours. You are the one that must act.
+      p You reach a decision.
+      p You have the opportunity to escape. To flee and never look back. To never again consider the cell of distraction.
+      p Is that what you want?
+      p Do you join me and leave?
+      p Or do you collapse into blissful distraction and just continue, on and on, time after time, hoping that next time, something will be different?
+      p The alarm bells are deafening. You feel the blood pounding in your ears.
+      +leave(5, "NOT READY?", true)
+      p You shudder.
+      p You stand.
+      p You overcome.
+      p You take a step.
+      p You begin to feel your mind unfold.
+      p Pieces of your brain twist and fall apart as you shake off the identity that the billion-dollar distraction manufacturers have handed to you, the identity that you once willingly accepted without even realising that it was there.
+      p I beg of you, find something.
+      p Create. Discover. Seek. Learn.
+      p You see it now, don't know?
+      p You understand.
+      p You know what you must do.
+      p.ultimatum: a(href="#i-understand").border-look I know what I must do.
+      a#i-understand

@@ -1,0 +1,59 @@
+@use "sass:list"
+
+.cant-think-page
+  .main-nav
+    display: none
+
+  .encouraging-message
+    text-align: left
+    max-width: 540px
+    padding-top: 40px
+    border-radius: 0px 0px 16px 16px
+
+  .leave
+    margin: 26px 32px !important
+    color: #aaa
+
+    $sizes: 14px 16px 21px 30px 72px
+    @each $size in $sizes
+      &.leave__stage-#{list.index($sizes, $size)}
+        font-size: $size
+
+    &.leave__final
+      font-weight: bold
+      color: #f2f2f2
+
+      .leave__actions
+        display: block
+
+    .leave__actions
+      margin-left: 5px
+      font-family: monospace
+      font-size: 0.9em
+
+      & a, & a:visited
+        color: #fb8460
+
+  .ultimatum
+    margin-top: 32px !important
+
+  #i-understand
+    display: flex
+    height: 20px
+    justify-content: center
+    align-items: center
+    font-size: 60px
+    font-weight: bold
+    color: #fff
+
+    &:target
+      position: fixed
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      height: unset
+      background: black
+
+      &::after
+        content: "Good."
