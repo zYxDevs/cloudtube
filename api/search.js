@@ -1,4 +1,4 @@
-const fetch = require("node-fetch")
+const {request} = require("../utils/request")
 const {render} = require("pinski/plugins")
 const {getUser} = require("../utils/getuser")
 const converters = require("../utils/converters")
@@ -10,7 +10,10 @@ module.exports = [
 			const instanceOrigin = getUser(req).getSettingsOrDefaults().instance
 			const fetchURL = new URL(`${instanceOrigin}/api/v1/search`)
 			fetchURL.searchParams.set("q", query)
-			const results = await fetch(fetchURL.toString()).then(res => res.json())
+			const results = await request(fetchURL.toString()).then(res => res.json())
+			const error = results.error || results.message || results.code
+
+			if (error) throw new Error(`Instance said: ${error}`)
 
 			for (const video of results) {
 				converters.normaliseVideoInfo(video)

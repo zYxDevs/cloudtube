@@ -39,7 +39,7 @@ function lengthSecondsToLengthText(seconds) {
  */
 function normaliseVideoInfo(video) {
 	if (!video.second__lengthText && video.lengthSeconds > 0) {
-		video.second__lengthText = converters.lengthSecondsToLengthText(video.lengthSeconds)
+		video.second__lengthText = lengthSecondsToLengthText(video.lengthSeconds)
 	}
 	if (!video.second__lengthText && video.lengthSeconds === 0) {
 		video.second__lengthText = "LIVE"

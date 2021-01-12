@@ -1,3 +1,4 @@
+const {request} = require("../utils/request")
 const fetch = require("node-fetch")
 const {render} = require("pinski/plugins")
 const db = require("../utils/db")
@@ -127,7 +128,7 @@ module.exports = [
 				if (!settings.local) {
 					const instanceOrigin = settings.instance
 					const outURL = `${instanceOrigin}/api/v1/videos/${id}`
-					const videoPromise = fetch(outURL).then(res => res.json())
+					const videoPromise = request(outURL).then(res => res.json())
 					return renderVideo(videoPromise, {user, id, instanceOrigin})
 				} else {
 					return render(200, "pug/local-video.pug", {id})
