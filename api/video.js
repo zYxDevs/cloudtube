@@ -122,20 +122,23 @@ module.exports = [
 		route: "/watch", methods: ["GET", "POST"], upload: true, code: async ({req, url, body}) => {
 			const user = getUser(req)
 			const settings = user.getSettingsOrDefaults()
+			const id = url.searchParams.get("v")
 			if (req.method === "GET") {
-				const id = url.searchParams.get("v")
+				const t = url.searchParams.get("t")
+				let mediaFragment = converters.tToMediaFragment(t)
 				if (!settings.local) {
 					const instanceOrigin = settings.instance
 					const outURL = `${instanceOrigin}/api/v1/videos/${id}`
 					const videoPromise = request(outURL).then(res => res.json())
-					return renderVideo(videoPromise, {user, id, instanceOrigin})
+					return renderVideo(videoPromise, {user, id, instanceOrigin}, {mediaFragment})
 				} else {
 					return render(200, "pug/local-video.pug", {id})
 				}
 			} else { // req.method === "POST"
 				const video = JSON.parse(new URLSearchParams(body.toString()).get("video"))
 				const videoPromise = Promise.resolve(video)
-				return renderVideo(videoPromise, {user})
+				const instanceOrigin = "http://localhost:3000"
+				return renderVideo(videoPromise, {user, id, instanceOrigin})
 			}
 		}
 	}

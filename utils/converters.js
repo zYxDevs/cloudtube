@@ -47,6 +47,55 @@ function normaliseVideoInfo(video) {
 	}
 }
 
+/**
+ * YT supports a time parameter t in these possible formats:
+ * - [digits] -> seconds
+ * - ([digits]:)?[digits]:[digits] -> hours?, minutes, seconds
+ * - ([digits]h)?([digits]m)?([digits]s)? -> hours?, minutes?, seconds
+ *
+ * Try our best to get something suitable out. Fail by returning empty
+ * string, meaning nothing suitable was recognised.
+ */
+function tToMediaFragment(t) {
+	let resolved = ""
+
+	console.log(t)
+	if (!t || t.length > 10) { // don't parse missing values, don't pass too long strings
+		// skip processing
+	} else if (t.match(/^[0-9.,]+$/)) {
+		resolved = t
+	} else if (t.includes(":")) {
+		resolved = t.split(":").map(s => s.padStart(2, "0")).join(":") // need to pad each to length 2 for npt
+	} else if (t.match(/[hms]/)) {
+		let buffer = ""
+		let sum = 0
+		const multipliers = new Map([
+			["h", 60*60],
+			["m", 60],
+			["s", 1]
+		])
+		for (const char of t) {
+			console.log(char)
+			if (char.match(/[0-9]/)) {
+				buffer += char
+			} else if (char.match(/[hms]/)) {
+				sum += +buffer * multipliers.get(char)
+				buffer = ""
+			} else {
+				buffer = ""
+			}
+		}
+		resolved = String(sum)
+	}
+
+	if (resolved) {
+		return "#t=npt:" + resolved
+	} else {
+		return ""
+	}
+}
+
 module.exports.timeToPastText = timeToPastText
 module.exports.lengthSecondsToLengthText = lengthSecondsToLengthText
 module.exports.normaliseVideoInfo = normaliseVideoInfo
+module.exports.tToMediaFragment = tToMediaFragment
