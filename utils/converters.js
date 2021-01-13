@@ -59,8 +59,7 @@ function normaliseVideoInfo(video) {
 function tToMediaFragment(t) {
 	let resolved = ""
 
-	console.log(t)
-	if (!t || t.length > 10) { // don't parse missing values, don't pass too long strings
+	if (!t || t.length > 10) { // don't parse missing values, don't parse too long strings
 		// skip processing
 	} else if (t.match(/^[0-9.,]+$/)) {
 		resolved = t

@@ -36,7 +36,7 @@ function formatOrder(format) {
 	return -total
 }
 
-async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals) {
+async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals = {}) {
 	try {
 		// resolve video
 		const video = await videoPromise
