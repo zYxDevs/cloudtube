@@ -2,6 +2,7 @@ const {render, redirect} = require("pinski/plugins")
 const db = require("../utils/db")
 const {getToken, getUser} = require("../utils/getuser")
 const constants = require("../utils/constants")
+const {getInstances} = require("../background/instances")
 const validate = require("../utils/validate")
 const V = validate.V
 
@@ -10,7 +11,8 @@ module.exports = [
 		route: "/settings", methods: ["GET"], code: async ({req}) => {
 			const user = getUser(req)
 			const settings = user.getSettings()
-			return render(200, "pug/settings.pug", {constants, user, settings})
+			const instances = getInstances()
+			return render(200, "pug/settings.pug", {constants, user, settings, instances})
 		}
 	},
 	{

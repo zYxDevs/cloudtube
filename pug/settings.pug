@@ -30,12 +30,7 @@ block content
     form(method="post" action="/settings")
       +fieldset("Settings")
 
-        +input("instance", "Instance", "url", constants.user_settings.instance.default, false, [
-          "https://invidious.snopyta.org",
-          "https://invidious.13ad.de",
-          "https://watch.nettohikari.com",
-          "https://invidious.fdn.fr"
-        ])
+        +input("instance", "Instance", "url", constants.user_settings.instance.default, false, instances)
 
         +select("save_history", "Watched videos history", false, [
           {value: "0", text: "Don't store"},
