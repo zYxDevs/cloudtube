@@ -18,25 +18,25 @@ function formatOrder(format) {
 	// key, max, order, transform
 	// asc: lower number comes first, desc: higher number comes first
 	const spec = [
-		["second__height", 8000, "desc", x => x ? Math.floor(x/96) : 0],
-		["fps", 100, "desc", x => x ? Math.floor(x/10) : 0],
-		["type", " ".repeat(60), "asc", x => x.length],
+		{key: "second__height", max: 8000, order: "desc", transform: x => x ? Math.floor(x/96) : 0},
+		{key: "fps", max: 100, order: "desc", transform: x => x ? Math.floor(x/10) : 0},
+		{key: "type", max: " ".repeat(60), order: "asc", transform: x => x.length}
 	]
 	let total = 0
 	for (let i = 0; i < spec.length; i++) {
 		const s = spec[i]
-		let diff = s[3](format[s[0]])
-		if (s[2] === "asc") diff = s[3](s[1]) - diff
+		let diff = s.transform(format[s.key])
+		if (s.order === "asc") diff = s.transform(s.max) - diff
 		total += diff
-		if (i+1 < spec.length) {
-			s2 = spec[i+1]
-			total *= s2[3](s2[1])
+		if (i+1 < spec.length) { // not the last spec item?
+			const s2 = spec[i+1]
+			total *= s2.transform(s2.key)
 		}
 	}
 	return -total
 }
 
-async function renderVideo(videoPromise, {user, id, instanceOrigin}) {
+async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals) {
 	try {
 		// resolve video
 		const video = await videoPromise
@@ -63,7 +63,7 @@ async function renderVideo(videoPromise, {user, id, instanceOrigin}) {
 				rec.watched = watchedVideos.includes(rec.videoId)
 			}
 		}
-		return render(200, "pug/video.pug", {video, subscribed, instanceOrigin})
+		return render(200, "pug/video.pug", Object.assign(locals, {video, subscribed, instanceOrigin}))
 	} catch (e) {
 		// show an appropriate error message
 		// these should probably be split out to their own files
@@ -71,9 +71,8 @@ async function renderVideo(videoPromise, {user, id, instanceOrigin}) {
 		if (e instanceof fetch.FetchError) {
 			const template = `
 p The selected instance, #[code= instanceOrigin], did not respond correctly.
-p Requested URL: #[a(href=url)= url]
 `
-			message = pug.render(template, {instanceOrigin, url: outURL})
+			message = pug.render(template, {instanceOrigin})
 		} else if (e instanceof InstanceError) {
 			if (e.identifier === "RATE_LIMITED_BY_YOUTUBE") {
 				const template = `

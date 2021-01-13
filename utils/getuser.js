@@ -81,7 +81,7 @@ class User {
 }
 
 /**
- * @param {any} responseHeaders supply this to create a token
+ * @param {any} [responseHeaders] supply this to create a token
  */
 function getUser(req, responseHeaders) {
 	const token = getToken(req, responseHeaders)

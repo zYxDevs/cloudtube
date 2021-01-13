@@ -8,7 +8,7 @@ function timeToPastText(timestamp) {
 		["hour", 60 * 60 * 1000],
 		["minute", 60 * 1000],
 		["second", 1 * 1000]
-	].reduce((acc, [unitName, unitValue]) => {
+	].reduce((acc, /** @type {[string, number]} */ [unitName, unitValue]) => {
 		if (acc) return acc
 		if (difference > unitValue) {
 			const number = Math.floor(difference / unitValue)
@@ -19,12 +19,9 @@ function timeToPastText(timestamp) {
 }
 
 function lengthSecondsToLengthText(seconds) {
-	return [Math.floor(seconds/3600), Math.floor(seconds/60)%60, seconds%60]
-		.reduce((a, c, i, t) => (
-			a ? a : c || i == 1 ? t.slice(i) : false
-		), false)
-		.map((x, i) => i === 0 ? x : (x+"").padStart(2, "0"))
-		.join(":")
+	let parts = [Math.floor(seconds/3600), Math.floor(seconds/60)%60, seconds%60]
+	if (parts[0] === 0) parts = parts.slice(1)
+	return parts.map((x, i) => i === 0 ? x : (x+"").padStart(2, "0")).join(":")
 }
 
 /**
