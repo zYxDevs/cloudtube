@@ -30,7 +30,7 @@ function formatOrder(format) {
 		total += diff
 		if (i+1 < spec.length) { // not the last spec item?
 			const s2 = spec[i+1]
-			total *= s2.transform(s2.key)
+			total *= s2.transform(s2.max)
 		}
 	}
 	return -total
