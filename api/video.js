@@ -74,7 +74,7 @@ p The selected instance, #[code= instanceOrigin], did not respond correctly.
 `
 			message = pug.render(template, {instanceOrigin})
 		} else if (e instanceof InstanceError) {
-			if (e.identifier === "RATE_LIMITED_BY_YOUTUBE") {
+			if (e.identifier === "RATE_LIMITED_BY_YOUTUBE" || e.message === "Could not extract video info. Instance is likely blocked.") {
 				const template = `
 .blocked-explanation
 	img(src="/static/images/instance-blocked.svg" width=552 height=96)
