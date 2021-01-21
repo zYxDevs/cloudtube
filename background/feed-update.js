@@ -74,7 +74,7 @@ class Refresher {
 	}
 
 	refreshChannel(ucid) {
-		return fetch(`http://localhost:3000/api/v1/channels/${ucid}/latest`).then(res => res.json()).then(root => {
+		return fetch(`${constants.server_setup.local_instance_origin}/api/v1/channels/${ucid}/latest`).then(res => res.json()).then(root => {
 			if (Array.isArray(root)) {
 				root.forEach(video => {
 					// organise

@@ -16,6 +16,10 @@ let constants = {
 		}
 	},
 
+	server_setup: {
+		local_instance_origin: "http://localhost:3000"
+	},
+
 	caching: {
 		csrf_time: 4*60*60*1000,
 		seen_token_subscriptions_eligible: 40*60*60*1000,
