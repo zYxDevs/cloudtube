@@ -3,7 +3,7 @@ const {request} = require("../utils/request")
 let globalList = []
 
 function execute() {
-	return request("https://instances.invidio.us/instances.json?sort_by=health").then(res => res.json()).then(list => {
+	return request("https://api.invidious.io/instances.json?sort_by=health").then(res => res.json()).then(list => {
 		list = list.filter(i => i[1].type === "https").map(i => i[1].uri)
 		globalList = list
 	}).catch(error => {
