@@ -123,9 +123,9 @@ module.exports = [
 			const user = getUser(req)
 			const settings = user.getSettingsOrDefaults()
 			const id = url.searchParams.get("v")
+			const t = url.searchParams.get("t")
+			let mediaFragment = converters.tToMediaFragment(t)
 			if (req.method === "GET") {
-				const t = url.searchParams.get("t")
-				let mediaFragment = converters.tToMediaFragment(t)
 				if (!settings.local) {
 					const instanceOrigin = settings.instance
 					const outURL = `${instanceOrigin}/api/v1/videos/${id}`
@@ -138,7 +138,7 @@ module.exports = [
 				const video = JSON.parse(new URLSearchParams(body.toString()).get("video"))
 				const videoPromise = Promise.resolve(video)
 				const instanceOrigin = "http://localhost:3000"
-				return renderVideo(videoPromise, {user, id, instanceOrigin})
+				return renderVideo(videoPromise, {user, id, instanceOrigin}, {mediaFragment})
 			}
 		}
 	}
