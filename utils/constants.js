@@ -28,7 +28,7 @@ let constants = {
 
 	regex: {
 		ucid: "[A-Za-z0-9-_]+",
-		video_id: "[A-Za-z0-9-_]+"
+		video_id: "[A-Za-z0-9-_]{11,}"
 	},
 
 	symbols: {
