@@ -4,7 +4,7 @@ let globalList = []
 
 function execute() {
 	return request("https://api.invidious.io/instances.json?sort_by=health").then(res => res.json()).then(list => {
-		list = list.filter(i => i[1].type === "https").map(i => i[1].uri)
+		list = list.filter(i => i[1].type === "https").map(i => i[1].uri.replace(/\/+$/, ""))
 		globalList = list
 	}).catch(error => {
 		console.error(error)
