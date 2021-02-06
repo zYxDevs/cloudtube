@@ -33,6 +33,11 @@ const deltas = [
 	function() {
 		db.prepare("CREATE TABLE WatchedVideos (token TEXT NOT NULL, videoID TEXT NOT NULL, PRIMARY KEY (token, videoID))")
 			.run()
+	},
+	// 4: Fixup stored instance settings
+	function() {
+		db.prepare("UPDATE Settings SET instance = REPLACE(REPLACE(instance, '/', ''), ':', '://') WHERE instance LIKE '%/'")
+			.run()
 	}
 ]
 
