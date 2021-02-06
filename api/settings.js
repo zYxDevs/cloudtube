@@ -31,7 +31,12 @@ module.exports = [
 					for (const key of Object.keys(constants.user_settings)) {
 						const setting = constants.user_settings[key]
 						if (params.has(key)) {
-							const provided = params.get(key)
+							let provided = params.get(key)
+
+							if (key === "instance") {
+								provided = provided.replace(/\/+$/, "")
+							}
+
 							if (setting.type === "string") {
 								if (provided) data[key] = provided
 								else data[key] = null
