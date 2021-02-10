@@ -22,7 +22,7 @@ block content
             img(src=thumbnail.url width=thumbnail.width height=thumbnail.height alt="").thumbnail-image
         .about
           .name= data.author
-          .subscribers= data.second__subCountText || `${data.subCount} subscribers`
+          .subscribers= data.second__subCountText
         +subscribe_button(data.authorId, subscribed, `/channel/${data.authorId}`).subscribe-button.base-border-look
       .description!= data.descriptionHtml
 

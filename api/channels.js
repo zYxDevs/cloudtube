@@ -14,6 +14,9 @@ module.exports = [
 			const subscribed = user.isSubscribed(id)
 			const instanceOrigin = settings.instance
 			// normalise info, apply watched status
+			if (!data.second__subCountText && data.subCount) {
+				data.second__subCountText = converters.subscriberCountToText(data.subCount)
+			}
 			const watchedVideos = user.getWatchedVideos()
 			if (data.latestVideos) {
 				data.latestVideos.forEach(video => {

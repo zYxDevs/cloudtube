@@ -47,11 +47,9 @@ async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals = {}
 			if (!format.second__height && format.resolution) format.second__height = +format.resolution.slice(0, -1)
 			if (!format.second__order) format.second__order = formatOrder(format)
 		}
-		// process length text
+		// process length text and view count
 		for (const rec of video.recommendedVideos) {
-			if (!rec.second__lengthText && rec.lengthSeconds > 0) {
-				rec.second__lengthText = converters.lengthSecondsToLengthText(rec.lengthSeconds)
-			}
+			converters.normaliseVideoInfo(rec)
 		}
 		// get subscription data
 		const subscribed = user.isSubscribed(video.authorId)
@@ -62,6 +60,10 @@ async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals = {}
 			for (const rec of video.recommendedVideos) {
 				rec.watched = watchedVideos.includes(rec.videoId)
 			}
+		}
+		// normalise view count
+		if (!video.second__viewCountText && video.viewCount) {
+			video.second__viewCountText = converters.viewCountToText(video.viewCount)
 		}
 		return render(200, "pug/video.pug", Object.assign(locals, {video, subscribed, instanceOrigin}))
 	} catch (e) {

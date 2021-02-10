@@ -33,6 +33,7 @@ function lengthSecondsToLengthText(seconds) {
  * Changes:
  * - second__lengthText is added, may be [hh:]mm:ss or "LIVE"
  * - publishedText may be changed to "Live now"
+ * - second__viewCountText is added
  */
 function normaliseVideoInfo(video) {
 	if (!video.second__lengthText && video.lengthSeconds > 0) {
@@ -44,6 +45,9 @@ function normaliseVideoInfo(video) {
 	}
 	if (video.publishedText === "0 seconds ago") {
 		video.publishedText = "Live now"
+	}
+	if (!video.second__viewCountText) {
+		video.second__viewCountText = viewCountToText(video.viewCount)
 	}
 }
 
@@ -94,7 +98,34 @@ function tToMediaFragment(t) {
 	}
 }
 
+function viewCountToText(viewCount) {
+	return viewCount.toLocaleString("en-US") + " views"
+}
+
+/**
+ * YT does not give the exact count sometimes but a rounded value,
+ * e.g. for the subscriber count.
+ *
+ * This function returns the text version of the rounded count.
+ */
+function preroundedCountToText(count) {
+	for (const scale of [[1e9, "B"], [1e6, "M"], [1e3, "K"]]) {
+		if (count >= scale[0]) {
+			// YouTube returns 3 significant figures. At least it does for channels.
+			const rounded = (count/scale[0]).toPrecision(3)
+			return `${rounded}${scale[1]}`
+		}
+	}
+	return String(count)
+}
+
+function subscriberCountToText(count) {
+	return preroundedCountToText(count) + " subscribers"
+}
+
 module.exports.timeToPastText = timeToPastText
 module.exports.lengthSecondsToLengthText = lengthSecondsToLengthText
 module.exports.normaliseVideoInfo = normaliseVideoInfo
 module.exports.tToMediaFragment = tToMediaFragment
+module.exports.viewCountToText = viewCountToText
+module.exports.subscriberCountToText = subscriberCountToText
