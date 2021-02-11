@@ -197,7 +197,7 @@ video.addEventListener("dblclick", event => {
 
 document.addEventListener("keydown", event => {
 	if (["INPUT", "SELECT", "BUTTON"].includes(event.target.tagName)) return
-	if (event.ctrlKey || event.shiftKey) return
+	if (event.ctrlKey || event.shiftKey || event.altKey) return
 	let caught = true
 	if (event.key === "j" || event.key === "n") {
 		relativeSeek(-10)
