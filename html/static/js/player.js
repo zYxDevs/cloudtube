@@ -209,8 +209,6 @@ document.addEventListener("keydown", event => {
 		relativeSeek(-5)
 	} else if (event.key === "ArrowRight") {
 		relativeSeek(5)
-	} else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-		// no-op
 	} else if (event.key >= "0" && event.key <= "9") {
 		video.currentTime = video.duration * (+event.key) / 10
 	} else if (event.key === "f") {
