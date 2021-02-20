@@ -5,6 +5,7 @@ const db = require("../utils/db")
 const {getToken, getUser} = require("../utils/getuser")
 const pug = require("pug")
 const converters = require("../utils/converters")
+const constants = require("../utils/constants")
 
 class InstanceError extends Error {
 	constructor(error, identifier) {
@@ -36,6 +37,25 @@ function formatOrder(format) {
 	return -total
 }
 
+function rewriteVideoDescription(descriptionHtml, id) {
+	// replace timestamps to clickable links and rewrite youtube links to stay on the instance instead of pointing to YouTube
+	// test cases
+	// https://www.youtube.com/watch?v=VdPsJW6AHqc 00:00 timestamps, youtu.be/<videoid>
+	// https://www.youtube.com/watch?v=FDMq9ie0ih0 00:00 & 00:00:00 timestamps
+	// https://www.youtube.com/watch?v=fhum63fAwrI www.youtube.com/watch?v=<videoid>
+	// https://www.youtube.com/watch?v=i-szWOrc3Mo www.youtube.com/<channelname> (unsupported by cloudtube currently)
+	// https://www.youtube.com/watch?v=LSG71wbKpbQ www.youtube.com/channel/<id>
+	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?:\/\/(www\.)?youtu\.be\/(${constants.regex.video_id})([^"]*)">([^<]+)<\/a>`, "g"), `<a href="/watch?v=$2$3">$4</a>`)
+	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?:\/\/(www\.)?youtu(\.be|be\.com)\/([^"]*)">([^<]+)<\/a>`, "g"), `<a href="/$3">$4</a>`)
+	descriptionHtml = descriptionHtml.replace(new RegExp(`(?:([0-5]?[0-9]):)?([0-5]?[0-9]):([0-5][0-9])`, "g"), function(match, p1, p2, p3, offset, string){
+		if (p1 === undefined) {
+			return `<a href=\"/watch?v=${id}&t=${p2}m${p3}s\">${p2}:${p3}</a>`
+		}
+		return `<a href=\"/watch?v=${id}&t=${p1}h${p2}m${p3}s\">${p1}:${p2}:${p3}</a>`
+	})
+	return descriptionHtml
+}
+
 async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals = {}) {
 	try {
 		// resolve video
@@ -65,6 +85,7 @@ async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals = {}
 		if (!video.second__viewCountText && video.viewCount) {
 			video.second__viewCountText = converters.viewCountToText(video.viewCount)
 		}
+		video.descriptionHtml = rewriteVideoDescription(video.descriptionHtml, id)
 		return render(200, "pug/video.pug", Object.assign(locals, {video, subscribed, instanceOrigin}))
 	} catch (e) {
 		// show an appropriate error message
