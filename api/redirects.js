@@ -3,7 +3,7 @@ const {redirect} = require("pinski/plugins")
 
 module.exports = [
 	{
-		route: `/(?:watch/|w/|v/|shorts/)?(${constants.regex.video_id})`, priority: -1, methods: ["GET"], code: async ({fill, url}) => {
+		route: `/(?:watch/|w/|v/|shorts/|e/)?(${constants.regex.video_id})`, priority: -1, methods: ["GET"], code: async ({fill, url}) => {
 			/*
 			 Why not URLSearchParams?
 			 URLSearchParams is an unordered map, and URLs are more
