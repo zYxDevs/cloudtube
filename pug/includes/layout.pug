@@ -15,9 +15,13 @@ html
         .links
           a(href="/").link.home CloudTube
           a(href="/subscriptions" title="Subscriptions").link.icon-link
-            img(src=getStaticURL("html", "/static/images/subscriptions.svg") width=30 height=25 alt="Subscriptions.").icon
+            svg(width=30 height=25)
+              image(href=getStaticURL("html", "/static/images/subscriptions.svg") alt="Subscriptions.").icon
+              title Subscriptions
           a(href="/settings" title="Settings").link.icon-link
-            img(src=getStaticURL("html", "/static/images/settings.svg") width=25 height=25 alt="Settings.").icon
+            svg(width=25 height=25)
+              image(href=getStaticURL("html", "/static/images/settings.svg") alt="Settings.").icon
+              title Settings
         form(method="get" action="/search").search-form
           input(type="text" placeholder="Search" name="q" autocomplete="off" value=query).search
 
