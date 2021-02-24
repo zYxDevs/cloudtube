@@ -45,14 +45,29 @@ function rewriteVideoDescription(descriptionHtml, id) {
 	// https://www.youtube.com/watch?v=fhum63fAwrI www.youtube.com/watch?v=<videoid>
 	// https://www.youtube.com/watch?v=i-szWOrc3Mo www.youtube.com/<channelname> (unsupported by cloudtube currently)
 	// https://www.youtube.com/watch?v=LSG71wbKpbQ www.youtube.com/channel/<id>
-	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?:\/\/(www\.)?youtu\.be\/(${constants.regex.video_id})([^"]*)">([^<]+)<\/a>`, "g"), `<a href="/watch?v=$2$3">$4</a>`)
-	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?:\/\/(www\.)?youtu(\.be|be\.com)\/([^"]*)">([^<]+)<\/a>`, "g"), `<a href="/$3">$4</a>`)
-	descriptionHtml = descriptionHtml.replace(new RegExp(`(?:([0-5]?[0-9]):)?([0-5]?[0-9]):([0-5][0-9])`, "g"), function(match, p1, p2, p3, offset, string){
-		if (p1 === undefined) {
-			return `<a href=\"/watch?v=${id}&t=${p2}m${p3}s\">${p2}:${p3}</a>`
+
+	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?://(?:www\\.)?youtu\\.be/(${constants.regex.video_id})([^"]*)">([^<]+)</a>`, "g"), `<a href="/watch?v=$1$2">$3</a>`)
+	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?://(?:www\\.)?youtu(?:\\.be|be\\.com)/([^"]*)">([^<]+)<\/a>`, "g"), `<a href="/$1">$2</a>`)
+	descriptionHtml = descriptionHtml.replace(new RegExp(`(?:([0-9]*):)?([0-5]?[0-9]):([0-5][0-9])`, "g"), (_, hours, minutes, seconds) => {
+		let timeURL, timeDisplay, timeSeconds
+		if (hours === undefined) {
+			timeURL = `${minutes}m${seconds}s`
+			timeDisplay = `${minutes}:${seconds}`
+			timeSeconds = minutes*60 + + seconds
+		} else {
+			timeURL = `${hours}h${minutes}m${seconds}s`
+			timeDisplay = `${hours}:${minutes}:${seconds}`
+			timeSeconds = hours*60*60 + minutes*60 + + seconds
 		}
-		return `<a href=\"/watch?v=${id}&t=${p1}h${p2}m${p3}s\">${p1}:${p2}:${p3}</a>`
+
+		const params = new URLSearchParams()
+		params.set("v", id)
+		params.set("t", timeURL)
+		const url = "/watch?" + params
+
+		return pug.render(`a(href=url data-clickable-timestamp=timeSeconds)= timeDisplay`, {url, timeURL, timeDisplay, timeSeconds})
 	})
+
 	return descriptionHtml
 }
 
