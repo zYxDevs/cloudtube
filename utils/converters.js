@@ -78,7 +78,6 @@ function tToMediaFragment(t) {
 			["s", 1]
 		])
 		for (const char of t) {
-			console.log(char)
 			if (char.match(/[0-9]/)) {
 				buffer += char
 			} else if (char.match(/[hms]/)) {
