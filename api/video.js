@@ -130,7 +130,7 @@ p The selected instance, #[code= instanceOrigin], did not respond correctly.
 			h3.actor YouTube
 			| Working
 p.
-	CloudTube needs to a working Second/Invidious instance in order to get data about videos.
+	CloudTube needs a working NewLeaf/Invidious instance in order to get data about videos.
 	However, the selected instance, #[code= instanceOrigin], has been temporarily blocked by YouTube.
 p.
 	You will be able to watch this video if you select a working instance in settings.

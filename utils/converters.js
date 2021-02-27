@@ -25,7 +25,7 @@ function lengthSecondsToLengthText(seconds) {
 }
 
 /**
- * Second and Invidious don't return quite the same data. This
+ * NewLeaf and Invidious don't return quite the same data. This
  * function normalises them so that all the useful properties are
  * available no matter the kind of instance. The video is modified
  * in-place.
