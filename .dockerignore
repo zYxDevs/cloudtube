@@ -4,6 +4,7 @@
 .#*
 .vscode
 .idea
+.git
 
 # Auto-generated files
 node_modules
@@ -11,3 +12,5 @@ node_modules
 # User configuration
 /db
 /config/config.js
+
+Dockerfile
