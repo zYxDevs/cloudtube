@@ -118,10 +118,8 @@ function rewriteVideoDescription(descriptionHtml, id) {
 	return descriptionHtml
 }
 
-async function renderVideo(videoPromise, {user, settings, id, instanceOrigin}, locals = {}) {
+async function renderVideo(video, {user, settings, id, instanceOrigin}, locals = {}) {
 	try {
-		// resolve video
-		const video = await videoPromise
 		if (!video) throw new Error("The instance returned null.")
 		if (video.error) throw new InstanceError(video.error, video.identifier)
 
@@ -216,19 +214,17 @@ module.exports = [
 			const t = url.searchParams.get("t")
 			let mediaFragment = converters.tToMediaFragment(t)
 			if (req.method === "GET") {
-				if (!settings.local) {
-					const instanceOrigin = settings.instance
-					const outURL = `${instanceOrigin}/api/v1/videos/${id}`
-					const videoPromise = request(outURL).then(res => res.json())
-					return renderVideo(videoPromise, {user, settings, id, instanceOrigin}, {mediaFragment})
-				} else {
+				if (settings.local) {
 					return render(200, "pug/local-video.pug", {id})
 				}
+				const instanceOrigin = settings.instance
+				const outURL = `${instanceOrigin}/api/v1/videos/${id}`
+				const video = await request(outURL).then(res => res.json())
+				return renderVideo(video, {user, settings, id, instanceOrigin}, {mediaFragment})
 			} else { // req.method === "POST"
 				const video = JSON.parse(new URLSearchParams(body.toString()).get("video"))
-				const videoPromise = Promise.resolve(video)
 				const instanceOrigin = "http://localhost:3000"
-				return renderVideo(videoPromise, {user, settings, id, instanceOrigin}, {mediaFragment})
+				return renderVideo(video, {user, settings, id, instanceOrigin}, {mediaFragment})
 			}
 		}
 	}
