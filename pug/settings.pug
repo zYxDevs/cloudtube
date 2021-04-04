@@ -32,6 +32,14 @@ block content
 
         +input("instance", "Instance", "url", constants.user_settings.instance.default, false, instances)
 
+        +select("quality", "Preferred qualities", false, [
+          {value: "0", text: "Best combined"},
+          {value: "1", text: "Best DASH"},
+          {value: "2", text: "Best <=1080p"},
+          {value: "3", text: "Best low-fps"},
+          {value: "4", text: "360p"}
+        ])
+
         +select("save_history", "Watched videos history", false, [
           {value: "0", text: "Don't store"},
           {value: "1", text: "Store on server"}

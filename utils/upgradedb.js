@@ -38,6 +38,11 @@ const deltas = [
 	function() {
 		db.prepare("UPDATE Settings SET instance = REPLACE(REPLACE(instance, '/', ''), ':', '://') WHERE instance LIKE '%/'")
 			.run()
+	},
+	// 5: Settings +quality
+	function() {
+		db.prepare("ALTER TABLE Settings ADD COLUMN quality INTEGER DEFAULT 0")
+			.run()
 	}
 ]
 

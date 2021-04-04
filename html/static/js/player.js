@@ -87,10 +87,11 @@ const playManagers = {
 class QualitySelect extends ElemJS {
 	constructor() {
 		super(q("#quality-select"))
-		this.on("input", this.onInput.bind(this))
+		this.on("input", this.setFormat.bind(this))
+		this.setFormat()
 	}
 
-	onInput() {
+	setFormat() {
 		const itag = this.element.value
 		formatLoader.play(itag)
 		video.focus()

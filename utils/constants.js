@@ -16,6 +16,10 @@ let constants = {
 		local: {
 			type: "boolean",
 			default: false
+		},
+		quality: {
+			type: "integer",
+			default: 0
 		}
 	},
 
@@ -56,7 +60,8 @@ try {
 	const overrides = require("../config/config.js")
 	constants = mixin(constants, overrides)
 } catch (e) {
-	console.log("Note: overrides file `config/config.js` ignored, file not found.")
+	console.error("Missing config file /config/config.js\nDocumentation: https://git.sr.ht/~cadence/tube-docs/tree/main/item/docs")
+	process.exit(1)
 }
 
 module.exports = constants

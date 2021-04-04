@@ -37,6 +37,53 @@ function formatOrder(format) {
 	return -total
 }
 
+function sortFormats(video, preference) {
+	const standard = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
+	const adaptive = video.adaptiveFormats.filter(f => f.type.startsWith("video") && f.qualityLabel).sort((a, b) => a.second__order - b.second__order)
+	let formats = standard.concat(adaptive)
+
+	for (const format of formats) {
+		if (!format.second__height && format.resolution) format.second__height = +format.resolution.slice(0, -1)
+		if (!format.second__order) format.second__order = formatOrder(format)
+		format.cloudtube__label = `${format.qualityLabel} ${format.container}`
+	}
+	for (const format of adaptive) {
+		format.cloudtube__label += " *"
+	}
+
+	if (preference === 1) { // best dash
+		formats.sort((a, b) => (b.second__height - a.second__height))
+	} else if (preference === 2) { // best <=1080p
+		formats.sort((a, b) => {
+			if (b.second__height > 1080) {
+				if (a.second__height > 1080) return b.second__height - a.second__height
+				return -1
+			}
+			if (a.second__height > 1080) return 1
+			return b.second__height - a.second__height
+		})
+	} else if (preference === 3) { // best low-fps
+		formats.sort((a, b) => {
+			if (b.fps > 30) {
+				if (a.fps < 30) return b.second__height - a.second__height
+				return -1
+			}
+			if (a.fps > 30) return 1
+			return b.second__height - a.second__height
+		})
+	} else if (preference === 4) { // 360p only
+		formats.sort((a, b) => {
+			if (a.itag == 18) return -1
+			if (b.itag == 18) return 1
+			return 0
+		})
+	} else { // preference === 0, best combined
+		// should already be correct
+	}
+
+	return formats
+}
+
 function rewriteVideoDescription(descriptionHtml, id) {
 	// replace timestamps to clickable links and rewrite youtube links to stay on the instance instead of pointing to YouTube
 	// test cases
@@ -71,23 +118,24 @@ function rewriteVideoDescription(descriptionHtml, id) {
 	return descriptionHtml
 }
 
-async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals = {}) {
+async function renderVideo(videoPromise, {user, settings, id, instanceOrigin}, locals = {}) {
 	try {
 		// resolve video
 		const video = await videoPromise
 		if (!video) throw new Error("The instance returned null.")
 		if (video.error) throw new InstanceError(video.error, video.identifier)
+
 		// process stream list ordering
-		for (const format of video.formatStreams.concat(video.adaptiveFormats)) {
-			if (!format.second__height && format.resolution) format.second__height = +format.resolution.slice(0, -1)
-			if (!format.second__order) format.second__order = formatOrder(format)
-		}
+		const formats = sortFormats(video, settings.quality)
+
 		// process length text and view count
 		for (const rec of video.recommendedVideos) {
 			converters.normaliseVideoInfo(rec)
 		}
+
 		// get subscription data
 		const subscribed = user.isSubscribed(video.authorId)
+
 		// process watched videos
 		user.addWatchedVideoMaybe(video.videoId)
 		const watchedVideos = user.getWatchedVideos()
@@ -96,12 +144,16 @@ async function renderVideo(videoPromise, {user, id, instanceOrigin}, locals = {}
 				rec.watched = watchedVideos.includes(rec.videoId)
 			}
 		}
+
 		// normalise view count
 		if (!video.second__viewCountText && video.viewCount) {
 			video.second__viewCountText = converters.viewCountToText(video.viewCount)
 		}
+
+		// rewrite description
 		video.descriptionHtml = rewriteVideoDescription(video.descriptionHtml, id)
-		return render(200, "pug/video.pug", Object.assign(locals, {video, subscribed, instanceOrigin}))
+
+		return render(200, "pug/video.pug", Object.assign(locals, {video, formats, subscribed, instanceOrigin}))
 	} catch (e) {
 		// show an appropriate error message
 		// these should probably be split out to their own files
@@ -168,7 +220,7 @@ module.exports = [
 					const instanceOrigin = settings.instance
 					const outURL = `${instanceOrigin}/api/v1/videos/${id}`
 					const videoPromise = request(outURL).then(res => res.json())
-					return renderVideo(videoPromise, {user, id, instanceOrigin}, {mediaFragment})
+					return renderVideo(videoPromise, {user, settings, id, instanceOrigin}, {mediaFragment})
 				} else {
 					return render(200, "pug/local-video.pug", {id})
 				}
@@ -176,7 +228,7 @@ module.exports = [
 				const video = JSON.parse(new URLSearchParams(body.toString()).get("video"))
 				const videoPromise = Promise.resolve(video)
 				const instanceOrigin = "http://localhost:3000"
-				return renderVideo(videoPromise, {user, id, instanceOrigin}, {mediaFragment})
+				return renderVideo(videoPromise, {user, settings, id, instanceOrigin}, {mediaFragment})
 			}
 		}
 	}

@@ -14,12 +14,9 @@ block head
 block content
   unless error
     main.video-page
-      - const sortedFormatStreams = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
-      - const sortedVideoAdaptiveFormats = video.adaptiveFormats.filter(f => f.type.startsWith("video") && f.qualityLabel).sort((a, b) => a.second__order - b.second__order)
-
       .main-video-section
         .video-container
-          - const format = sortedFormatStreams[0]
+          - const format = formats[0]
           if format
             video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
               source(src=format.url+mediaFragment type=format.type)
@@ -49,10 +46,8 @@ block content
           +subscribe_button(video.authorId, subscribed, `/watch?v=${video.videoId}`).border-look
           //- button.border-look#theatre Theatre
           select(autocomplete="off").border-look#quality-select
-            each f in sortedFormatStreams
-              option(value=f.itag)= `${f.qualityLabel} ${f.container}`
-            each f in sortedVideoAdaptiveFormats
-              option(value=f.itag)= `${f.qualityLabel} ${f.container} *`
+            each f in formats
+              option(value=f.itag)= f.cloudtube__label
           //-
             a(href="/subscriptions").border-look
               img(src="/static/images/search.svg" width=17 height=17 alt="").button-icon
