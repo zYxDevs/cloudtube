@@ -135,7 +135,7 @@ function playbackIntervention(event) {
 			other.currentTime = target.currentTime;
 			break;
 		case "ratechange":
-			other.rate = target.rate;
+			other.playbackRate = target.playbackRate;
 			break;
 		// case "stalled":
 		// case "waiting":
@@ -151,7 +151,7 @@ function playbackIntervention(event) {
 for (let eventName of ["pause", "play", "seeked"]) {
 	video.addEventListener(eventName, playbackIntervention)
 }
-for (let eventName of ["canplaythrough", "waiting", "stalled"]) {
+for (let eventName of ["canplaythrough", "waiting", "stalled", "ratechange"]) {
 	video.addEventListener(eventName, playbackIntervention)
 	audio.addEventListener(eventName, playbackIntervention)
 }
