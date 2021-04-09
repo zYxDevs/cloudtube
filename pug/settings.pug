@@ -33,10 +33,10 @@ block content
         +input("instance", "Instance", "url", constants.user_settings.instance.default, false, instances)
 
         +select("quality", "Preferred qualities", false, [
-          {value: "0", text: "Best combined"},
-          {value: "1", text: "Best DASH"},
+          {value: "0", text: "720p"},
+          {value: "1", text: "Best possible"},
           {value: "2", text: "Best <=1080p"},
-          {value: "3", text: "Best low-fps"},
+          {value: "3", text: "Best <=30fps"},
           {value: "4", text: "360p"}
         ])
 
