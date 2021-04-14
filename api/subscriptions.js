@@ -2,7 +2,7 @@ const {render} = require("pinski/plugins")
 const db = require("../utils/db")
 const {fetchChannelLatest} = require("../utils/youtube")
 const {getUser} = require("../utils/getuser")
-const {timeToPastText} = require("../utils/converters")
+const {timeToPastText, rewriteVideoDescription} = require("../utils/converters")
 const {refresher} = require("../background/feed-update")
 
 module.exports = [
@@ -32,6 +32,7 @@ module.exports = [
 						.map(video => {
 							video.publishedText = timeToPastText(video.published * 1000)
 							video.watched = watchedVideos.includes(video.videoId)
+							video.descriptionHtml = rewriteVideoDescription(video.descriptionHtml, video.videoId)
 							return video
 						})
 				}

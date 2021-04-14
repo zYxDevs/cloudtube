@@ -1,3 +1,6 @@
+const constants = require("./constants")
+const pug = require("pug")
+
 function timeToPastText(timestamp) {
 	const difference = Date.now() - timestamp
 	return [
@@ -49,6 +52,43 @@ function normaliseVideoInfo(video) {
 	if (!video.second__viewCountText) {
 		video.second__viewCountText = viewCountToText(video.viewCount)
 	}
+	if (video.descriptionHtml) {
+		video.descriptionHtml = rewriteVideoDescription(video.descriptionHtml, video.videoId)
+	}
+}
+
+function rewriteVideoDescription(descriptionHtml, id) {
+	// replace timestamps to clickable links and rewrite youtube links to stay on the instance instead of pointing to YouTube
+	// test cases
+	// https://www.youtube.com/watch?v=VdPsJW6AHqc 00:00 timestamps, youtu.be/<videoid>
+	// https://www.youtube.com/watch?v=FDMq9ie0ih0 00:00 & 00:00:00 timestamps
+	// https://www.youtube.com/watch?v=fhum63fAwrI www.youtube.com/watch?v=<videoid>
+	// https://www.youtube.com/watch?v=i-szWOrc3Mo www.youtube.com/<channelname> (unsupported by cloudtube currently)
+	// https://www.youtube.com/watch?v=LSG71wbKpbQ www.youtube.com/channel/<id>
+
+	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?://(?:www\\.)?youtu\\.be/(${constants.regex.video_id})([^"]*)">([^<]+)</a>`, "g"), `<a href="/watch?v=$1$2">$3</a>`)
+	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?://(?:www\\.)?youtu(?:\\.be|be\\.com)/([^"]*)">([^<]+)<\/a>`, "g"), `<a href="/$1">$2</a>`)
+	descriptionHtml = descriptionHtml.replace(new RegExp(`(?:([0-9]*):)?([0-5]?[0-9]):([0-5][0-9])`, "g"), (_, hours, minutes, seconds) => {
+		let timeURL, timeDisplay, timeSeconds
+		if (hours === undefined) {
+			timeURL = `${minutes}m${seconds}s`
+			timeDisplay = `${minutes}:${seconds}`
+			timeSeconds = minutes*60 + + seconds
+		} else {
+			timeURL = `${hours}h${minutes}m${seconds}s`
+			timeDisplay = `${hours}:${minutes}:${seconds}`
+			timeSeconds = hours*60*60 + minutes*60 + + seconds
+		}
+
+		const params = new URLSearchParams()
+		params.set("v", id)
+		params.set("t", timeURL)
+		const url = "/watch?" + params
+
+		return pug.render(`a(href=url data-clickable-timestamp=timeSeconds)= timeDisplay`, {url, timeURL, timeDisplay, timeSeconds})
+	})
+
+	return descriptionHtml
 }
 
 /**
@@ -125,6 +165,7 @@ function subscriberCountToText(count) {
 module.exports.timeToPastText = timeToPastText
 module.exports.lengthSecondsToLengthText = lengthSecondsToLengthText
 module.exports.normaliseVideoInfo = normaliseVideoInfo
+module.exports.rewriteVideoDescription = rewriteVideoDescription
 module.exports.tToMediaFragment = tToMediaFragment
 module.exports.viewCountToText = viewCountToText
 module.exports.subscriberCountToText = subscriberCountToText
