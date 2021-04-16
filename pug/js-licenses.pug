@@ -1,0 +1,22 @@
+extends includes/layout.pug
+
+block head
+  title JavaScript license information
+
+block content
+  main.js-licenses-page
+    h1 JavaScript license information
+    table#jslicense-labels1
+      thead
+        tr
+          th(scope="col") File
+          th(scope="col") License
+          th(scope="col") Source
+      tbody
+        each path of static.keys()
+          if path.match(/^html\/static\/js\/.*\.js$/)
+            - const file = path.replace(/^html/, "")
+            tr
+              td: a(href=file)= file
+              td: a(href="http://www.gnu.org/licenses/agpl-3.0.html") GNU-AGPL-3.0-or-later
+              td: a(href=file)= file
