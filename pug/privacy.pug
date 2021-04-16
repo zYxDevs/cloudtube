@@ -1,0 +1,40 @@
+extends includes/layout.pug
+
+block head
+  title Privacy policy
+
+block content
+  main.privacy-page
+    h1 Privacy policy
+    p This document contains details about the data this website collects, what it is used for, how it is stored, how it is shared, and how it can be removed.
+    h2 Data collected
+    h3 Data provided by you
+    p CloudTube will store this information when you personally enter it into the site:
+    ul
+      li personal settings
+      li list of channels you have subscribed to
+      li list of videos you have watched (only if enabled in settings)
+    h3 Data collected passively
+    p When your device requests any resource from CloudTube, this information about the request may be stored for up to 14 days:
+    ul
+      li the time the request was made
+      li the IP address
+      li the requested URL
+      li the response status code
+    h2 Accounts and cookies
+    p CloudTube does not allow users to create accounts.
+    p The first time a user personally provides data to the site, such as changing settings or subscribing to a channel, an ephemeral session is created and linked to a cookie.
+    p On future visits, this cookie will be used to look up the session, and provide a response based on that stored information.
+    p As described above, no personally identifiable information is linked to sessions.
+    p If the user never personally provides data to the site, no cookie will be stored.
+    h2 What the data is used for
+    ul
+      li providing the core service
+      li providing information for debugging
+    h2 How the data is shared
+    p It is not.
+    p Data stored by the site remains within the site, and is never shared with other companies or individuals.
+    h2 How to delete your data
+    p #[a(href="/settings") Visit the settings page] and find the "delete data" section. Read the text.
+    p To delete your data, check "I understand the consequences", then click "permanently erase my data".
+    p This will erase all of your data from the server, and delete the identifying cookie from your web browser.

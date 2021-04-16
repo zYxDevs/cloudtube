@@ -25,20 +25,22 @@ html
         form(method="get" action="/search").search-form
           input(type="text" placeholder="Search" name="q" autocomplete="off" value=query).search
 
-    block content
+    div
+      block content
 
-    footer.footer__container
-      div.footer__center
-        p Released as AGPL free software.
-        .footer__cols
-          div
-            h3.footer__colhead Source
-            ul.footer__list
-              li: a(href="https://sr.ht/~cadence/tube") Project hub
-              li: a(href="https://lists.sr.ht/~cadence/tube-announce") Announcements
-              li: a(href="https://todo.sr.ht/~cadence/tube") Report a problem
-          div
-            h3.footer__colhead About
-            ul.footer__list
-              // li: a(href="/privacy") Privacy policy
-              // li: a(href="/js-licenses") JavaScript licenses
+    if showNav
+      footer.footer__container
+        div.footer__center
+          p Released as AGPL free software.
+          .footer__cols
+            div
+              h3.footer__colhead Source
+              ul.footer__list
+                li: a(href="https://sr.ht/~cadence/tube") Project hub
+                li: a(href="https://lists.sr.ht/~cadence/tube-announce") Announcements
+                li: a(href="https://todo.sr.ht/~cadence/tube") Report a problem
+            div
+              h3.footer__colhead About
+              ul.footer__list
+                li: a(href="/privacy") Privacy policy
+                // li: a(href="/js-licenses") JavaScript licenses
