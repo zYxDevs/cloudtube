@@ -1,0 +1,32 @@
+@use "./colors.sass" as c
+
+.footer__container
+  flex: 1
+  display: grid
+  align-items: end
+  line-height: 1.5
+
+.footer__center
+  display: flex
+  flex-direction: column
+  align-items: center
+  background-color: c.$bg-darkest
+  margin: 40px 0 0
+  padding: 10px 10px 30px
+
+.footer__cols
+  display: flex
+  gap: 16px
+  justify-content: center
+
+  @media screen and (max-width: 600px)
+    display: grid
+
+.footer__colhead
+  font-weight: normal
+  font-size: 1em
+  margin: 0 0 8px
+
+.footer__list
+  padding-left: 24px
+  margin: 0
