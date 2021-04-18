@@ -32,9 +32,15 @@ block content
       li providing the core service
       li providing information for debugging
     h2 How the data is shared
-    p It is not.
-    p Data stored by the site remains within the site, and is never shared with other companies or individuals.
+    h3 With YouTube
+    p YouTube is a company owned by Google, Inc. CloudTube displays information from YouTube.
+    p When you perform a query on CloudTube that requires data from YouTube, such as making a search or loading a video, your query is forwarded to YouTube.
+    p For example, when searching, YouTube receives a query for those search terms, and when watching a video, YouTube receives a page load for that video.
+    p When watching a video, your browser connects to googlevideo.com directly to request the video stream. This connection, and any data stored by YouTube as a result, is subject to #[a(href="https://policies.google.com/privacy") Google's privacy policy].
+    p All other queries are forwarded to your selected Invidious instance, which forwards them to YouTube. YouTube does not receive any metadata about you for these queries, only the query itself.
+    h3 With other organisations
+    p CloudTube does not share any data with other people or organisations.
     h2 How to delete your data
     p #[a(href="/settings") Visit the settings page] and find the "delete data" section. Read the text.
     p To delete your data, check "I understand the consequences", then click "permanently erase my data".
-    p This will erase all of your data from the server, and delete the identifying cookie from your web browser.
+    p This will erase all of your data from the server, and delete the unique cookie from your web browser.
