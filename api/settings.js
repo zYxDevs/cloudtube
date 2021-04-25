@@ -33,8 +33,16 @@ module.exports = [
 						if (params.has(key)) {
 							let provided = params.get(key)
 
+							// Correct common errors in instance URL
 							if (key === "instance") {
 								provided = provided.replace(/\/+$/, "")
+							}
+
+							// Delete existing watch history when it's disabled
+							if (key === "save_history") {
+								if (provided !== "1") {
+									db.prepare("DELETE FROM WatchedVideos WHERE token = ?").run(token)
+								}
 							}
 
 							if (setting.type === "string") {
