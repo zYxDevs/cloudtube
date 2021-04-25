@@ -52,15 +52,21 @@ function sortFormats(video, preference) {
 	}
 
 	if (preference === 1) { // best dash
-		formats.sort((a, b) => (b.second__height - a.second__height))
+		formats.sort((a, b) => {
+			const a1 = a.second__height + a.fps / 100
+			const b1 = b.second__height + b.fps / 100
+			return b1 - a1
+		})
 	} else if (preference === 2) { // best <=1080p
 		formats.sort((a, b) => {
-			if (b.second__height > 1080) {
-				if (a.second__height > 1080) return b.second__height - a.second__height
+			const a1 = a.second__height + a.fps / 100
+			const b1 = b.second__height + b.fps / 100
+			if (b1 > 1081) {
+				if (a1 > 1081) return b1 - a1
 				return -1
 			}
-			if (a.second__height > 1080) return 1
-			return b.second__height - a.second__height
+			if (a1 > 1081) return 1
+			return b1 - a1
 		})
 	} else if (preference === 3) { // best low-fps
 		formats.sort((a, b) => {
