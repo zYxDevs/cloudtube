@@ -6,8 +6,9 @@ console.log
 
 video.addEventListener("ended", () => {
 	if (data.continuous) {
-		const first = data.recommendedVideos[0]
-		window.location.assign(`/watch?v=${first.videoId}&continuous=1`)
+		const first = q("#continuous-first")
+		const url = first.querySelector(".title-link").href
+		location.assign(url)
 	}
 })
 

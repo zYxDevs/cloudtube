@@ -18,7 +18,7 @@ block content
       if first
         script(type="module" src=getStaticURL("html", "/static/js/continuous.js"))
         noscript
-          meta(http-equiv="refresh" content=`${video.lengthSeconds+5};url=/watch?v=${first.videoId}&continuous=1`)
+          meta(http-equiv="refresh" content=`${video.lengthSeconds+5};url=/watch?v=${first.videoId}&continuous=1&session-watched=${sessionWatchedNext}`)
     main.video-page
       .main-video-section
         .video-container
@@ -91,7 +91,8 @@ block content
           if column.length
             .related-cols
               h2.related-header Autoplay next
-            +video_list_item("related-video", column.shift(), instanceOrigin, {continuous: true})
+            #continuous-first
+              +video_list_item("related-video", column.shift(), instanceOrigin, {continuous: true})
           if column.length
             .related-cols
               h2.related-header Related videos
