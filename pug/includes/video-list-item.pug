@@ -1,6 +1,8 @@
 mixin video_list_item(className, video, instanceOrigin, options = {})
   div(class={[className]: true, "video-list-item--watched": video.watched})
     - let link = `/watch?v=${video.videoId}`
+    if options.continuous
+      - link += `&continuous=1&session-watched=${sessionWatchedNext}`
     a(href=link tabindex="-1").thumbnail
       img(src=`/vi/${video.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
       if video.second__lengthText != undefined

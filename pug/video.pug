@@ -9,16 +9,22 @@ block head
   else
     title Error - CloudTube
   script(type="module" src=getStaticURL("html", "/static/js/player.js"))
-  script const data = !{JSON.stringify(video)}
+  script const data = !{JSON.stringify({...video, continuous})}
 
 block content
   unless error
+    if continuous
+      - const first = video.recommendedVideos[0]
+      if first
+        script(type="module" src=getStaticURL("html", "/static/js/continuous.js"))
+        noscript
+          meta(http-equiv="refresh" content=`${video.lengthSeconds+5};url=/watch?v=${first.videoId}&continuous=1`)
     main.video-page
       .main-video-section
         .video-container
           - const format = formats[0]
           if format
-            video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag)#video.video
+            video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag autoplay=continuous)#video.video
               source(src=format.url+mediaFragment type=format.type)
               each t in video.captions
                 track(label=t.label kind="subtitles" srclang=t.languageCode src=t.url)
@@ -44,6 +50,15 @@ block content
         #live-event-notice
         #audio-loading-display
 
+        if continuous
+          div#continuous-controls.continuous
+            .continuous__description
+              .continuous__title Continuous mode: next video autoplays
+              noscript
+                .continuous__script-warning Without JavaScript, it will trigger on a timer, not on video completion.
+            .continuous__buttons
+              a(href=`/watch?v=${video.videoId}`)#continuous-stop.border-look Turn off
+
         .button-container
           +subscribe_button(video.authorId, subscribed, `/watch?v=${video.videoId}`).border-look
           //- button.border-look#theatre Theatre
@@ -60,10 +75,28 @@ block content
 
         .description!= video.descriptionHtml
 
-      aside.related-videos
-        h2.related-header Related videos
+      //- Standard view
+      aside(style=continuous ? "display: none" : "")#standard-related-videos.related-videos
+        .related-cols
+          h2.related-header Related videos
+          .continuous-start
+              a(href=`/watch?v=${video.videoId}&continuous=1` nofollow) Continuous mode
         each r in video.recommendedVideos
           +video_list_item("related-video", r, instanceOrigin)
+
+      //- Continuous view
+      if continuous
+        aside.related-videos#continuous-related-videos
+          - let column = video.recommendedVideos.filter(v => !sessionWatched.includes(v.videoId))
+          if column.length
+            .related-cols
+              h2.related-header Autoplay next
+            +video_list_item("related-video", column.shift(), instanceOrigin, {continuous: true})
+          if column.length
+            .related-cols
+              h2.related-header Related videos
+            each r in column
+              +video_list_item("related-video", r, instanceOrigin, {continuous: true}) // keep on continuous mode for all recommendations
 
   else
     //- error

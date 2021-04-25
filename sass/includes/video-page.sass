@@ -69,6 +69,29 @@
       border-radius: 3px
       background: linear-gradient(to right, #1a1 var(--rating), #bbb var(--rating))
 
+  .continuous
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin: 16px 4px
+    padding: 12px
+    border-radius: 4px
+    background-color: c.$bg-darkest
+
+    &__description
+      margin-left: 12px
+
+    &__title
+      font-size: 20px
+
+    &__script-warning
+      font-size: 15px
+      color: c.$fg-warning
+
+    &__buttons
+      display: flex
+      flex-shrink: 0
+
   .description
     font-size: 17px
     word-break: break-word
@@ -80,8 +103,17 @@
 .subscribe-form
   display: inline-block
 
+.related-cols
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: 8px
+
+.continuous-start
+  font-size: 15px
+
 .related-header
-  margin: 4px 0px 12px 2px
+  margin: 4px 0px 4px 2px
   font-weight: normal
   font-size: 26px
 

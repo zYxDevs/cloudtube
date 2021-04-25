@@ -7,7 +7,7 @@ let constants = {
 	user_settings: {
 		instance: {
 			type: "string",
-			default: "https://second.cadence.moe"
+			default: "http://localhost:3000"
 		},
 		save_history: {
 			type: "boolean",

@@ -183,21 +183,35 @@ module.exports = [
 			const user = getUser(req)
 			const settings = user.getSettingsOrDefaults()
 			const id = url.searchParams.get("v")
+
+			// Media fragment
 			const t = url.searchParams.get("t")
 			let mediaFragment = converters.tToMediaFragment(t)
+
+			// Continuous mode
+			const continuous = url.searchParams.get("continuous") === "1"
+			const swp = url.searchParams.get("session-watched")
+			const sessionWatched = swp ? swp.split(" ") : []
+			const sessionWatchedNext = sessionWatched.concat([id]).join("+")
+			if (continuous) settings.quality = 0 // autoplay with synced streams does not work
+
 			if (req.method === "GET") {
-				if (settings.local) {
+				if (settings.local) { // skip to the local fetching page, which will then POST video data in a moment
 					return render(200, "pug/local-video.pug", {id})
 				}
-				const instanceOrigin = settings.instance
-				const outURL = `${instanceOrigin}/api/v1/videos/${id}`
-				const video = await request(outURL).then(res => res.json())
-				return renderVideo(video, {user, settings, id, instanceOrigin}, {mediaFragment})
+				var instanceOrigin = settings.instance
+				var outURL = `${instanceOrigin}/api/v1/videos/${id}`
+				var video = await request(outURL).then(res => res.json())
 			} else { // req.method === "POST"
-				const video = JSON.parse(new URLSearchParams(body.toString()).get("video"))
-				const instanceOrigin = "http://localhost:3000"
-				return renderVideo(video, {user, settings, id, instanceOrigin}, {mediaFragment})
+				var instanceOrigin = "http://localhost:3000"
+				var video = JSON.parse(new URLSearchParams(body.toString()).get("video"))
 			}
+
+			return renderVideo(video, {
+				user, settings, id, instanceOrigin
+			}, {
+				mediaFragment, continuous, sessionWatched, sessionWatchedNext
+			})
 		}
 	}
 ]
