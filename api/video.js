@@ -190,6 +190,7 @@ module.exports = [
 
 			// Continuous mode
 			const continuous = url.searchParams.get("continuous") === "1"
+			const autoplay = url.searchParams.get("autoplay") === "1"
 			const swp = url.searchParams.get("session-watched")
 			const sessionWatched = swp ? swp.split(" ") : []
 			const sessionWatchedNext = sessionWatched.concat([id]).join("+")
@@ -210,7 +211,7 @@ module.exports = [
 			return renderVideo(video, {
 				user, settings, id, instanceOrigin
 			}, {
-				mediaFragment, continuous, sessionWatched, sessionWatchedNext
+				mediaFragment, autoplay, continuous, sessionWatched, sessionWatchedNext
 			})
 		}
 	}

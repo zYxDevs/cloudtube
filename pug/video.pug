@@ -24,7 +24,7 @@ block content
         .video-container
           - const format = formats[0]
           if format
-            video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag autoplay=continuous)#video.video
+            video(controls preload="auto" width=format.second__width height=format.second__height data-itag=format.itag autoplay=continuous||autoplay)#video.video
               source(src=format.url+mediaFragment type=format.type)
               each t in video.captions
                 track(label=t.label kind="subtitles" srclang=t.languageCode src=t.url)
