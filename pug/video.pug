@@ -79,8 +79,9 @@ block content
       aside(style=continuous ? "display: none" : "")#standard-related-videos.related-videos
         .related-cols
           h2.related-header Related videos
-          .continuous-start
-              a(href=`/watch?v=${video.videoId}&continuous=1` nofollow) Continuous mode
+          if video.recommendedVideos.length
+            .continuous-start
+                a(href=`/watch?v=${video.videoId}&continuous=1` nofollow) Continuous mode
         each r in video.recommendedVideos
           +video_list_item("related-video", r, instanceOrigin)
 
