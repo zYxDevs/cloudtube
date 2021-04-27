@@ -16,6 +16,7 @@ const {setInstance} = require("pinski/plugins")
 	server.addRoute("/static/css/main.css", "sass/main.sass", "sass")
 
 	server.addPugDir("pug", ["pug/includes"])
+	server.addPugDir("pug/errors")
 	server.addRoute("/cant-think", "pug/cant-think.pug", "pug")
 	server.addRoute("/privacy", "pug/privacy.pug", "pug")
 	server.addRoute("/js-licenses", "pug/js-licenses.pug", "pug")

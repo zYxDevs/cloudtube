@@ -1,0 +1,25 @@
+.blocked-explanation
+  img(src="/static/images/instance-blocked.svg" width=552 height=96)
+  .rows
+    .row
+      h3.actor You
+      | Working
+    .row
+      h3.actor CloudTube
+      | Working
+    .row
+      h3.actor Instance
+      | Blocked by YouTube
+    .row
+      h3.actor YouTube
+      | Working
+p.
+  CloudTube needs a working NewLeaf/Invidious instance in order to get data about videos.
+  However, the selected instance, #[code= instanceOrigin], has been temporarily blocked by YouTube.
+p.
+  You will be able to watch this video if you select a working instance in settings.
+  #[br]#[a(href="/settings") Go to settings →]
+p.
+  (Tip: Try #[code https://invidious.snopyta.org] or #[code https://invidious.site].)
+p.
+  This situation #[em will] be improved in the future!
