@@ -16,7 +16,7 @@ mixin input({id, label, description, type, placeholder, disabled, list})
         each item in list
           option(value=item)
     if description
-      .field-row__description= description
+      .field-row__description!= description
 
 mixin select({id, label, description, disabled, options})
   - disabled = disabled || false
