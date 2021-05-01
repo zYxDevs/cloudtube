@@ -1,8 +1,9 @@
-import {q, ElemJS} from "/static/js/elemjs/elemjs.js"
+import {q, qa, ElemJS} from "/static/js/elemjs/elemjs.js"
 import {SubscribeButton} from "/static/js/subscribe.js"
 
 const video = q("#video")
 const audio = q("#audio")
+const timestamps = qa("a[data-clickable-timestamp]")
 
 const videoFormats = new Map()
 const audioFormats = new Map()
@@ -221,3 +222,9 @@ document.addEventListener("keydown", event => {
 })
 
 new SubscribeButton(q("#subscribe"))
+
+Array.from(timestamps).forEach(el => el.addEventListener('click', event => {
+	event.preventDefault()
+	video.currentTime = event.target.getAttribute("data-clickable-timestamp")
+	window.history.replaceState({}, "", event.target.href)
+}))
