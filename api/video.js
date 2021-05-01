@@ -160,6 +160,11 @@ module.exports = [
 					video.second__viewCountText = converters.viewCountToText(video.viewCount)
 				}
 
+				// apply media fragment to all sources
+				for (const format of formats) {
+					format.url += mediaFragment
+				}
+
 				// rewrite description
 				video.descriptionHtml = converters.rewriteVideoDescription(video.descriptionHtml, id)
 
