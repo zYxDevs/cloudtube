@@ -3,8 +3,9 @@ mixin video_list_item(className, video, instanceOrigin, options = {})
     - let link = `/watch?v=${video.videoId}`
     if options.continuous
       - link += `&continuous=1&session-watched=${sessionWatchedNext}`
-    a(href=link tabindex="-1").thumbnail
-      img(src=`/vi/${video.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
+    div.thumbnail
+      a(href=link tabindex="-1").thumbnail__link
+        img(src=`/vi/${video.videoId}/mqdefault.jpg` width=320 height=180 alt="").image
       if video.second__lengthText != undefined
         span.duration= video.second__lengthText
     .info
