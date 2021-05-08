@@ -12,6 +12,10 @@ const {setInstance} = require("pinski/plugins")
 
 	setInstance(server)
 
+	server.muteLogsStartingWith("/vi/")
+	server.muteLogsStartingWith("/favicon")
+	server.muteLogsStartingWith("/static")
+
 	server.addSassDir("sass", ["sass/includes"])
 	server.addRoute("/static/css/main.css", "sass/main.sass", "sass")
 
