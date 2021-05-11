@@ -1,3 +1,5 @@
+/** @type {import("node-fetch").default} */
+// @ts-ignore
 const fetch = require("node-fetch")
 const {getUser} = require("../utils/getuser")
 const constants = require("../utils/constants.js")

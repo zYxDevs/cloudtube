@@ -1,4 +1,6 @@
 const {request} = require("../utils/request")
+/** @type {import("node-fetch").default} */
+// @ts-ignore
 const fetch = require("node-fetch")
 const {render} = require("pinski/plugins")
 const db = require("../utils/db")

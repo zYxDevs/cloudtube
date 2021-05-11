@@ -151,7 +151,7 @@ function preroundedCountToText(count) {
 	for (const scale of [[1e9, "B"], [1e6, "M"], [1e3, "K"]]) {
 		if (count >= scale[0]) {
 			// YouTube returns 3 significant figures. At least it does for channels.
-			const rounded = (count/scale[0]).toPrecision(3)
+			const rounded = (count/+scale[0]).toPrecision(3)
 			return `${rounded}${scale[1]}`
 		}
 	}

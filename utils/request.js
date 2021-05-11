@@ -1,3 +1,5 @@
+/** @type {import("node-fetch").default} */
+// @ts-ignore
 const fetch = require("node-fetch")
 
 function request(url, options = {}) {

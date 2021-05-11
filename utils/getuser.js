@@ -31,6 +31,7 @@ class User {
 		this.token = token
 	}
 
+	/** @return {{instance?: string, save_history?: boolean, local?: boolean, quality?: number}} */
 	getSettings() {
 		if (this.token) {
 			return db.prepare("SELECT * FROM Settings WHERE token = ?").get(this.token) || {}
@@ -39,6 +40,7 @@ class User {
 		}
 	}
 
+	/** @return {{instance?: string, save_history?: boolean, local?: boolean, quality?: number}} */
 	getSettingsOrDefaults() {
 		const settings = this.getSettings()
 		for (const key of Object.keys(constants.user_settings)) {
