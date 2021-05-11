@@ -1,0 +1,64 @@
+@use "colors.sass" as c
+
+@mixin filter-notice
+  margin-top: 24px
+  padding: 12px
+  border-radius: 8px
+  background-color: c.$bg-darker
+  white-space: pre-line
+
+.filters-page
+  max-width: 600px
+  margin: 0 auto
+
+  .filter-list
+    margin-top: 24px
+
+  .no-filters
+    padding: 4px
+    text-align: center
+
+  .filter-confirmation-notice
+    @include filter-notice
+    color: c.$fg-warning
+
+  .filter-compile-error
+    @include filter-notice
+
+    &__header
+      color: c.$fg-warning
+
+    &__trace
+      background-color: c.$bg-darkest
+      padding: 6px
+
+  .save-filter
+    margin-top: 12px
+
+    .border-look
+      background-color: c.$bg-darker
+      font-size: 22px
+      padding: 7px 16px 8px
+      font-size: 24px
+
+  .filter-category-header
+    font-size: 1.25em
+    margin-bottom: 4px
+
+  .filter
+    display: flex
+    padding: 5px 0
+    border-top: 1px solid c.$edge-grey
+
+    &:last-child
+      border-bottom: 1px solid c.$edge-grey
+
+    &__details
+      flex: 1
+
+    &__type
+      font-size: 15px
+      color: c.$fg-dim
+
+    &__remove
+      flex-shrink: 0

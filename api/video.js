@@ -145,6 +145,10 @@ module.exports = [
 					converters.normaliseVideoInfo(rec)
 				}
 
+				// filter list
+				const {videos, filteredCount} = converters.applyVideoFilters(video.recommendedVideos, user.getFilters())
+				video.recommendedVideos = videos
+
 				// get subscription data
 				const subscribed = user.isSubscribed(video.authorId)
 

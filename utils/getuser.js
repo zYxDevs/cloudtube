@@ -80,6 +80,14 @@ class User {
 			db.prepare("INSERT OR IGNORE INTO WatchedVideos (token, videoID) VALUES (?, ?)").run([this.token, videoID])
 		}
 	}
+
+	getFilters() {
+		if (this.token) {
+			return db.prepare("SELECT * FROM Filters WHERE token = ? ORDER BY data ASC").all(this.token)
+		} else {
+			return []
+		}
+	}
 }
 
 /**

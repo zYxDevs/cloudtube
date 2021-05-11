@@ -55,4 +55,28 @@
 .border-look
   @include border-button
   @include button-size
-  @include button-hover
+  @at-root #{selector.unify(&, "a, button")}
+    @include button-hover
+
+.menu-look
+  @include button-size
+  -webkit-appearance: none
+  -moz-appearance: none
+  color: c.$fg-bright
+  text-decoration: none
+  line-height: 1.25
+  margin: 0
+  padding: 8px 20px
+  background: c.$bg-accent
+  border: solid c.$bg-darker
+  border-width: 1px 0px 0px
+  text-align: left
+
+  &:last-child
+    border-width: 1px 0px 1px
+
+  &:hover
+    background: c.$bg-accent-x
+
+  &:active
+    background: c.$bg-darker

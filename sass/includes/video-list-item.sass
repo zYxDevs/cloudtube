@@ -1,6 +1,68 @@
 @use "colors.sass" as c
 @use "_dimensions.sass" as dimensions
 
+.thumbnail
+  $more-size: 24px
+
+  &__more
+    position: absolute
+    top: 4px
+    right: 4px
+    width: $more-size
+    height: $more-size
+    border-radius: 50%
+    background-color: rgba(20, 20, 20, 0.85)
+    padding: 0px
+    color: #fff
+
+    visibility: hidden
+
+    @at-root .thumbnail:hover &, &[open]
+      visibility: visible
+
+  &__show-more
+    display: block
+    height: $more-size
+    line-height: 16px
+    font-size: 25px
+    text-align: center
+
+    &::-webkit-details-marker
+      display: none
+
+  &__options-container
+    position: absolute
+    z-index: 1
+    top: $more-size
+    left: -1000px
+    right: 0
+    padding-top: 4px
+    display: flex
+    justify-content: flex-end
+    pointer-events: none
+
+  &__options-list
+    pointer-events: auto
+    display: grid
+    background-color: c.$bg-accent
+    padding: 8px 0px
+    border-radius: 8px
+    box-shadow: 0 2px 6px 2px #000
+
+    &::before
+      content: ""
+      display: block
+      height: 12px
+      width: 12px
+      position: absolute
+      top: 0
+      right: 0
+      transform: translate(-6px, -1px) rotate(-45deg)
+      clip-path: polygon(-5% -20%, 120% -20%, 120% 125%)
+      background-color: c.$bg-accent
+      box-shadow: 0px 0px 4px 0px #000
+      pointer-events: none
+
 @mixin video-list-item
   display: grid
   grid-template-columns: 160px 1fr
@@ -78,7 +140,6 @@
     grid-gap: 16px
     grid-template-columns: auto 1fr
     margin-bottom: 20px
-    overflow: hidden
     max-height: 150px
 
     @at-root .video-list-item--watched#{&}
@@ -97,6 +158,10 @@
       padding: 4px 5px
       right: 5px
       bottom: 5px
+
+    .info
+      overflow: hidden
+      max-height: 150px
 
     .title
       font-size: 24px

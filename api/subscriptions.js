@@ -1,13 +1,12 @@
 const {render} = require("pinski/plugins")
 const db = require("../utils/db")
-const {fetchChannelLatest} = require("../utils/youtube")
 const {getUser} = require("../utils/getuser")
-const {timeToPastText, rewriteVideoDescription} = require("../utils/converters")
+const {timeToPastText, rewriteVideoDescription, applyVideoFilters} = require("../utils/converters")
 const {refresher} = require("../background/feed-update")
 
 module.exports = [
 	{
-		route: `/subscriptions`, methods: ["GET"], code: async ({req}) => {
+		route: `/subscriptions`, methods: ["GET"], code: async ({req, url}) => {
 			const user = getUser(req)
 			let hasSubscriptions = false
 			let videos = []
@@ -36,10 +35,12 @@ module.exports = [
 							return video
 						})
 				}
+				const filters = user.getFilters()
+				;({videos} = applyVideoFilters(videos, filters))
 			}
 			const settings = user.getSettingsOrDefaults()
 			const instanceOrigin = settings.instance
-			return render(200, "pug/subscriptions.pug", {settings, hasSubscriptions, videos, channels, refreshed, timeToPastText, instanceOrigin})
+			return render(200, "pug/subscriptions.pug", {url, settings, hasSubscriptions, videos, channels, refreshed, timeToPastText, instanceOrigin})
 		}
 	}
 ]

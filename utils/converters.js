@@ -1,5 +1,6 @@
 const constants = require("./constants")
 const pug = require("pug")
+const {Matcher} = require("./matcher")
 
 function timeToPastText(timestamp) {
 	const difference = Date.now() - timestamp
@@ -162,6 +163,24 @@ function subscriberCountToText(count) {
 	return preroundedCountToText(count) + " subscribers"
 }
 
+function applyVideoFilters(videos, filters) {
+	const originalCount = videos.length
+	for (const filter of filters) {
+		if (filter.type === "channel-id") {
+			videos = videos.filter(v => v.authorId !== filter.data)
+		} else if (filter.type === "channel-name") {
+			videos = videos.filter(v => v.author !== filter.data)
+		} else if (filter.type === "title") {
+			const matcher = new Matcher(filter.data)
+			matcher.compilePattern()
+			videos = videos.filter(v => !matcher.match(v.title))
+		}
+	}
+	const filteredCount = originalCount - videos.length
+	//TODO: actually display if things were filtered, and give the option to disable filters one time
+	return {videos, filteredCount}
+}
+
 module.exports.timeToPastText = timeToPastText
 module.exports.lengthSecondsToLengthText = lengthSecondsToLengthText
 module.exports.normaliseVideoInfo = normaliseVideoInfo
@@ -169,3 +188,4 @@ module.exports.rewriteVideoDescription = rewriteVideoDescription
 module.exports.tToMediaFragment = tToMediaFragment
 module.exports.viewCountToText = viewCountToText
 module.exports.subscriberCountToText = subscriberCountToText
+module.exports.applyVideoFilters = applyVideoFilters

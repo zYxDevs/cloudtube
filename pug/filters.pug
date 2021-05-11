@@ -1,0 +1,77 @@
+extends includes/layout
+
+mixin filter_type_option(label, value)
+  option(value=value selected=(value === type))= label
+
+block head
+  title Filters - CloudTube
+  script(type="module" src=getStaticURL("html", "static/js/filters.js"))
+
+block content
+  main.filters-page
+    h1 Filters
+    details(open=!!type)
+      summary New filter
+      form(method="post")
+        if label
+          input(type="hidden" name="label" value=label)
+        if referrer
+          input(type="hidden" name="referrer" value=referrer)
+        .field-row
+          label.field-row__label(for="filter-type") Type
+          select(id="filter-type" name="filter-type").border-look.field-row__input
+            +filter_type_option("Title", "title")
+            +filter_type_option("Channel name", "channel-name")
+            +filter_type_option("Channel ID", "channel-id")
+        .field-row.max-width-input
+          label.field-row__label(for="new-filter") Contents
+          input(type="text" id="new-filter" name="new-filter" value=contents required maxlength=filterMaxLength).border-look.field-row__input
+          .field-row__description(style=(type !== "title" ? "display: none" : ""))#title-pattern-matching
+            | For titles, pattern matching is supported. Regular expressions are #{regexpEnabledText} enabled.
+            |
+            a(href="https://git.sr.ht/~cadence/tube-docs/tree/main/item/docs/cloudtube/Filters.md") For help, see the documentation.
+        if compileError
+          section.filter-compile-error
+            header.filter-compile-error__header Your pattern failed to compile.
+            pre.filter-compile-error__trace
+              = contents + "\n"
+              = " ".repeat(compileError.position) + "^ " + compileError.message
+            div: a(href="https://git.sr.ht/~cadence/tube-docs/tree/main/item/docs/cloudtube/Filters.md") For help, see the documentation.
+        else
+          if type
+            .filter-confirmation-notice.
+              You can refine the filter further if you need to.
+              When you're happy, click Save.
+        .save-filter
+          button.border-look
+            if referrer
+              | Save & return
+            else
+              | Save
+
+
+    .filter-list
+      - let someFiltersDisplayed = false
+      each category in categories
+        if category.filters.length
+          - someFiltersDisplayed = true
+          h2.filter-category-header= category.name
+        div
+          each filter in category.filters
+            .filter
+              .filter__details
+                - let type = `type: ${filter.type}`
+                - let content = filter.data
+                if filter.type === "channel-id" && filter.label
+                  - type += `, id: ${filter.data}`
+                  - content = filter.label
+                .filter__type= type
+                .filter__content= content
+              form.filter__remove(method="post" action="/filters/delete")
+                input(type="hidden" name="delete-id" value=filter.id)
+                button.border-look Remove
+      if !someFiltersDisplayed
+        .no-filters
+          h2 You haven't created any filters.
+          p Create one now and cleanse your mind.
+          p You can add filters using the button on video thumbnails.

@@ -43,6 +43,11 @@ const deltas = [
 	function() {
 		db.prepare("ALTER TABLE Settings ADD COLUMN quality INTEGER DEFAULT 0")
 			.run()
+	},
+	// 6: +Filters
+	function() {
+		db.prepare("CREATE TABLE Filters (id INTEGER, token TEXT NOT NULL, type TEXT NOT NULL, data TEXT NOT NULL, label TEXT, PRIMARY KEY (id))")
+			.run()
 	}
 ]
 

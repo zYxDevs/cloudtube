@@ -81,6 +81,12 @@ block content
       .save-settings
         button.border-look Save
 
+    h2.more-settings-header More settings
+
+    section.more-settings
+      ul.more-settings__list
+        li.more-settings__list-item: a(href="/filters") Edit filters
+
     if user.token
       details.data-management
         summary Sync data
