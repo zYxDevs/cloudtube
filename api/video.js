@@ -175,7 +175,7 @@ module.exports = [
 				video.descriptionHtml = converters.rewriteVideoDescription(video.descriptionHtml, id)
 
 				return render(200, "pug/video.pug", {
-					video, formats, subscribed, instanceOrigin, mediaFragment, autoplay, continuous,
+					url, video, formats, subscribed, instanceOrigin, mediaFragment, autoplay, continuous,
 					sessionWatched, sessionWatchedNext
 				})
 

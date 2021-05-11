@@ -6,7 +6,7 @@ const converters = require("../utils/converters")
 
 module.exports = [
 	{
-		route: `/channel/(${constants.regex.ucid})`, methods: ["GET"], code: async ({req, fill}) => {
+		route: `/channel/(${constants.regex.ucid})`, methods: ["GET"], code: async ({req, fill, url}) => {
 			const id = fill[0]
 			const user = getUser(req)
 			const settings = user.getSettingsOrDefaults()
@@ -24,7 +24,7 @@ module.exports = [
 					video.watched = watchedVideos.includes(video.videoId)
 				})
 			}
-			return render(200, "pug/channel.pug", {data, subscribed, instanceOrigin})
+			return render(200, "pug/channel.pug", {url, data, subscribed, instanceOrigin})
 		}
 	}
 ]

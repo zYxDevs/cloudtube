@@ -13,7 +13,7 @@ mixin video_list_item(className, video, instanceOrigin, options = {})
         .thumbnail__options-container
           .thumbnail__options-list
             - const paramsBase = {}
-            - if (url) paramsBase.referrer = url.pathname + (url.search && "?" + url.search)
+            - if (url) paramsBase.referrer = url.pathname + url.search
             a(href=`/filters?${new URLSearchParams({"channel-id": video.authorId, label: video.author, ...paramsBase})}`).menu-look Hide this channel
             a(href=`/filters?${new URLSearchParams({title: video.title, ...paramsBase})}`).menu-look Hide by title
             a(href="/filters").menu-look Edit all filters
