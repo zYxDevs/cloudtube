@@ -43,6 +43,12 @@ fieldset
     align-items: start
     padding-bottom: 15px
 
+  &.max-width-input
+    grid-template-columns: auto 1fr
+
+    .field-row__input
+      justify-self: stretch
+
   &__label
     grid-area: label
     padding: 8px 8px 8px 0px
@@ -58,6 +64,7 @@ fieldset
     margin: 12px 0px 18px
     font-size: 16px
     color: #ccc
+    line-height: 1.2
 
 //
   .checkbox-row

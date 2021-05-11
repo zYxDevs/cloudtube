@@ -86,7 +86,9 @@ function presetEnsureParams(list) {
 		() => ({
 			statusCode: 400,
 			contentType: "application/json",
-			content: `Some required body parameters were missing. Required parameters: ${list.join(", ")}`
+			content: {
+				error: `Some required body parameters were missing. Required parameters: ${list.join(", ")}`
+			}
 		})
 	]
 }

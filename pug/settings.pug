@@ -10,7 +10,7 @@ mixin input({id, label, description, type, placeholder, disabled, list})
   - disabled = disabled || false
   .field-row
     label.field-row__label(for=id)= label
-    input(type=type id=id name=id value=settings[id] placeholder=placeholder disabled=disabled list=`${id}-list`).border-look.field-row__input
+    input(type=(type) id=id name=id value=settings[id] placeholder=placeholder disabled=disabled list=`${id}-list`).border-look.field-row__input
     if list
       datalist(id=`${id}-list`)
         each item in list
