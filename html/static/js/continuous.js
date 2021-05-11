@@ -2,8 +2,6 @@ import {q, ejs, ElemJS} from "/static/js/elemjs/elemjs.js"
 
 const video = q("#video")
 
-console.log
-
 video.addEventListener("ended", () => {
 	if (data.continuous) {
 		const first = q("#continuous-first")
