@@ -17,7 +17,10 @@
 
     visibility: hidden
 
-    @at-root .thumbnail:hover &, &[open]
+    @at-root .thumbnail:hover &, body.show-focus &
+      visibility: visible
+
+    &[open]
       visibility: visible
 
   &__show-more
