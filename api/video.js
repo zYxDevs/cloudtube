@@ -174,6 +174,11 @@ module.exports = [
 				// rewrite description
 				video.descriptionHtml = converters.rewriteVideoDescription(video.descriptionHtml, id)
 
+				// rewrite captions urls so they are served on the same domain via the /proxy route
+				for (const caption of video.captions) {
+					caption.url = `/proxy?${new URLSearchParams({"url": caption.url})}`
+				}
+
 				return render(200, "pug/video.pug", {
 					url, video, formats, subscribed, instanceOrigin, mediaFragment, autoplay, continuous,
 					sessionWatched, sessionWatchedNext
