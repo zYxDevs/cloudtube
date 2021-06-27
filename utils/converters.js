@@ -66,8 +66,15 @@ function rewriteVideoDescription(descriptionHtml, id) {
 	// https://www.youtube.com/watch?v=fhum63fAwrI www.youtube.com/watch?v=<videoid>
 	// https://www.youtube.com/watch?v=i-szWOrc3Mo www.youtube.com/<channelname> (unsupported by cloudtube currently)
 	// https://www.youtube.com/watch?v=LSG71wbKpbQ www.youtube.com/channel/<id>
+	// https://www.youtube.com/watch?v=RiEkOKFOG3s youtu.be/<videoid> with params
 
-	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?://(?:www\\.)?youtu\\.be/(${constants.regex.video_id})([^"]*)">([^<]+)</a>`, "g"), `<a href="/watch?v=$1$2">$3</a>`)
+	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?://(?:www\\.)?youtu\\.be/(${constants.regex.video_id})[?]?([^"]*)">([^<]+)</a>`, "g"), (_, id, params, innerText) => {
+		if (params) {
+			return `<a href="/watch?v=${id}&${params}">${innerText}</a>`
+		} else {
+			return `<a href="/watch?v=${id}">${innerText}</a>`
+		}
+	})
 	descriptionHtml = descriptionHtml.replace(new RegExp(`<a href="https?://(?:www\\.)?youtu(?:\\.be|be\\.com)/([^"]*)">([^<]+)<\/a>`, "g"), `<a href="/$1">$2</a>`)
 	descriptionHtml = descriptionHtml.replace(new RegExp(`(?:([0-9]*):)?([0-5]?[0-9]):([0-5][0-9])`, "g"), (_, hours, minutes, seconds) => {
 		let timeURL, timeDisplay, timeSeconds
