@@ -93,12 +93,17 @@
       flex-shrink: 0
 
   .description
+    position: relative
     font-size: 17px
+    line-height: 1.4
     word-break: break-word
     margin: 16px 4px 4px 4px
     background-color: c.$bg-accent-area
     padding: 12px
     border-radius: 4px
+
+    --regular-background: #{c.$bg-accent-area}
+    --highlight-background: #{c.$bg-darker}
 
 .subscribe-form
   display: inline-block
@@ -149,3 +154,26 @@
 
       .actor
         margin: 4px 0px 10px
+
+// Chapter highlights
+
+.timestamp--active
+  margin: 4px 0px
+  display: inline-block
+
+  &::after
+    display: block
+    position: absolute
+    left: 0
+    right: 0
+    height: calc(1.4em + 4px)
+    transform: translateY(-1.4em) translateY(-4px)
+
+    padding-right: 6px
+    text-align: right
+    content: "⮜"
+    line-height: 1.6
+    color: #fff
+
+    border: solid black
+    border-width: 2px 0px

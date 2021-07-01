@@ -1,5 +1,5 @@
 import {q, qa, ElemJS} from "/static/js/elemjs/elemjs.js"
-import {SubscribeButton} from "/static/js/subscribe.js"
+import {SubscribeButton} from "/static/js/modules/SubscribeButton.js"
 
 const video = q("#video")
 const audio = q("#audio")

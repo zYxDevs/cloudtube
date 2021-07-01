@@ -9,6 +9,7 @@ block head
   else
     title Error - CloudTube
   script(type="module" src=getStaticURL("html", "/static/js/player.js"))
+  script(type="module" src=getStaticURL("html", "/static/js/chapter-highlight.js"))
   script const data = !{JSON.stringify({...video, continuous})}
 
 block content
@@ -73,7 +74,7 @@ block content
           a(href=`https://www.youtube.com/watch?v=${video.videoId}#cloudtube`).border-look YouTube
           a(href=`https://redirect.invidious.io/watch?v=${video.videoId}`).border-look Invidious
 
-        .description!= video.descriptionHtml
+        .description#description!= video.descriptionHtml
 
       //- Standard view
       aside(style=continuous ? "display: none" : "")#standard-related-videos.related-videos
