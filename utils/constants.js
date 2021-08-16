@@ -20,6 +20,10 @@ let constants = {
 		quality: {
 			type: "integer",
 			default: 0
+		},
+		recommended_mode: {
+			type: "integer",
+			default: 0
 		}
 	},
 

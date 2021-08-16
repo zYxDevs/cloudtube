@@ -181,7 +181,7 @@ module.exports = [
 
 				return render(200, "pug/video.pug", {
 					url, video, formats, subscribed, instanceOrigin, mediaFragment, autoplay, continuous,
-					sessionWatched, sessionWatchedNext
+					sessionWatched, sessionWatchedNext, settings
 				})
 
 			} catch (error) {

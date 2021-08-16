@@ -10,6 +10,12 @@
   @media screen and (min-width: 1000px)
     grid-template-columns: 1fr 400px
 
+  &--recommended-below, &--recommended-hidden
+    grid-template-columns: none
+
+  &--recommended-hidden .related-videos
+    display: none
+
 .main-video-section
   .video-container
     text-align: center

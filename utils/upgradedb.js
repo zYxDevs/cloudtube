@@ -48,6 +48,11 @@ const deltas = [
 	function() {
 		db.prepare("CREATE TABLE Filters (id INTEGER, token TEXT NOT NULL, type TEXT NOT NULL, data TEXT NOT NULL, label TEXT, PRIMARY KEY (id))")
 			.run()
+	},
+	// 7: Settings +recommended_mode
+	function() {
+		db.prepare("ALTER TABLE Settings ADD COLUMN recommended_mode INTEGER DEFAULT 0")
+			.run()
 	}
 ]
 

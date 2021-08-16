@@ -47,7 +47,7 @@ block content
 
         +select({
           id: "local",
-          label: "Fetch videos",
+          label: "Fetch videos from",
           description: "If remote, the instance above will be used.\nIf local, CloudTube will try to connect to an instance running on your own computer. This can bypass blocks, but requires you to run the instance software.",
           options: [
             {value: "0", text: "Remote instance"},
@@ -75,6 +75,17 @@ block content
           options: [
             {value: "0", text: "Don't store"},
             {value: "1", text: "Store on server"}
+          ]
+        })
+
+        +select({
+          id: "recommended_mode",
+          label: "Recommended videos",
+          description: 'Videos are recommended by YouTube to make people waste time.\nYou can take back some control by moving them below, or hiding them entirely.\nFor precise filtering of specific content, <a href="/filters">open the filter editor.</a>',
+          options: [
+            {value: "0", text: "Sidebar"},
+            {value: "1", text: "Below"},
+            {value: "2", text: "Hidden"}
           ]
         })
 
