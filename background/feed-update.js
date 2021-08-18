@@ -87,12 +87,12 @@ class Refresher {
 				})
 				// update channel refreshed
 				prepared.channel_refreshed_update.run(Date.now(), ucid)
-				console.log(`updated ${root.length} videos for channel ${ucid}`)
+				// console.log(`updated ${root.length} videos for channel ${ucid}`)
 			} else if (root.identifier === "PUBLISHED_DATES_NOT_PROVIDED") {
 				return [] // nothing we can do. skip this iteration.
 			} else if (root.identifier === "NOT_FOUND") {
 				// the channel does not exist. we should unsubscribe all users so we don't try again.
-				console.log(`channel ${ucid} does not exist, unsubscribing all users`)
+				// console.log(`channel ${ucid} does not exist, unsubscribing all users`)
 				prepared.unsubscribe_all_from_channel.run(ucid)
 			} else {
 				throw new Error(root.error)
@@ -105,7 +105,7 @@ class Refresher {
 			const timeSinceLastLoop = Date.now() - this.refreshQueue.lastLoadTime
 			if (timeSinceLastLoop < constants.caching.subscriptions_refresh_loop_min) {
 				const timeToWait = constants.caching.subscriptions_refresh_loop_min - timeSinceLastLoop
-				console.log(`waiting ${timeToWait} before next loop`)
+				// console.log(`waiting ${timeToWait} before next loop`)
 				this.state = this.sym.WAITING
 				this.waitingTimeout = setTimeout(() => this.next(), timeToWait)
 				return
@@ -121,7 +121,7 @@ class Refresher {
 				// Problems related to fetching from the instance?
 				// All we can do is retry later.
 				// However, skip this channel this time in case the problem will occur every time.
-				console.error(error)
+				console.error("Error in background refresh:\n", error)
 				setTimeout(() => {
 					this.next()
 				}, 10e3)
