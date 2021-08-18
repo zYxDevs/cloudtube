@@ -117,7 +117,15 @@ class Refresher {
 		if (!this.refreshQueue.isEmpty()) {
 			this.state = this.sym.ACTIVE
 			const ucid = this.refreshQueue.next()
-			this.refreshChannel(ucid).then(() => this.next())
+			this.refreshChannel(ucid).then(() => this.next()).catch(error => {
+				// Problems related to fetching from the instance?
+				// All we can do is retry later.
+				// However, skip this channel this time in case the problem will occur every time.
+				console.error(error)
+				setTimeout(() => {
+					this.next()
+				}, 10e3)
+			})
 		} else {
 			this.state = this.sym.EMPTY
 		}
