@@ -11,6 +11,7 @@ block head
 block content
   main.video-error-page
     h2 Fetching video
-    p#status Waiting...
+    p (You can also #[a(href=`https://www.youtube.com/watch?v=${id}#cloudtube`) watch on YouTube], #[a(href="https://git.sr.ht/~cadence/tube-docs/tree/main/item/docs/newleaf/Installing%20NewLeaf.md") install NewLeaf], or just #[a(href="/settings") turn off local fetch.])
+    p#status.fetch-status Waiting...
     form(method="post")#form.local-video-form
       input(type="hidden" name="video")#video-data
