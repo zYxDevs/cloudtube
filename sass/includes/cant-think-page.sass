@@ -1,4 +1,5 @@
 @use "sass:list"
+@use "colors.sass" as c
 
 .cant-think-page
   .main-nav
@@ -6,9 +7,24 @@
 
   .encouraging-message
     text-align: left
-    max-width: 540px
+    max-width: 572px
     padding-top: 40px
     border-radius: 0px 0px 16px 16px
+    box-sizing: border-box
+
+  .page-narration
+    background-color: c.$bg-accent
+    border: 1px solid #aaa
+    color: #fff
+    border-radius: 0
+    padding: 16px
+    margin: 40px auto 60px
+
+    &__audio-container
+      margin-top: 20px
+
+    &__audio
+      width: 100%
 
   .leave
     margin: 26px 32px !important
@@ -22,6 +38,7 @@
     &.leave__final
       font-weight: bold
       color: #f2f2f2
+      text-align: center
 
       .leave__actions
         display: block

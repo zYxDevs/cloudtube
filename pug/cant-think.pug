@@ -19,6 +19,13 @@ mixin leave(index, prefix="No more?", final)
 
 block content
   main.cant-think-page
+    - let src = constants.server_setup.cant_think_narration_url
+    if src
+      aside.encouraging-message.page-narration
+        div You can listen to this page narrated by #[a(href="https://suricrasia.online") Suricrasia Online].
+        .page-narration__audio-container
+          audio(controls src=src preload="metadata").page-narration__audio
+      .narration-divider
     .encouraging-message
       p Oh?
       p You can't think of anything to watch, yet you're still here?
@@ -59,7 +66,7 @@ block content
       p Pieces of your brain twist and fall apart as you shake off the identity that the billion-dollar distraction manufacturers have handed to you, the identity that you once willingly accepted without even realising that it was there.
       p I beg of you, find something.
       p Create. Discover. Seek. Learn.
-      p You see it now, don't know?
+      p You see it now, don't you?
       p You understand.
       p You know what you must do.
       p.ultimatum: a(href="#i-understand").border-look I know what I must do.

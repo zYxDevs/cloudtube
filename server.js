@@ -1,5 +1,6 @@
 const {Pinski} = require("pinski")
 const {setInstance} = require("pinski/plugins")
+const constants = require("./utils/constants")
 
 ;(async () => {
 	await require("./utils/upgradedb")()
@@ -11,6 +12,7 @@ const {setInstance} = require("pinski/plugins")
 	})
 
 	setInstance(server)
+	server.pugDefaultLocals.constants = constants
 
 	server.muteLogsStartingWith("/vi/")
 	server.muteLogsStartingWith("/favicon")

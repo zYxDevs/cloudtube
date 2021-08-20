@@ -32,7 +32,9 @@ let constants = {
 		// The URL of the local NewLeaf instance, which is always used for subscription updates.
 		local_instance_origin: "http://localhost:3000",
 		// Whether users may filter videos by regular expressions. Unlike square patterns, regular expressions are _not_ bounded in complexity, so this can be used for denial of service attacks. Only enable if this is a private instance and you trust all the members.
-		allow_regexp_filters: false
+		allow_regexp_filters: false,
+		// Audio narration on the "can't think" page. `null` to disable narration, or a URL to enable with that audio file.
+		cant_think_narration_url: null
 	},
 
 	// ***                                                 ***
