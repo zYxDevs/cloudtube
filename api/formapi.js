@@ -24,7 +24,10 @@ module.exports = [
 
 					if (add) {
 						await fetchChannel(ucid, settings.instance)
-						db.prepare("INSERT OR IGNORE INTO Subscriptions (token, ucid) VALUES (?, ?)").run(token, ucid)
+						db.prepare(
+							"INSERT INTO Subscriptions (token, ucid) VALUES (?, ?)"
+								+ " ON CONFLICT (token, ucid) DO UPDATE SET channel_missing = 0"
+						).run(token, ucid)
 					} else {
 						db.prepare("DELETE FROM Subscriptions WHERE token = ? AND ucid = ?").run(token, ucid)
 					}

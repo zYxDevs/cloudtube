@@ -53,6 +53,11 @@ const deltas = [
 	function() {
 		db.prepare("ALTER TABLE Settings ADD COLUMN recommended_mode INTEGER DEFAULT 0")
 			.run()
+	},
+	// 8: Subscriptions +channel_missing
+	function() {
+		db.prepare("ALTER TABLE Subscriptions ADD COLUMN channel_missing INTEGER DEFAULT 0")
+			.run()
 	}
 ]
 

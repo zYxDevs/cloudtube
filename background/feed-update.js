@@ -16,7 +16,7 @@ const prepared = {
 		"UPDATE Channels SET refreshed = ? WHERE ucid = ?"
 	),
 	unsubscribe_all_from_channel: db.prepare(
-		"DELETE FROM Subscriptions WHERE ucid = ?"
+		"UPDATE Subscriptions SET channel_missing = 1 WHERE ucid = ?"
 	)
 }
 
@@ -35,7 +35,7 @@ class RefreshQueue {
 		// get the next set of scheduled channels to refresh
 		const afterTime = Date.now() - constants.caching.seen_token_subscriptions_eligible
 		const channels = db.prepare(
-			"SELECT DISTINCT Subscriptions.ucid FROM SeenTokens INNER JOIN Subscriptions ON SeenTokens.token = Subscriptions.token AND SeenTokens.seen > ? ORDER BY SeenTokens.seen DESC"
+			"SELECT DISTINCT Subscriptions.ucid FROM SeenTokens INNER JOIN Subscriptions ON SeenTokens.token = Subscriptions.token AND SeenTokens.seen > ? WHERE Subscriptions.channel_missing = 0 ORDER BY SeenTokens.seen DESC"
 		).pluck().all(afterTime)
 		this.addLast(channels)
 		this.lastLoadTime = Date.now()
