@@ -58,6 +58,11 @@ const deltas = [
 	function() {
 		db.prepare("ALTER TABLE Subscriptions ADD COLUMN channel_missing INTEGER DEFAULT 0")
 			.run()
+	},
+	// 9: add index Videos (authorID)
+	function() {
+		db.prepare("CREATE INDEX Videos_authorID ON Videos (authorID)")
+			.run()
 	}
 ]
 

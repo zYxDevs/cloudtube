@@ -58,6 +58,7 @@ function normaliseVideoInfo(video) {
 	}
 }
 
+const timeDisplayCompiled = pug.compile(`a(href=url data-clickable-timestamp=timeSeconds)= timeDisplay`)
 function rewriteVideoDescription(descriptionHtml, id) {
 	// replace timestamps to clickable links and rewrite youtube links to stay on the instance instead of pointing to YouTube
 	// test cases
@@ -93,7 +94,7 @@ function rewriteVideoDescription(descriptionHtml, id) {
 		params.set("t", timeURL)
 		const url = "/watch?" + params
 
-		return pug.render(`a(href=url data-clickable-timestamp=timeSeconds)= timeDisplay`, {url, timeURL, timeDisplay, timeSeconds})
+		return timeDisplayCompiled({url, timeURL, timeDisplay, timeSeconds})
 	})
 
 	return descriptionHtml

@@ -14,7 +14,10 @@ function getToken(req, responseHeaders) {
 			return null
 		}
 	}
-	db.prepare("REPLACE INTO SeenTokens (token, seen) VALUES (?, ?)").run([token, Date.now()])
+	db.prepare(
+		"INSERT INTO SeenTokens (token, seen) VALUES (?, ?)"
+			+ " ON CONFLICT (token) DO UPDATE SET seen = excluded.seen"
+	).run([token, Date.now()])
 	return token
 }
 

@@ -16,18 +16,15 @@ module.exports = [
 				// trigger a background refresh, needed if they came back from being inactive
 				refresher.skipWaiting()
 				// get channels
-				const subscriptions = user.getSubscriptions()
-				const template = Array(subscriptions.length).fill("?").join(", ")
-				channels = db.prepare(`SELECT * FROM Channels WHERE ucid IN (${template}) ORDER BY name`).all(subscriptions)
+				channels = db.prepare(`SELECT Channels.* FROM Channels INNER JOIN Subscriptions ON Channels.ucid = Subscriptions.ucid WHERE token = ? ORDER BY name`).all(user.token)
 				// get refreshed status
-				refreshed = db.prepare(`SELECT min(refreshed) as min, max(refreshed) as max, count(refreshed) as count FROM Channels WHERE ucid IN (${template})`).get(subscriptions)
+				refreshed = db.prepare(`SELECT min(refreshed) as min, max(refreshed) as max, count(refreshed) as count FROM Channels INNER JOIN Subscriptions ON Channels.ucid = Subscriptions.ucid WHERE token = ?`).get(user.token)
 				// get watched videos
 				const watchedVideos = user.getWatchedVideos()
 				// get videos
-				if (subscriptions.length) {
+				if (channels.length) {
 					hasSubscriptions = true
-					const template = Array(subscriptions.length).fill("?").join(", ")
-					videos = db.prepare(`SELECT * FROM Videos WHERE authorId IN (${template}) ORDER BY published DESC LIMIT 60`).all(subscriptions)
+					videos = db.prepare(`SELECT Videos.* FROM Videos INNER JOIN Subscriptions ON Videos.authorID = Subscriptions.ucid WHERE token = ? ORDER BY published DESC LIMIT 60`).all(user.token)
 						.map(video => {
 							video.publishedText = timeToPastText(video.published * 1000)
 							video.watched = watchedVideos.includes(video.videoId)
