@@ -147,6 +147,7 @@ function tToMediaFragment(t) {
 }
 
 function viewCountToText(viewCount) {
+	if (typeof viewCount !== "number") return null
 	return viewCount.toLocaleString("en-US") + " views"
 }
 
