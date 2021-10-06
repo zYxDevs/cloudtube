@@ -1,11 +1,12 @@
 extends includes/layout.pug
 
 block head
-  title JavaScript license information
+  title License information
 
 block content
   main.js-licenses-page
-    h1 JavaScript license information
+    h1 License information
+    h2 JavaScript
     table#jslicense-labels1
       thead
         tr
@@ -20,3 +21,5 @@ block content
               td: a(href=file)= file
               td: a(href="http://www.gnu.org/licenses/agpl-3.0.html") GNU-AGPL-3.0-or-later
               td: a(href=file)= file
+    h2 Flash
+    p Flash playback is provided by #[a(href="https://github.com/gokercebeci/f4player/") f4player by Goker Cebeci.] (HTML 5 playback is still preferred where possible; Flash is only tried on ancient browsers.)

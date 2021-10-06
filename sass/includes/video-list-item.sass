@@ -1,6 +1,10 @@
 @use "colors.sass" as c
 @use "_dimensions.sass" as dimensions
 
+// navigator hacks
+.thumbnail > .thumbnail__options-container
+  float: right
+
 .thumbnail
   $more-size: 24px
 
@@ -33,7 +37,8 @@
     &::-webkit-details-marker
       display: none
 
-  &__options-container
+  // "&__more" is needed for navigator hacks
+  &__more &__options-container
     position: absolute
     z-index: 1
     top: $more-size

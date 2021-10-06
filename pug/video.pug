@@ -32,6 +32,9 @@ block content
               source(src=format.url type=format.type)
               each t in video.captions
                 track(label=t.label kind="subtitles" srclang=t.languageCode src=t.url)
+              // fallback: flash player
+              - let flashvars = new URLSearchParams({skin: "/static/flash/skin.swf", video: format.url})
+              embed(type="application/x-shockwave-flash" src="/static/flash/player.swf" id="f4Player" width=1280 height=720 flashvars=flashvars.toString() allowscriptaccess="always" allowfullscreen="true" bgcolor="#000000")
           else
             video(src="")#video.video
             .stream-notice The server provided no playback streams.
