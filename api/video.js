@@ -43,19 +43,23 @@ function formatOrder(format) {
 }
 
 function sortFormats(video, preference) {
-	const standard = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
-	const adaptive = video.adaptiveFormats.filter(f => f.type.startsWith("video") && f.qualityLabel).sort((a, b) => a.second__order - b.second__order)
-	let formats = standard.concat(adaptive)
-
+	// Add second__ extensions to format objects, required if Invidious was the extractor
+	let formats = video.formatStreams.concat(video.adaptiveFormats)
 	for (const format of formats) {
 		if (!format.second__height && format.resolution) format.second__height = +format.resolution.slice(0, -1)
 		if (!format.second__order) format.second__order = formatOrder(format)
 		format.cloudtube__label = `${format.qualityLabel} ${format.container}`
 	}
-	for (const format of adaptive) {
-		format.cloudtube__label += " *"
-	}
 
+	// Properly build and order format list
+	const standard = video.formatStreams.slice().sort((a, b) => b.second__height - a.second__height)
+	const adaptive = video.adaptiveFormats.filter(f => f.type.startsWith("video") && f.qualityLabel).sort((a, b) => a.second__order - b.second__order)
+	for (const format of adaptive) {
+		if (!format.cloudtube__label.endsWith("*")) format.cloudtube__label += " *"
+	}
+	formats = standard.concat(adaptive)
+
+	// Reorder fomats based on user preference
 	if (preference === 1) { // best dash
 		formats.sort((a, b) => {
 			const a1 = a.second__height + a.fps / 100
