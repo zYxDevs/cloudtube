@@ -1,16 +1,16 @@
 const {render} = require("pinski/plugins")
-const constants = require("../utils/constants")
 const {fetchChannel} = require("../utils/youtube")
 const {getUser} = require("../utils/getuser")
 const converters = require("../utils/converters")
 
 module.exports = [
 	{
-		route: `/channel/(${constants.regex.ucid})`, methods: ["GET"], code: async ({req, fill, url}) => {
-			const id = fill[0]
+		route: `/(c|channel|user)/(.+)`, methods: ["GET"], code: async ({req, fill, url}) => {
+			const path = fill[0]
+			const id = fill[1]
 			const user = getUser(req)
 			const settings = user.getSettingsOrDefaults()
-			const data = await fetchChannel(id, settings.instance)
+			const data = await fetchChannel(id, path, settings.instance)
 			const subscribed = user.isSubscribed(id)
 			const instanceOrigin = settings.instance
 

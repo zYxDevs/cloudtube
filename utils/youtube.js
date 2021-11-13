@@ -1,7 +1,7 @@
 const {request} = require("./request")
 const db = require("./db")
 
-async function fetchChannel(ucid, instance) {
+async function fetchChannel(ucid, path="channel", instance) {
 	function updateGoodData(channel) {
 		const bestIcon = channel.authorThumbnails.slice(-1)[0]
 		const iconURL = bestIcon ? bestIcon.url : null
@@ -39,7 +39,7 @@ async function fetchChannel(ucid, instance) {
 	}
 
 	/** @type {any} */
-	const channel = await request(`${instance}/api/v1/channels/${ucid}`).then(res => res.json())
+	const channel = await request(`${instance}/api/v1/channels/${ucid}?second__path=${path}`).then(res => res.json())
 
 	// handle the case where the channel has a newly discovered error
 	if (channel.error) {
