@@ -63,6 +63,13 @@ const deltas = [
 	function() {
 		db.prepare("CREATE INDEX Videos_authorID ON Videos (authorID)")
 			.run()
+	},
+	// 10: +TakedownVideos, +TakedownChannels
+	function() {
+		db.prepare("CREATE TABLE TakedownVideos (id TEXT NOT NULL, org TEXT, url TEXT, PRIMARY KEY (id))")
+			.run()
+		db.prepare("CREATE TABLE TakedownChannels (ucid TEXT NOT NULL, org TEXT, url TEXT, PRIMARY KEY (ucid))")
+			.run()
 	}
 ]
 

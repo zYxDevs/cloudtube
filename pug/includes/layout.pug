@@ -34,7 +34,7 @@ html
           p Released as AGPL free software.
           .footer__cols
             div
-              h3.footer__colhead Source
+              h3.footer__colhead Source code
               ul.footer__list
                 li: a(href="https://sr.ht/~cadence/tube") Project hub
                 li: a(href="https://lists.sr.ht/~cadence/tube-announce") Announcements
@@ -44,3 +44,5 @@ html
               ul.footer__list
                 li: a(href="/privacy") Privacy policy
                 li: a(href="/licenses" data-jslicense=1) Licenses
+                if constants.takedown
+                  li: a(href="/takedown") DMCA

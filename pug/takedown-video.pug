@@ -1,0 +1,22 @@
+extends includes/layout
+
+include includes/video-list-item
+include includes/subscribe-button
+
+block head
+  title Unavailable for legal reasons - CloudTube
+
+block content
+  main.video-error-page
+    h2 Unavailable for legal reasons
+    p The copyright holders of this video issued a legal notice directly to this website. They demanded that access to this particular video, or the particular channel it's from, should be forbidden.
+    if org
+      p The notice was issued by #{org}.
+    if url
+      p: a(href=url) More information about the notice is available here.
+    p Any content not covered by this notice is still available.
+    p You can still #[a(href=`https://www.youtube.com/watch?v=${id}#cloudtube`) watch the video on YouTube.]
+    footer.takedown-footer
+      p: i Let this be a warning of why you shouldn't rely on centralised services!
+      p: i You will always be able to download the CloudTube source code, or try another instance.
+      p: i That's all we know.

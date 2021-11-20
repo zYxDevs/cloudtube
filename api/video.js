@@ -108,6 +108,12 @@ module.exports = [
 			const settings = user.getSettingsOrDefaults()
 			const id = url.searchParams.get("v")
 
+			// Check if playback is allowed
+			const videoTakedownInfo = db.prepare("SELECT id, org, url FROM TakedownVideos WHERE id = ?").get(id)
+			if (videoTakedownInfo) {
+				return render(451, "pug/takedown-video.pug", videoTakedownInfo)
+			}
+
 			// Media fragment
 			const t = url.searchParams.get("t")
 			let mediaFragment = converters.tToMediaFragment(t)
@@ -140,6 +146,15 @@ module.exports = [
 				// Error handling
 				if (!video) throw new MessageError("The instance returned null.")
 				if (video.error) throw new InstanceError(video.error, video.identifier)
+
+				// Check if channel playback is allowed
+				const channelTakedownInfo = db.prepare("SELECT ucid, org, url FROM TakedownChannels WHERE ucid = ?").get(video.authorId)
+				if (channelTakedownInfo) {
+					// automatically add the entry to the videos list, so it won't be fetched again
+					const args = {id, ...channelTakedownInfo}
+					db.prepare("INSERT INTO TakedownVideos (id, org, url) VALUES (@id, @org, @url)").run(args)
+					return render(451, "pug/takedown-video.pug", channelTakedownInfo)
+				}
 
 				// process stream list ordering
 				const formats = sortFormats(video, settings.quality)
