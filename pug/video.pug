@@ -20,11 +20,11 @@ block content
         script(type="module" src=getStaticURL("html", "/static/js/continuous.js"))
         noscript
           meta(http-equiv="refresh" content=`${video.lengthSeconds+5};url=/watch?v=${first.videoId}&continuous=1&session-watched=${sessionWatchedNext}`)
-    main.video-page(class={
+    .video-page(class={
       "video-page--recommended-below": settings.recommended_mode === 1,
       "video-page--recommended-hidden": settings.recommended_mode === 2
     })
-      .main-video-section
+      main.main-video-section
         .video-container
           - const format = formats[0]
           if format
@@ -69,7 +69,7 @@ block content
         .button-container
           +subscribe_button(video.authorId, subscribed, `/watch?v=${video.videoId}`).border-look
           //- button.border-look#theatre Theatre
-          select(autocomplete="off").border-look#quality-select
+          select(aria-label="Quality" autocomplete="off").border-look#quality-select
             each f in formats
               option(value=f.itag)= f.cloudtube__label
           //-
