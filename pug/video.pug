@@ -51,7 +51,6 @@ block content
             - const month = new Intl.DateTimeFormat("en-US", {month: "short"}).format(date.getTime())
             div= `Uploaded ${date.getUTCDate()} ${month} ${date.getUTCFullYear()}`
             div= video.second__viewCountText
-            div(style=`--rating: ${video.rating*20}%`)#rating-bar.rating-bar
 
         audio(preload="auto")#audio
         #live-event-notice
