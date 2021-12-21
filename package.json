@@ -10,11 +10,11 @@
   "author": "",
   "license": "AGPL-3.0",
   "dependencies": {
-    "better-sqlite3": "^7.1.0",
+    "better-sqlite3": "^7.4.5",
     "cookie": "^0.4.1",
-    "denque": "^1.4.1",
+    "denque": "^1.5.1",
     "mixin-deep": "^2.0.1",
-    "node-fetch": "^2.6.0",
-    "pinski": "git+https://git.sr.ht/~cadence/nodejs-pinski#210be3cfacbd93d44e104698a29abd39494a6271"
+    "node-fetch": "^2.6.6",
+    "pinski": "git+https://git.sr.ht/~cadence/nodejs-pinski#e22095172a061a8271e28272e2e481d541ea6725"
   }
 }
