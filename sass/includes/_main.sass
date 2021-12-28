@@ -1,0 +1,32 @@
+$_theme: () !default
+
+@use "sass:selector"
+
+// preload second-level includes with the theme (there will be conflicts due to reconfiguration they are loaded individually)
+// this isn't _exactly_ what @forward is supposed to be used for, but it's the best option here
+@forward "video-list-item" show _ with ($_theme: $_theme)
+@forward "forms" show _ with ($_theme: $_theme)
+@forward "buttons" show _ with ($_theme: $_theme)
+
+@use "base" with ($_theme: $_theme)
+@use "video-page" with ($_theme: $_theme)
+@use "search-page" with ($_theme: $_theme)
+@use "home-page" with ($_theme: $_theme)
+@use "channel-page" with ($_theme: $_theme)
+@use "subscriptions-page" with ($_theme: $_theme)
+@use "settings-page" with ($_theme: $_theme)
+@use "cant-think-page" with ($_theme: $_theme)
+@use "privacy-page" with ($_theme: $_theme)
+@use "licenses-page" with ($_theme: $_theme)
+@use "filters-page" with ($_theme: $_theme)
+@use "takedown-page" with ($_theme: $_theme)
+@use "nav" with ($_theme: $_theme)
+@use "footer" with ($_theme: $_theme)
+
+@font-face
+  font-family: "Bariol"
+  src: url(/static/fonts/bariol.woff?statichash=1)
+
+.button-container
+  display: flex
+  flex-wrap: wrap

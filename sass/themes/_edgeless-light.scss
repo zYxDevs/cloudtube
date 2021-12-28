@@ -1,0 +1,8 @@
+// extend regular light theme to change a couple of shades
+@use "light";
+@use "sass:map";
+
+// this section is for colour meanings
+$theme: map.merge(light.$theme, (
+  "edge-grey": #c0c0c0,
+));

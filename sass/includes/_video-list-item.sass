@@ -1,5 +1,7 @@
-@use "colors.sass" as c
-@use "_dimensions.sass" as dimensions
+$_theme: () !default
+
+@use "sass:map"
+@use "_dimensions" as dimensions
 
 // navigator hacks
 .thumbnail > .thumbnail__options-container
@@ -30,6 +32,7 @@
   &__show-more
     display: block
     height: $more-size
+    color: #fff
     line-height: 16px
     font-size: 25px
     text-align: center
@@ -52,7 +55,7 @@
   &__options-list
     pointer-events: auto
     display: grid
-    background-color: c.$bg-accent
+    background-color: map.get($_theme, "bg-3")
     padding: 8px 0px
     border-radius: 8px
     box-shadow: 0 2px 6px 2px #000
@@ -67,7 +70,7 @@
       right: 0
       transform: translate(-6px, -1px) rotate(-45deg)
       clip-path: polygon(-5% -20%, 120% -20%, 120% 125%)
-      background-color: c.$bg-accent
+      background-color: map.get($_theme, "bg-3")
       box-shadow: 0px 0px 4px 0px #000
       pointer-events: none
 
@@ -80,7 +83,7 @@
   margin-bottom: 12px
 
   @at-root .video-list-item--watched#{&}
-    background: c.$bg-darker
+    background: map.get($_theme, "bg-dim")
     padding: 4px 4px 0px
     margin: -4px -4px 8px
 
@@ -93,7 +96,7 @@
   .thumbnail
     position: relative
     display: flex
-    background: c.$bg-darkest
+    background: map.get($_theme, "bg-0")
 
     &__link
       font-size: 0 // remove whitespace around the image
@@ -106,7 +109,7 @@
     position: absolute
     bottom: 3px
     right: 3px
-    color: c.$fg-bright
+    color: #fff
     font-size: 14px
     background: rgba(20, 20, 20, 0.85)
     line-height: 1
@@ -119,20 +122,20 @@
     line-height: 1.2
 
   .title-link
-    color: c.$fg-main
+    color: map.get($_theme, "fg-main")
     text-decoration: none
 
   .author-line
     margin-top: 4px
     font-size: 15px
-    color: c.$fg-dim
+    color: map.get($_theme, "fg-dim")
 
   .author
-    color: c.$fg-dim
+    color: map.get($_theme, "fg-dim")
     text-decoration: none
 
     &:hover, &:active
-      color: c.$fg-bright
+      color: map.get($_theme, "fg-bright")
       text-decoration: underline
 
 @mixin recommendation-item
@@ -176,15 +179,15 @@
 
     .author-line
       font-size: 15px
-      color: c.$fg-main
+      color: map.get($_theme, "fg-main")
 
     .author
-      color: c.$fg-main
+      color: map.get($_theme, "fg-main")
 
     .description
       margin-top: 16px
       font-size: 15px
-      color: c.$fg-dim
+      color: map.get($_theme, "fg-dim")
 
   +dimensions.thin
     .description
@@ -195,7 +198,7 @@
 
   .description b
     font-weight: normal
-    color: c.$fg-main
+    color: map.get($_theme, "fg-main")
 
 @mixin channel-video
   @include large-item

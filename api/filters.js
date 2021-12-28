@@ -9,8 +9,7 @@ const {Matcher, PatternCompileError} = require("../utils/matcher")
 const filterMaxLength = 160
 const regexpEnabledText = constants.server_setup.allow_regexp_filters ? "" : "not"
 
-function getCategories(req) {
-	const user = getUser(req)
+function getCategories(user) {
 	const filters = user.getFilters()
 
 	// Sort filters into categories for display. Titles are already sorted.
@@ -39,7 +38,9 @@ function getCategories(req) {
 module.exports = [
 	{
 		route: "/filters", methods: ["GET"], code: async ({req, url}) => {
-			const categories = getCategories(req)
+			const user = getUser(req)
+			const categories = getCategories(user)
+			const settings = user.getSettingsOrDefaults()
 			let referrer = url.searchParams.get("referrer") || null
 
 			let type = null
@@ -54,7 +55,7 @@ module.exports = [
 				label = url.searchParams.get("label")
 			}
 
-			return render(200, "pug/filters.pug", {categories, type, contents, label, referrer, filterMaxLength, regexpEnabledText})
+			return render(200, "pug/filters.pug", {settings, categories, type, contents, label, referrer, filterMaxLength, regexpEnabledText})
 		}
 	},
 	{
@@ -100,8 +101,10 @@ module.exports = [
 					return true
 				}, state => {
 					const {type, contents, label, compileError} = state
-					const categories = getCategories(req)
-					return render(400, "pug/filters.pug", {categories, type, contents, label, compileError, filterMaxLength, regexpEnabledText})
+					const user = getUser(req)
+					const categories = getCategories(user)
+					const settings = user.getSettingsOrDefaults()
+					return render(400, "pug/filters.pug", {settings, categories, type, contents, label, compileError, filterMaxLength, regexpEnabledText})
 				})
 				.last(state => {
 					const {type, contents, label} = state

@@ -9,6 +9,10 @@ let constants = {
 			type: "string",
 			default: "http://localhost:3000"
 		},
+		theme: {
+			type: "integer",
+			default: 0
+		},
 		save_history: {
 			type: "boolean",
 			default: false

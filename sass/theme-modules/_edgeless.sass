@@ -1,0 +1,27 @@
+$_theme: () !default
+
+@use "sass:map"
+
+// remove separating edges
+.main-nav, .footer__center, .video-page--recommended-side .related-videos
+  border: none
+
+// no background change to recommended videos sidebar
+.video-page--recommended-side .related-videos
+  background-color: map.get($_theme, "bg-2")
+
+// navigation shadow
+.main-nav
+  position: relative // needed for box shadow to overlap related videos section
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.1)
+
+// thumbnail dropdown menu dividers
+.menu-look
+  border-color: map.get($_theme, "bg-0")
+
+// details areas
+details, .checkbox-hider__container, .more-settings
+  border: none
+details[open] summary
+  border: none
+  margin-bottom: 4px

@@ -31,8 +31,8 @@ block content
 
       if settings.save_history
         input(type="checkbox" id="watched-videos-display")
-        .watched-videos-display-container
-          label(for="watched-videos-display").watched-videos-display-label Hide watched videos
+        .checkbox-hider__container
+          label(for="watched-videos-display").checkbox-hider__label Hide watched videos
 
       each video in videos
         +video_list_item("subscriptions-video", video, instanceOrigin, {showMarkWatched: settings.save_history && !video.watched})

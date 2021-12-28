@@ -1,10 +1,12 @@
+$_theme: () !default
+
 @use "sass:selector"
-@use "colors.sass" as c
+@use "sass:map"
 
 @mixin button-base
   -webkit-appearance: none
   -moz-appearance: none
-  color: c.$fg-bright
+  color: map.get($_theme, "fg-bright")
   border: none
   border-radius: 4px
   padding: 8px
@@ -14,7 +16,7 @@
 
   @at-root #{selector.unify(&, "select")}
     padding: 8px 27px 8px 8px
-    background: url(/static/images/arrow-down-wide.svg) right 53% no-repeat c.$bg-accent-x
+    background: map.get($_theme, "image-dropdown") right 53% no-repeat map.get($_theme, "bg-4")
 
   @at-root #{selector.unify(&, "a")}
     padding: 7px 8px
@@ -31,12 +33,12 @@
 @mixin button-bg
   @include button-base
 
-  background-color: c.$bg-accent-x
+  background-color: map.get($_theme, "bg-4")
 
 @mixin border-button
   @include button-bg
 
-  border: 1px solid c.$edge-grey
+  border: 1px solid map.get($_theme, "edge-grey")
 
 @mixin button-size
   margin: 4px
@@ -44,10 +46,10 @@
 
 @mixin button-hover
   &:hover
-    background-color: c.$bg-accent
+    background-color: map.get($_theme, "bg-3")
 
   &:active
-    background-color: c.$bg-dark
+    background-color: map.get($_theme, "bg-2")
 
 .base-border-look
   @include border-button
@@ -62,13 +64,13 @@
   @include button-size
   -webkit-appearance: none
   -moz-appearance: none
-  color: c.$fg-bright
+  color: map.get($_theme, "fg-bright")
   text-decoration: none
   line-height: 1.25
   margin: 0
   padding: 8px 20px
-  background: c.$bg-accent
-  border: solid c.$bg-darker
+  background: map.get($_theme, "bg-3")
+  border: solid map.get($_theme, "edge-grey")
   border-width: 1px 0px 0px
   text-align: left
 
@@ -76,7 +78,7 @@
     border-width: 1px 0px 1px
 
   &:hover
-    background: c.$bg-accent-x
+    background: map.get($_theme, "bg-4")
 
   &:active
-    background: c.$bg-darker
+    background: map.get($_theme, "bg-1")

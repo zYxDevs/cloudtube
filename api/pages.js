@@ -1,16 +1,35 @@
 const {render} = require("pinski/plugins")
+const {getUser} = require("../utils/getuser")
 
 module.exports = [
 	{
 		route: "/", methods: ["GET"], code: async ({req}) => {
 			const userAgent = req.headers["user-agent"] || ""
 			const mobile = userAgent.toLowerCase().includes("mobile")
-			return render(200, "pug/home.pug", {mobile})
+			const user = getUser(req)
+			const settings = user.getSettingsOrDefaults()
+			return render(200, "pug/home.pug", {settings, mobile})
 		}
 	},
 	{
-		route: "/js-licenses", methods: ["GET"], code: async () => {
-			return render(200, "pug/js-licenses.pug")
+		route: "/(?:js-)?licenses", methods: ["GET"], code: async ({req}) => {
+			const user = getUser(req)
+			const settings = user.getSettingsOrDefaults()
+			return render(200, "pug/licenses.pug", {settings})
+		}
+	},
+	{
+		route: "/cant-think", methods: ["GET"], code: async ({req}) => {
+			const user = getUser(req)
+			const settings = user.getSettingsOrDefaults()
+			return render(200, "pug/cant-think.pug", {settings})
+		}
+	},
+	{
+		route: "/privacy", methods: ["GET"], code: async ({req}) => {
+			const user = getUser(req)
+			const settings = user.getSettingsOrDefaults()
+			return render(200, "pug/privacy.pug", {settings})
 		}
 	}
 ]

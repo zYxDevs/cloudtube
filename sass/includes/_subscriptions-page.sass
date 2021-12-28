@@ -1,6 +1,8 @@
-@use "colors.sass" as c
-@use "video-list-item.sass" as *
-@use "forms.sass" as forms
+$_theme: () !default
+
+@use "sass:map"
+@use "forms" as forms
+@use "video-list-item" as *
 
 .subscriptions-page
   padding: 40px 20px 20px
@@ -33,7 +35,7 @@
 
   .name
     font-size: 22px
-    color: c.$fg-main
+    color: map.get($_theme, "fg-main")
 
 @include forms.checkbox-hider("watched-videos-display")
 

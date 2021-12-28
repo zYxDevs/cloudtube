@@ -70,6 +70,11 @@ const deltas = [
 			.run()
 		db.prepare("CREATE TABLE TakedownChannels (ucid TEXT NOT NULL, org TEXT, url TEXT, PRIMARY KEY (ucid))")
 			.run()
+	},
+	// 11: Settings +theme
+	function() {
+		db.prepare("ALTER TABLE Settings ADD COLUMN theme INTEGER DEFAULT 0")
+			.run()
 	}
 ]
 
@@ -82,7 +87,7 @@ async function createBackup(entry) {
 
 /**
  * @param {number} entry
- * @param {boolean} log
+ * @param {boolean} [log]
  */
 function runDelta(entry, log) {
 	process.stdout.write(`Upgrading database to version ${entry}... `)

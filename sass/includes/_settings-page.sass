@@ -1,5 +1,7 @@
-@use "forms.sass" as forms
-@use "colors.sass" as c
+$_theme: () !default
+
+@use "sass:map"
+@use "forms" as forms
 
 .settings-page
   padding: 40px 20px 20px
@@ -19,8 +21,9 @@
 .more-settings
   margin-top: 24px
   padding: 12px
+  border: 1px solid map.get($_theme, "edge-grey")
   border-radius: 8px
-  background-color: c.$bg-accent-x
+  background-color: map.get($_theme, "bg-3")
 
   &__list
     margin: 0
@@ -34,7 +37,7 @@
   margin-top: 24px
 
   .delete-confirm-container
-    background: c.$bg-darker
+    background: map.get($_theme, "bg-1")
     margin-bottom: -36px
 
 @include forms.checkbox-hider("delete-confirm")

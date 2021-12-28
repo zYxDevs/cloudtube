@@ -1,8 +1,10 @@
-@use "colors.sass" as c
+$_theme: () !default
+
+@use "sass:map"
 
 body
-  background-color: c.$bg-dark
-  color: c.$fg-main
+  background-color: map.get($_theme, "bg-2")
+  color: map.get($_theme, "fg-main")
   font-family: "Bariol", sans-serif
   font-size: 18px
   margin: 0
@@ -13,13 +15,13 @@ body
   flex-direction: column
 
 a
-  color: c.$link
+  color: map.get($_theme, "link")
 
 pre, code
   font-size: 0.88em
 
 code
-  background: c.$bg-darker
+  background: map.get($_theme, "bg-1")
   padding: 3px 5px
   border-radius: 4px
 
@@ -32,7 +34,7 @@ button
   cursor: pointer
 
 ::placeholder
-  color: #c4c4c4
+  color: map.get($_theme, "placeholder")
   opacity: 1
 
 // focus section
@@ -48,19 +50,20 @@ button
 
 select:-moz-focusring
   color: transparent
-  text-shadow: 0 0 0 c.$fg-bright
+  text-shadow: 0 0 0 map.get($_theme, "fg-bright")
 
 body.show-focus
   a, select, button, input, video, summary
     &:focus
-      outline: 2px dotted #ddd
+      outline: 2px dotted map.get($_theme, "fg-main")
 
 video
   background-color: black
 
 details
-  background-color: c.$bg-accent-x
+  background-color: map.get($_theme, "bg-3")
   padding: 12px
+  border: 1px solid map.get($_theme, "edge-grey")
   border-radius: 8px
 
   summary
@@ -68,20 +71,22 @@ details
     line-height: 1
     margin-bottom: 0
     user-select: none
-    color: c.$fg-main
+    color: map.get($_theme, "fg-main")
 
   &[open] summary
-    margin-bottom: 16px
+    padding-bottom: 12px
+    border-bottom: 1px solid map.get($_theme, "edge-grey")
+    margin-bottom: 8px
 
 table
-  background-color: c.$bg-darker
+  background-color: map.get($_theme, "bg-1")
 
 table, td, th
-  border: 1px solid c.$edge-grey
+  border: 1px solid map.get($_theme, "edge-grey")
   border-collapse: collapse
 
 td, th
   padding: 4px 8px
 
 thead, tr:nth-child(even)
- background-color: c.$bg-darkest
+ background-color: map.get($_theme, "bg-0")

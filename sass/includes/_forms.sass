@@ -1,7 +1,9 @@
-@use "colors.sass" as c
+$_theme: () !default
+
+@use "sass:map"
 
 @mixin disabled
-  background-color: c.$bg-dark
+  background-color: map.get($_theme, "bg-2")
   color: #808080
 
 fieldset
@@ -20,7 +22,7 @@ fieldset
     font-size: 28px
     font-weight: bold
     padding: 0
-    border-bottom: 1px solid #333
+    border-bottom: 1px solid map.get($_theme, "edge-grey") // TODO: originally contrasted more
     line-height: 1.56
 
     @media screen and (max-width: 400px)
@@ -36,7 +38,7 @@ fieldset
   position: relative
   padding-bottom: 5px
   margin-bottom: 5px
-  border-bottom: 1px solid #999
+  border-bottom: 1px solid map.get($_theme, "edge-grey")
 
   @media screen and (max-width: 400px)
     flex-direction: column
@@ -52,7 +54,7 @@ fieldset
   &__label
     grid-area: label
     padding: 8px 8px 8px 0px
-    color: #fff
+    color: map.get($_theme, "fg-main")
 
   &__input
     grid-area: input
@@ -63,7 +65,7 @@ fieldset
     white-space: pre-line
     margin: 12px 0px 18px
     font-size: 16px
-    color: #ccc
+    color: map.get($_theme, "fg-dim")
     line-height: 1.2
 
 //
@@ -79,7 +81,7 @@ fieldset
       width: 16px
       height: 16px
       padding: 0px
-      border: 1px solid #666
+      border: 1px solid map.get($_theme, "edge-grey")
       border-radius: 3px
       margin-left: 8px
       position: relative
@@ -110,18 +112,19 @@ fieldset
     height: 42px
     margin: 0
 
-  .#{$base}-container
-    position: relative
-    display: grid // why does the default not work???
-    top: -42px
-    background: c.$bg-accent-x
-    line-height: 1
-    border-radius: 8px
-    margin-bottom: -18px
+.checkbox-hider__container
+  position: relative
+  display: grid // why does the default not work???
+  top: -42px
+  background: map.get($_theme, "bg-3")
+  line-height: 1
+  border: 1px solid map.get($_theme, "edge-grey")
+  border-radius: 8px
+  margin-bottom: -18px
 
-    .#{$base}-label
-      padding: 12px 0px 12px 32px
-      cursor: pointer
+  .checkbox-hider__label
+    padding: 12px 0px 12px 32px
+    cursor: pointer
 
 @mixin single-button-form
   display: inline-block

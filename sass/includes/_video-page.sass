@@ -1,11 +1,11 @@
-@use "colors.sass" as c
-@use "video-list-item.sass" as *
+$_theme: () !default
+
+@use "sass:map"
+@use "video-list-item" as *
 
 .video-page
   display: grid
   grid-auto-flow: row
-  padding: 20px
-  grid-gap: 16px
 
   @media screen and (min-width: 1000px)
     grid-template-columns: 1fr 400px
@@ -13,10 +13,25 @@
   &--recommended-below, &--recommended-hidden
     grid-template-columns: none
 
-  &--recommended-hidden .related-videos
-    display: none
+  &--recommended-side
+    .related-videos
+      border-left: 1px solid map.get($_theme, "edge-grey")
+      padding-left: 12px
+      padding-right: 20px
+      background-color: map.get($_theme, "bg-4")
+      padding-top: 12px
+
+  &--recommended-below
+    .related-videos
+      padding: 20px
+
+  &--recommended-hidden
+    .related-videos
+      display: none
 
 .main-video-section
+  padding: 20px
+
   .video-container
     text-align: center
 
@@ -27,7 +42,7 @@
       max-height: 80vh
 
   .stream-notice
-    background: c.$bg-darkest
+    background: map.get($_theme, "bg-0")
     padding: 4px
 
   .info
@@ -45,15 +60,15 @@
         margin: 0px 0px 4px
         font-size: 30px
         font-weight: normal
-        color: c.$fg-bright
+        color: map.get($_theme, "fg-bright")
         word-break: break-word
 
       .author-link
-        color: c.$fg-main
+        color: map.get($_theme, "fg-main")
         text-decoration: none
 
         &:hover, &:active
-          color: c.$fg-bright
+          color: map.get($_theme, "fg-bright")
           text-decoration: underline
 
     .info-secondary
@@ -75,7 +90,7 @@
     margin: 16px 4px
     padding: 12px
     border-radius: 4px
-    background-color: c.$bg-darkest
+    background-color: map.get($_theme, "bg-0")
 
     &__description
       margin-left: 12px
@@ -85,7 +100,7 @@
 
     &__script-warning
       font-size: 15px
-      color: c.$fg-warning
+      color: map.get($_theme, "fg-warning")
 
     &__buttons
       display: flex
@@ -97,12 +112,12 @@
     line-height: 1.4
     word-break: break-word
     margin: 16px 4px 4px 4px
-    background-color: c.$bg-accent-area
+    background-color: map.get($_theme, "bg-5")
     padding: 12px
     border-radius: 4px
 
-    --regular-background: #{c.$bg-accent-area}
-    --highlight-background: #{c.$bg-darker}
+    --regular-background: #{map.get($_theme, "bg-5")}
+    --highlight-background: #{map.get($_theme, "bg-1")}
 
 .subscribe-form
   display: inline-block

@@ -1,6 +1,8 @@
-@use "colors.sass" as c
-@use "video-list-item.sass" as *
-@use "_dimensions.sass" as dimensions
+$_theme: () !default
+
+@use "sass:map"
+@use "_dimensions" as dimensions
+@use "video-list-item" as *
 
 .channel-page
   padding: 40px 20px 20px
@@ -17,7 +19,7 @@
   align-self: flex-start
 
 .channel-data
-  background-color: c.$bg-darker
+  background-color: map.get($_theme, "bg-1")
   padding: 24px
   margin: 12px 0px 24px
   border-radius: 8px
@@ -44,11 +46,11 @@
       .name
         font-size: 30px
         font-weight: normal
-        color: c.$fg-bright
+        color: map.get($_theme, "fg-bright")
         margin: 0
 
       .subscribers
-        color: c.$fg-main
+        color: map.get($_theme, "fg-main")
         font-size: 18px
 
     .subscribe-form
@@ -61,7 +63,8 @@
         line-height: 1
         border-radius: 8px
         font-size: 22px
-        background-color: c.$power-deep
+        background-color: map.get($_theme, "power-deep")
+        color: map.get($_theme, "power-fg")
         border: none
 
   .description

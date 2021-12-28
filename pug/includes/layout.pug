@@ -3,7 +3,8 @@ html
   head
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
-    link(rel="stylesheet" type="text/css" href=getStaticURL("sass", "/main.sass"))
+    - const theme = settings && ["dark", "light", "edgeless-light"][settings.theme] || "dark"
+    link(rel="stylesheet" type="text/css" href=getStaticURL("sass", `/${theme}.sass`))
     script(type="module" src=getStaticURL("html", "/static/js/focus.js"))
     block head
 
@@ -15,13 +16,9 @@ html
         .links
           a(href="/").link.home CloudTube
           a(href="/subscriptions" title="Subscriptions").link.icon-link
-            svg(width=30 height=25)
-              image(href=getStaticURL("html", "/static/images/subscriptions.svg") alt="Subscriptions.").icon
-              title Subscriptions
+            != icons.get("subscriptions")
           a(href="/settings" title="Settings").link.icon-link
-            svg(width=25 height=25)
-              image(href=getStaticURL("html", "/static/images/settings.svg") alt="Settings.").icon
-              title Settings
+            != icons.get("settings")
         form(method="get" action="/search").search-form
           input(type="text" placeholder="Search" aria-label="Search a video" name="q" autocomplete="off" value=query).search
 

@@ -1,0 +1,38 @@
+// Defined in scss file instead of sass because indented syntax does not have multiline maps
+// https://github.com/sass/sass/issues/216
+
+@use "sass:map";
+
+// this section is for colour shades
+$theme: (
+  // lighter
+  "bg-0": #fff,
+  "bg-1": #fff,
+  // regular
+  "bg-2": #f2f2f2,
+  // darker
+  "bg-3": #e8e8e8, // slightly
+  "bg-4": #dadada, // noticably
+  "bg-5": #d0d0d0, // brightly
+
+  "fg-bright": #000,
+  "fg-main": #202020,
+  "fg-dim": #454545,
+  "fg-warning": #ce8600,
+
+  "edge-grey": #909090,
+  "placeholder": #636363,
+
+  "link": #0b51d4,
+
+  "power-deep": #c62727,
+  "power-fg": #fff,
+
+  "image-dropdown": url(/static/images/arrow-down-wide-light.svg)
+);
+
+// this section is for colour meanings
+$theme: map.merge($theme, (
+  "bg-dim": map.get($theme, "bg-4"),
+  "bg-nav": map.get($theme, "bg-0")
+));

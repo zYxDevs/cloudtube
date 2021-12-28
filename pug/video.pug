@@ -21,6 +21,7 @@ block content
         noscript
           meta(http-equiv="refresh" content=`${video.lengthSeconds+5};url=/watch?v=${first.videoId}&continuous=1&session-watched=${sessionWatchedNext}`)
     .video-page(class={
+      "video-page--recommended-side": settings.recommended_mode === 0,
       "video-page--recommended-below": settings.recommended_mode === 1,
       "video-page--recommended-hidden": settings.recommended_mode === 2
     })

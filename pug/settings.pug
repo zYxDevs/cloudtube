@@ -36,6 +36,16 @@ block content
     form(method="post" action="/settings")
       +fieldset("Settings")
 
+        +select({
+          id: "theme",
+          label: "Theme",
+          options: [
+            {value: "0", text: "Standard dark"},
+            {value: "1", text: "Standard light"},
+            {value: "2", text: "Edgeless light"}
+          ]
+        })
+
         +input({
           id: "instance",
           label: "Instance",

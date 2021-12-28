@@ -24,7 +24,7 @@ module.exports = [
 					video.watched = watchedVideos.includes(video.videoId)
 				})
 			}
-			return render(200, "pug/channel.pug", {url, data, subscribed, instanceOrigin})
+			return render(200, "pug/channel.pug", {settings, url, data, subscribed, instanceOrigin})
 		}
 	}
 ]

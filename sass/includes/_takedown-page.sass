@@ -1,0 +1,16 @@
+$_theme: () !default
+
+@use "sass:map"
+
+.takedown-page
+  max-width: 700px
+  margin: 0 auto
+
+  .new-section
+    margin-top: 200px
+
+  .important-section
+    padding: 4px 20px
+    border: 1px solid map.get($_theme, "edge-grey")
+    color: map.get($_theme, "fg-bright")
+    background-color: map.get($_theme, "bg-1")

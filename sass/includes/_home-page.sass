@@ -1,4 +1,6 @@
-@use "colors.sass" as c
+$_theme: () !default
+
+@use "sass:map"
 
 .home-page
   padding: 40px
@@ -18,8 +20,8 @@
   padding: 16px
   border-radius: 4px
   font-size: 20px
-  background-color: c.$bg-darker
-  color: c.$fg-main
+  background-color: map.get($_theme, "bg-1")
+  color: map.get($_theme, "fg-main")
 
   p
     margin: 0 32px

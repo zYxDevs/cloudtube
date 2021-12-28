@@ -1,0 +1,9 @@
+@use "themes/dark" as *
+@use "includes/main" with ($_theme: $theme)
+
+@use "theme-modules/edgeless" with ($_theme: $theme)
+
+// navigation shadow
+.main-nav
+  position: relative // needed for box shadow to overlap related videos section
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.1)
