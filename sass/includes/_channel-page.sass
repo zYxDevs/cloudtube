@@ -74,6 +74,19 @@ $_theme: () !default
 .channel-video
   @include channel-video
 
+.channel-error
+  background-color: map.get($_theme, "bg-1")
+  padding: 24px
+  margin: 12px 0px 24px
+  border-radius: 8px
+  border: 1px solid map.get($_theme, "edge-grey")
+  font-size: 20px
+  color: map.get($_theme, "fg-warning")
+
+.you-should-unsubscribe
+  margin-top: 20px
+  color: map.get($_theme, "fg-main")
+
 .about-description // class provided by youtube
   pre
     font-size: inherit

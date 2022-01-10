@@ -50,6 +50,7 @@ let constants = {
 		csrf_time: 4*60*60*1000,
 		seen_token_subscriptions_eligible: 40*60*60*1000,
 		subscriptions_refresh_loop_min: 5*60*1000,
+		subscriptions_refesh_fake_not_found_cooldown: 10*60*1000,
 	},
 
 	// Pattern matching.

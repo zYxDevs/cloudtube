@@ -37,6 +37,10 @@ $_theme: () !default
     font-size: 22px
     color: map.get($_theme, "fg-main")
 
+  .missing-reason
+    font-size: 16px
+    color: map.get($_theme, "fg-warning")
+
 @include forms.checkbox-hider("watched-videos-display")
 
 #watched-videos-display:checked ~ .video-list-item--watched

@@ -54,7 +54,7 @@ class User {
 
 	getSubscriptions() {
 		if (this.token) {
-			return db.prepare("SELECT ucid FROM Subscriptions WHERE token = ? AND channel_missing = 0").pluck().all(this.token)
+			return db.prepare("SELECT ucid FROM Subscriptions WHERE token = ?").pluck().all(this.token)
 		} else {
 			return []
 		}
@@ -62,7 +62,7 @@ class User {
 
 	isSubscribed(ucid) {
 		if (this.token) {
-			return !!db.prepare("SELECT * FROM Subscriptions WHERE token = ? AND ucid = ? AND channel_missing = 0").get([this.token, ucid])
+			return !!db.prepare("SELECT * FROM Subscriptions WHERE token = ? AND ucid = ?").get([this.token, ucid])
 		} else {
 			return false
 		}

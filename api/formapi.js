@@ -26,7 +26,6 @@ module.exports = [
 						await fetchChannel(ucid, settings.instance)
 						db.prepare(
 							"INSERT INTO Subscriptions (token, ucid) VALUES (?, ?)"
-								+ " ON CONFLICT (token, ucid) DO UPDATE SET channel_missing = 0"
 						).run(token, ucid)
 					} else {
 						db.prepare("DELETE FROM Subscriptions WHERE token = ? AND ucid = ?").run(token, ucid)
@@ -41,7 +40,6 @@ module.exports = [
 							}),
 							content: "Success, redirecting..."
 						}
-						return redirect(params.get("referrer"), 303)
 					} else {
 						return {
 							statusCode: 200,

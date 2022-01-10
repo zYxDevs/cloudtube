@@ -11,12 +11,24 @@ block content
     if hasSubscriptions
       section
         details.channels-details
-          summary #{channels.length} subscriptions
+          summary
+            | #{channels.length} subscriptions
+            if missingChannelCount === 1
+              = ` - ${missingChannelCount} channel is gone`
+            else if missingChannelCount > 1
+              = ` - ${missingChannelCount} channels are gone`
           .channels-list
             for channel in channels
               a(href=`/channel/${channel.ucid}`).channel-item
                 img(src=channel.icon_url width=512 height=512 alt="").thumbnail
-                span.name= channel.name
+                div
+                  div.name= channel.name
+                  if channel.missing
+                    div.missing-reason
+                      if channel.missing_reason
+                        = channel.missing_reason
+                      else
+                        | This channel appears to be deleted or terminated. Click to check it.
 
       if refreshed
         section

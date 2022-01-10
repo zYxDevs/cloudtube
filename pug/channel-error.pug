@@ -1,0 +1,27 @@
+extends includes/layout
+
+include includes/video-list-item
+include includes/subscribe-button
+
+block head
+  title= `${data.row ? data.row.name : "Deleted channel"} - CloudTube`
+  script(type="module" src=getStaticURL("html", "/static/js/channel.js"))
+
+block content
+  main.channel-page
+    if data.row
+      .channel-data
+        .info
+          - const iconURL = data.row.icon_url
+          if iconURL
+            .logo
+              img(src=iconURL alt="").thumbnail-image
+          .about
+            h1.name= data.row.name
+          +subscribe_button(data.ucid, subscribed, `/channel/${data.ucid}`).subscribe-button.base-border-look
+
+    .channel-error
+      div= data.message
+
+      if data.missing && subscribed
+        .you-should-unsubscribe To remove this channel from your subscriptions list, click Unsubscribe.

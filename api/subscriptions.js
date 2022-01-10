@@ -11,12 +11,14 @@ module.exports = [
 			let hasSubscriptions = false
 			let videos = []
 			let channels = []
+			let missingChannelCount = 0
 			let refreshed = null
 			if (user.token) {
 				// trigger a background refresh, needed if they came back from being inactive
 				refresher.skipWaiting()
 				// get channels
 				channels = db.prepare(`SELECT Channels.* FROM Channels INNER JOIN Subscriptions ON Channels.ucid = Subscriptions.ucid WHERE token = ? ORDER BY name`).all(user.token)
+				missingChannelCount = channels.reduce((a, c) => a + c.missing, 0)
 				// get refreshed status
 				refreshed = db.prepare(`SELECT min(refreshed) as min, max(refreshed) as max, count(refreshed) as count FROM Channels INNER JOIN Subscriptions ON Channels.ucid = Subscriptions.ucid WHERE token = ?`).get(user.token)
 				// get watched videos
@@ -37,7 +39,7 @@ module.exports = [
 			}
 			const settings = user.getSettingsOrDefaults()
 			const instanceOrigin = settings.instance
-			return render(200, "pug/subscriptions.pug", {url, settings, hasSubscriptions, videos, channels, refreshed, timeToPastText, instanceOrigin})
+			return render(200, "pug/subscriptions.pug", {url, settings, hasSubscriptions, videos, channels, missingChannelCount, refreshed, timeToPastText, instanceOrigin})
 		}
 	}
 ]

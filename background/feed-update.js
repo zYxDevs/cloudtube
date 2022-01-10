@@ -15,8 +15,8 @@ const prepared = {
 	channel_refreshed_update: db.prepare(
 		"UPDATE Channels SET refreshed = ? WHERE ucid = ?"
 	),
-	unsubscribe_all_from_channel: db.prepare(
-		"UPDATE Subscriptions SET channel_missing = 1 WHERE ucid = ?"
+	channel_mark_as_missing: db.prepare(
+		"UPDATE Channels SET missing = 1, missing_reason = ? WHERE ucid = ?"
 	)
 }
 
@@ -35,7 +35,7 @@ class RefreshQueue {
 		// get the next set of scheduled channels to refresh
 		const afterTime = Date.now() - constants.caching.seen_token_subscriptions_eligible
 		const channels = db.prepare(
-			"SELECT DISTINCT Subscriptions.ucid FROM SeenTokens INNER JOIN Subscriptions ON SeenTokens.token = Subscriptions.token AND SeenTokens.seen > ? WHERE Subscriptions.channel_missing = 0 ORDER BY SeenTokens.seen DESC"
+			"SELECT DISTINCT Subscriptions.ucid FROM SeenTokens INNER JOIN Subscriptions ON SeenTokens.token = Subscriptions.token INNER JOIN Channels ON Channels.ucid = Subscriptions.ucid WHERE Channels.missing = 0 AND SeenTokens.seen > ? ORDER BY SeenTokens.seen DESC"
 		).pluck().all(afterTime)
 		this.addLast(channels)
 		this.lastLoadTime = Date.now()
@@ -72,11 +72,12 @@ class Refresher {
 		this.refreshQueue = new RefreshQueue()
 		this.state = this.sym.ACTIVE
 		this.waitingTimeout = null
+		this.lastFakeNotFoundTime = 0
 		this.next()
 	}
 
 	refreshChannel(ucid) {
-		return fetch(`${constants.server_setup.local_instance_origin}/api/v1/channels/${ucid}/latest`).then(res => res.json()).then(root => {
+		return fetch(`${constants.server_setup.local_instance_origin}/api/v1/channels/${ucid}/latest`).then(res => res.json()).then(/** @param {any} root */ root => {
 			if (Array.isArray(root)) {
 				root.forEach(video => {
 					// organise
@@ -89,11 +90,24 @@ class Refresher {
 				prepared.channel_refreshed_update.run(Date.now(), ucid)
 				// console.log(`updated ${root.length} videos for channel ${ucid}`)
 			} else if (root.identifier === "PUBLISHED_DATES_NOT_PROVIDED") {
-				return [] // nothing we can do. skip this iteration.
+				// nothing we can do. skip this iteration.
 			} else if (root.identifier === "NOT_FOUND") {
-				// the channel does not exist. we should unsubscribe all users so we don't try again.
-				// console.log(`channel ${ucid} does not exist, unsubscribing all users`)
-				prepared.unsubscribe_all_from_channel.run(ucid)
+				// YouTube sometimes returns not found for absolutely no reason.
+				// There is no way to distinguish between a fake missing channel and a real missing channel without requesting the real endpoint.
+				// These fake missing channels often happen in bursts, which is why there is a cooldown.
+				const timeSinceLastFakeNotFound = Date.now() - this.lastFakeNotFoundTime
+				if (timeSinceLastFakeNotFound >= constants.caching.subscriptions_refesh_fake_not_found_cooldown) {
+					// We'll request the real endpoint to verify.
+					fetch(`${constants.server_setup.local_instance_origin}/api/v1/channels/${ucid}`).then(res => res.json()).then(/** @param {any} root */ root => {
+						if (root.error && (root.identifier === "NOT_FOUND" || root.identifier === "ACCOUNT_TERMINATED")) {
+							// The channel is really gone, and we should mark it as missing for everyone.
+							prepared.channel_mark_as_missing.run(root.error, ucid)
+						} else {
+							// The channel is not actually gone and YouTube is trolling us.
+							this.lastFakeNotFoundTime = Date.now()
+						}
+					})
+				} // else youtube is currently trolling us, skip this until later.
 			} else {
 				throw new Error(root.error)
 			}

@@ -75,6 +75,26 @@ const deltas = [
 	function() {
 		db.prepare("ALTER TABLE Settings ADD COLUMN theme INTEGER DEFAULT 0")
 			.run()
+	},
+	// 12: Channels +missing +missing_reason, Subscriptions -
+	// Better management for missing channels
+	// We totally discard the existing Subscriptions.channel_missing since it is unreliable.
+	function() {
+		db.prepare("ALTER TABLE Channels ADD COLUMN missing INTEGER NOT NULL DEFAULT 0")
+			.run()
+		db.prepare("ALTER TABLE Channels ADD COLUMN missing_reason TEXT")
+			.run()
+		// https://www.sqlite.org/lang_altertable.html#making_other_kinds_of_table_schema_changes
+		db.transaction(() => {
+			db.prepare("CREATE TABLE NEW_Subscriptions (token TEXT NOT NULL, ucid TEXT NOT NULL, PRIMARY KEY (token, ucid))")
+				.run()
+			db.prepare("INSERT INTO NEW_Subscriptions (token, ucid) SELECT token, ucid FROM Subscriptions")
+				.run()
+			db.prepare("DROP TABLE Subscriptions")
+				.run()
+			db.prepare("ALTER TABLE NEW_Subscriptions RENAME TO Subscriptions")
+				.run()
+		})()
 	}
 ]
 
