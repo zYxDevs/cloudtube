@@ -103,15 +103,6 @@ fieldset
         @include acts-like-button
         cursor: pointer
 
-@mixin checkbox-hider($base)
-  ##{$base}
-    position: relative
-    left: 10px
-    display: block
-    z-index: 1
-    height: 42px
-    margin: 0
-
 .checkbox-hider__container
   position: relative
   display: grid // why does the default not work???
@@ -122,9 +113,30 @@ fieldset
   border-radius: 8px
   margin-bottom: -18px
 
-  .checkbox-hider__label
-    padding: 12px 0px 12px 32px
-    cursor: pointer
+.checkbox-hider__label
+  padding: 12px 0px 12px 32px
+  cursor: pointer
+
+@mixin checkbox-hider($base)
+  ##{$base}
+    position: relative
+    left: 10px
+    display: block
+    z-index: 1
+    height: 42px
+    margin: 0
+
+  /*
+    automatically add these styles too
+    this means that components based off this can either add the .checkbox-hider__container class, or they can add the .base-name-container class,
+    depending on which one is more reasonable in the moment
+    for example, .delete-confirm-container takes advantage of the @extend here.
+
+  .#{$base}-container
+    @extend .checkbox-hider__container
+
+  .#{$base}-label
+    @extend .checkbox-hider__label
 
 @mixin single-button-form
   display: inline-block
