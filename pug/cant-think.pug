@@ -18,6 +18,7 @@ mixin leave(index, prefix="No more?", final)
         a(href="/search?q=cats+being+cute") [BLISS]
 
 block content
+  include includes/video-list-item
   main.cant-think-page
     - let src = constants.server_setup.cant_think_narration_url
     if src
@@ -71,3 +72,8 @@ block content
       p You know what you must do.
       p.ultimatum: a(href="#i-understand").border-look I know what I must do.
       a#i-understand
+      
+      p.the-end Well, looks like you reached the end of the content.#[br]You know what happens now.
+      h3 Recommended videos
+      +video_list_item("related-video", {videoId: "jKKCF_Bqtw4", title: "dopamine review", author: "Jreg", authorId: "UCGSGPehp0RWfca-kENgBJ9Q", viewCountText: "84,651 views"})
+      +video_list_item("related-video", {videoId: "gLYWLobR248", title: "I Watch My YouTube Videos At 2x Speed", author: "Jreg", authorId: "UCGSGPehp0RWfca-kENgBJ9Q", viewCountText: "125,625 views"})
