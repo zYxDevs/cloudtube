@@ -8,6 +8,17 @@ const V = validate.V
 
 module.exports = [
 	{
+		route: "/api/settings", methods: ["GET"], code: async ({req}) => {
+			const user = getUser(req)
+			const settings = user.getSettingsOrDefaults()
+			return {
+				statusCode: 200,
+				contentType: "application/json",
+				content: settings
+			}
+		}
+	},
+	{
 		route: "/settings", methods: ["GET"], code: async ({req}) => {
 			const user = getUser(req)
 			const settings = user.getSettings()
