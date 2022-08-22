@@ -10,7 +10,7 @@ module.exports = [
 			const id = fill[1]
 			const user = getUser(req)
 			const settings = user.getSettingsOrDefaults()
-			const data = await fetchChannel(id, path, settings.instance)
+			const data = await fetchChannel(path, id, settings.instance)
 			const subscribed = user.isSubscribed(id)
 			const instanceOrigin = settings.instance
 

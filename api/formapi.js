@@ -23,7 +23,7 @@ module.exports = [
 					const token = user.token
 
 					if (add) {
-						await fetchChannel(ucid, settings.instance)
+						await fetchChannel("channel", ucid, settings.instance)
 						db.prepare(
 							"INSERT INTO Subscriptions (token, ucid) VALUES (?, ?)"
 						).run(token, ucid)

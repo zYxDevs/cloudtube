@@ -1,7 +1,7 @@
 const {request} = require("./request")
 const db = require("./db")
 
-async function fetchChannel(ucid, path="channel", instance) {
+async function fetchChannel(path, ucid, instance) {
 	function updateGoodData(channel) {
 		const bestIcon = channel.authorThumbnails.slice(-1)[0]
 		const iconURL = bestIcon ? bestIcon.url : null
