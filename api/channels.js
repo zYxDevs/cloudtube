@@ -11,13 +11,13 @@ module.exports = [
 			const user = getUser(req)
 			const settings = user.getSettingsOrDefaults()
 			const data = await fetchChannel(path, id, settings.instance)
-			const subscribed = user.isSubscribed(id)
 			const instanceOrigin = settings.instance
 
 			// problem with the channel? fetchChannel has collected the necessary information for us.
 			// we can render a skeleton page, display the message, and provide the option to unsubscribe.
 			if (data.error) {
 				const statusCode = data.missing ? 410 : 500
+				const subscribed = user.isSubscribed(id)
 				return render(statusCode, "pug/channel-error.pug", {settings, data, subscribed, instanceOrigin})
 			}
 
@@ -34,6 +34,7 @@ module.exports = [
 					video.watched = watchedVideos.includes(video.videoId)
 				})
 			}
+			const subscribed = user.isSubscribed(data.authorId)
 			return render(200, "pug/channel.pug", {settings, data, subscribed, instanceOrigin})
 		}
 	}
