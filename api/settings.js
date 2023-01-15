@@ -23,7 +23,7 @@ module.exports = [
 			const user = getUser(req)
 			const settings = user.getSettings()
 			const instances = instancesList.get()
-			return render(200, "pug/settings.pug", {constants, user, settings, instances})
+			return render(200, "pug/settings.pug", {req, constants, user, settings, instances})
 		}
 	},
 	{

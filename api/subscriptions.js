@@ -39,7 +39,7 @@ module.exports = [
 			}
 			const settings = user.getSettingsOrDefaults()
 			const instanceOrigin = settings.instance
-			return render(200, "pug/subscriptions.pug", {url, settings, hasSubscriptions, videos, channels, missingChannelCount, refreshed, timeToPastText, instanceOrigin})
+			return render(200, "pug/subscriptions.pug", {req, url, settings, hasSubscriptions, videos, channels, missingChannelCount, refreshed, timeToPastText, instanceOrigin})
 		}
 	}
 ]

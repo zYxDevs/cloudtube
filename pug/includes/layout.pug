@@ -26,7 +26,10 @@ html
     if showNav
       nav.main-nav
         .links
-          a(href="/").link.home CloudTube
+          if req && req.headers && "x-insecure" in req.headers
+            a(href="/").link.home CloudTube - Insecure
+          else
+            a(href="/").link.home CloudTube
           a(href="/subscriptions" title="Subscriptions").link.icon-link
             != icons.get("subscriptions")
           a(href="/settings" title="Settings").link.icon-link

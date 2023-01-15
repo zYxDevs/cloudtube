@@ -18,7 +18,7 @@ module.exports = [
 			if (data.error) {
 				const statusCode = data.missing ? 410 : 500
 				const subscribed = user.isSubscribed(id)
-				return render(statusCode, "pug/channel-error.pug", {settings, data, subscribed, instanceOrigin})
+				return render(statusCode, "pug/channel-error.pug", {req, settings, data, subscribed, instanceOrigin})
 			}
 
 			// everything is fine
@@ -35,7 +35,7 @@ module.exports = [
 				})
 			}
 			const subscribed = user.isSubscribed(data.authorId)
-			return render(200, "pug/channel.pug", {settings, data, subscribed, instanceOrigin})
+			return render(200, "pug/channel.pug", {req, settings, data, subscribed, instanceOrigin})
 		}
 	}
 ]

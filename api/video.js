@@ -111,7 +111,7 @@ module.exports = [
 			// Check if playback is allowed
 			const videoTakedownInfo = db.prepare("SELECT id, org, url FROM TakedownVideos WHERE id = ?").get(id)
 			if (videoTakedownInfo) {
-				return render(451, "pug/takedown-video.pug", Object.assign({settings}, videoTakedownInfo))
+				return render(451, "pug/takedown-video.pug", Object.assign({req, settings}, videoTakedownInfo))
 			}
 
 			// Media fragment
@@ -129,7 +129,7 @@ module.exports = [
 			// Work out how to fetch the video
 			if (req.method === "GET") {
 				if (settings.local) { // skip to the local fetching page, which will then POST video data in a moment
-					return render(200, "pug/local-video.pug", {settings, id})
+					return render(200, "pug/local-video.pug", {req, settings, id})
 				}
 				var instanceOrigin = settings.instance
 				var outURL = `${instanceOrigin}/api/v1/videos/${id}`
@@ -153,7 +153,7 @@ module.exports = [
 					// automatically add the entry to the videos list, so it won't be fetched again
 					const args = {id, ...channelTakedownInfo}
 					db.prepare("INSERT INTO TakedownVideos (id, org, url) VALUES (@id, @org, @url)").run(args)
-					return render(451, "pug/takedown-video.pug", Object.assign({settings}, channelTakedownInfo))
+					return render(451, "pug/takedown-video.pug", Object.assign({req, settings}, channelTakedownInfo))
 				}
 
 				// process stream list ordering
@@ -199,7 +199,7 @@ module.exports = [
 				}
 
 				return render(200, "pug/video.pug", {
-					url, video, formats, subscribed, instanceOrigin, mediaFragment, autoplay, continuous,
+					req, url, video, formats, subscribed, instanceOrigin, mediaFragment, autoplay, continuous,
 					sessionWatched, sessionWatchedNext, settings
 				})
 
@@ -225,7 +225,7 @@ module.exports = [
 				// Create appropriate formatted message
 				const message = render(0, `pug/errors/${errorType}.pug`, locals).content
 
-				return render(500, "pug/video.pug", {video: {videoId: id}, error: true, message, settings})
+				return render(500, "pug/video.pug", {video: {videoId: id}, error: true, message, req, settings})
 			}
 		}
 	}

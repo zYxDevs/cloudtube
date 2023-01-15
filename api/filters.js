@@ -55,7 +55,7 @@ module.exports = [
 				label = url.searchParams.get("label")
 			}
 
-			return render(200, "pug/filters.pug", {settings, categories, type, contents, label, referrer, filterMaxLength, regexpEnabledText})
+			return render(200, "pug/filters.pug", {req, settings, categories, type, contents, label, referrer, filterMaxLength, regexpEnabledText})
 		}
 	},
 	{
@@ -104,7 +104,7 @@ module.exports = [
 					const user = getUser(req)
 					const categories = getCategories(user)
 					const settings = user.getSettingsOrDefaults()
-					return render(400, "pug/filters.pug", {settings, categories, type, contents, label, compileError, filterMaxLength, regexpEnabledText})
+					return render(400, "pug/filters.pug", {req, settings, categories, type, contents, label, compileError, filterMaxLength, regexpEnabledText})
 				})
 				.last(state => {
 					const {type, contents, label} = state

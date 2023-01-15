@@ -26,7 +26,7 @@ module.exports = [
 			const filters = user.getFilters()
 			results = converters.applyVideoFilters(results, filters).videos
 
-			return render(200, "pug/search.pug", {settings, url, query, results, instanceOrigin})
+			return render(200, "pug/search.pug", {req, settings, url, query, results, instanceOrigin})
 		}
 	}
 ]
