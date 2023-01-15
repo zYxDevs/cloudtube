@@ -15,6 +15,6 @@
     "denque": "^1.5.1",
     "mixin-deep": "^2.0.1",
     "node-fetch": "^2.6.6",
-    "pinski": "git+https://git.sr.ht/~cadence/nodejs-pinski#e22095172a061a8271e28272e2e481d541ea6725"
+    "pinski": "git+https://git.sr.ht/~cadence/nodejs-pinski#9653807f309aee34c8c63ce4e6ee760cccbfdf0d"
   }
 }
