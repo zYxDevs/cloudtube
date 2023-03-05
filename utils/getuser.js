@@ -24,7 +24,7 @@ function getToken(req, responseHeaders) {
 function setToken(responseHeaders, token) {
 	const setCookie = responseHeaders["set-cookie"] || []
 	if (!token) token = crypto.randomBytes(18).toString("base64").replace(/\W/g, "_")
-	setCookie.push(`token=${token}; Path=/; Max-Age=2147483648; HttpOnly; SameSite=Lax`)
+	setCookie.push(`token=${token}; Path=/; Max-Age=2147483647; HttpOnly; SameSite=Lax`)
 	responseHeaders["set-cookie"] = setCookie
 	return {token, responseHeaders}
 }
