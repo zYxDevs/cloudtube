@@ -26,22 +26,13 @@ async function fetchChannel(path, ucid, instance) {
 	if (!instance) throw new Error("No instance parameter provided")
 
 	const row = db.prepare("SELECT * FROM Channels WHERE ucid = ?").get(ucid)
-
-	// handle the case where the channel has a known error
-	if (row && row.missing_reason) {
-		return {
-			error: true,
-			ucid,
-			row,
-			missing: true,
-			message: row.missing_reason
-		}
-	}
+	// can branch on row.missing if needed, but account termination is not permanent,
+	// so we need to fetch new data from the web either way...
 
 	/** @type {any} */
 	const channel = await request(`${instance}/api/v1/channels/${ucid}?second__path=${path}`).then(res => res.json())
 
-	// handle the case where the channel has a newly discovered error
+	// handle the case where the just-fetched channel has an error
 	if (channel.error) {
 		const missingData = updateBadData(channel)
 		return {
@@ -52,7 +43,7 @@ async function fetchChannel(path, ucid, instance) {
 		}
 	}
 
-	// handle the case where the channel returns good data (this is the only remaining scenario)
+	// handle the case where the just-fetched channel does not have an error
 	updateGoodData(channel)
 	return channel
 }
